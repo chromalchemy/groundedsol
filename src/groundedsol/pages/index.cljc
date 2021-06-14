@@ -9,6 +9,9 @@
        :include-macros true)))
     ;[com.rpl.specter :refer [select ALL FIRST setval transform NONE]]))
 
+
+
+
 (comment
   ;markdown parse test with hickory + specter
   (def myvar
@@ -17,14 +20,14 @@
       :h2
       (map h/as-hiccup
            (h/parse-fragment
-             (groundedsol.util/foo))))))
-
+             (groundedsol.util/my-airtable-data))))))
+;---------------------------
 (comment
   [:div {:dangerouslySetInnerHTML {:__html myvar}}])
 
-(comment
+(comment)
 
-;(def c (groundedsol.util/content)
+(def c (groundedsol.util/content)
 
 ;markdown parse test with cybermonday
 ;(def md-hiccup
@@ -32,74 +35,78 @@
 ;    (:markdown-test c)))
 
 
-  (defn img-path [file]
-    (str "images/" file))
+ (defn img-path [file]
+   (str "images/" file))
 
-  (def routes (:routes c))
-  (def images (:images c))
+ (def routes (:routes c))
+ (def images (:images c))
 
-  (defn default-keymap [m]
-    (zipmap
-      (map symbol (keys m))
-      (keys m)))
+ (defn default-keymap [m]
+   (zipmap
+     (map symbol (keys m))
+     (keys m)))
 
-  (default-keymap (:consult (:intros c)))
+ (default-keymap (:consult (:intros c)))
 
-  (defn intro-block [m]
-    (let [{title :title,
-           subtitle :subtitle,
-           body :body,
-           link-text :link-text,
-           link :link} m]
-      [:section.contentBox3a
-       [:h3 title]
-       [:div.heading-line]
-       [:p.lead subtitle]
-       [:p body]
-       [:p [:a.btn.btn-main {:href link} link-text]]]))
+ (defn intro-block [m]
+   (let [{title :title,
+          subtitle :subtitle,
+          body :body,
+          link-text :link-text,
+          link :link} m]
+     [:section.contentBox3a
+      [:h3 title]
+      [:div.heading-line]
+      [:p.lead subtitle]
+      [:p body]
+      [:p [:a.btn.btn-main {:href link} link-text]]]))
 
-  (def nav
-    (let [r routes]
-      [:nav
-       [:ul.slimmenu
-        [:li [:a {:href (r :home/file)} (r :home/name)]]
-        [:li [:a {:href (r :consultation/file)} (r :services/name)]
-         [:ul
-          [:li [:a {:href (r :consultation/file)} (r :consultation/name)]]
-          [:li [:a {:href (r :consultation/file)} (r :design/name)]]
-          [:li [:a {:href (r :florida-plants/file)} (r :pop-up-shop/name)]]]]
-        [:li [:a {:href (r :florida-plants/file)} (r :florida-plants/name)]
-         [:ul
-          [:li [:a {:href (r :florida-plants/file)} (r :florida-plants-411/name)]] [:li [:a {:href (r :ecosystems/file)} (r :ecosystems/name)]]]]
-        [:li [:a {:href (r :about/file) } (r :about/name)]]
-        [:li [:a {:href (r :contact/file)} (r :contact/name)]]]]))
+ (def nav
+   (let [r routes]
+     [:nav
+      [:ul.slimmenu
+       [:li [:a {:href (r :home/file)} (r :home/name)]]
+       [:li [:a {:href (r :consultation/file)} (r :services/name)]
+        [:ul
+         [:li [:a {:href (r :consultation/file)} (r :consultation/name)]]
+         [:li [:a {:href (r :consultation/file)} (r :design/name)]]
+         [:li [:a {:href (r :florida-plants/file)} (r :pop-up-shop/name)]]]]
+       [:li [:a {:href (r :florida-plants/file)} (r :florida-plants/name)]
+        [:ul
+         [:li [:a {:href (r :florida-plants/file)} (r :florida-plants-411/name)]] [:li [:a {:href (r :ecosystems/file)} (r :ecosystems/name)]]]]
+       [:li [:a {:href (r :about/file) } (r :about/name)]]
+       [:li [:a {:href (r :contact/file)} (r :contact/name)]]]]))
 
-  (def welcome
-    (let [m (:welcome c)]
-      [:div.photoblock
-       [:div.container
-        [:div.inside
-         [:div.photoblockInside
-          [:h1.big (:title m)]
-          [:p.lead (:body m)]
-          [:p [:a.btn.btn-main {:href (:link m)} (:link-text m)]]]]]]))
+ (def welcome
+   (let [m (:welcome c)]
+     [:div.photoblock
+      [:div.container
+       [:div.inside
+        [:div.photoblockInside
+         [:h1.big (:title m)]
+         [:p.lead (:body m)]
+         [:p [:a.btn.btn-main {:href (:link m)} (:link-text m)]]]]]]))
 
-  (def hot-plant-gallery
-    (let [gallery (c :hot-plant-gallery)]
-      (list
-        [:h3.alternate1 (gallery :title)]
-        [:p.center
-         (for [m (:images gallery)]
-           [:a.lightbox.wow.fadeIn
-            {:data-lightbox-gallery (gallery :gallery-name)
-             :data-wow-delay (m :delay)
-             :href (img-path (str "//" (gallery :img-folder) "//" (m :img-file)))
-             :title (m :title)}
-            [:img {:alt (m :title)
-                   :src (img-path (str "//" (gallery :img-folder) "//" (m :thumb-file)))}]])]))))
+ (def hot-plant-gallery
+   (let [gallery (c :hot-plant-gallery)]
+     (list
+       [:h3.alternate1 (gallery :title)]
+       [:p.center
+        (for [m (:images gallery)]
+          [:a.lightbox.wow.fadeIn
+           {:data-lightbox-gallery (gallery :gallery-name)
+            :data-wow-delay (m :delay)
+            :href (img-path (str "//" (gallery :img-folder) "//" (m :img-file)))
+            :title (m :title)}
+           [:img {:alt (m :title)
+                  :src (img-path (str "//" (gallery :img-folder) "//" (m :thumb-file)))}]])]))))
 
 (defn hiccup []
-  (list [:h1 "hello broken page"]))
+  (list
+    [:h1
+     (str
+       (:markdown-test c))]))
+
 
 (comment
   (list
