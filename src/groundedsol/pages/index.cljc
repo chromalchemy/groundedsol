@@ -25,16 +25,14 @@
 (comment
   [:div {:dangerouslySetInnerHTML {:__html myvar}}])
 
-(comment)
-
-(def c (groundedsol.util/content)
+(def c (groundedsol.util/content))
 
 ;markdown parse test with cybermonday
 ;(def md-hiccup
 ;  (cybermonday.core/parse-md
 ;    (:markdown-test c)))
 
-
+(comment
  (defn img-path [file]
    (str "images/" file))
 
@@ -103,7 +101,7 @@
 
 (defn hiccup []
   (list
-    [:h1
+    [:h1 {:style {:color "green"}}
      (str
        (:markdown-test c))]))
 

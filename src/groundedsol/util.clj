@@ -2,7 +2,8 @@
   (:require
   ;  ;[groundedsol.core]
   ;  ;[markdown.core :as md]
-   [airtable-clj.core :as airtable]))
+    [cybermonday.core :as cm]
+    [airtable-clj.core :as airtable]))
   ;  [groundedsol.mycontent]
   ;  [com.rpl.specter :refer [select ALL FIRST setval transform NONE]]))
 
