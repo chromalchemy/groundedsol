@@ -28,7 +28,8 @@
       :records
       first
       :fields
-      (get "Notes")))
+      (get "Notes")
+      cm/parse-md))
     ;md/md-to-html-string))
 
 (def images
