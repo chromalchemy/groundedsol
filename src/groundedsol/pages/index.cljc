@@ -101,9 +101,11 @@
 
 (defn hiccup []
   (list
-    [:h1 {:style {:color "green"}}
-     (str
-       (:markdown-test c))]))
+    [:span
+     {:style {:color "green"
+              :font-size "2em"}}
+     ;(str)
+     (:markdown-test c)]))
 
 
 (comment

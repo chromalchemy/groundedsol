@@ -29,7 +29,11 @@
       first
       :fields
       (get "Notes")
-      cm/parse-md))
+      cm/parse-md
+      :body))
+      ;cm/md-to-ir))
+      ;:body))
+
     ;md/md-to-html-string))
 
 (def images
