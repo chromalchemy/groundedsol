@@ -33,7 +33,8 @@
                  [com.rpl/specter "1.1.3"]
                  [markdown-clj "1.10.5"]
                  [hickory "0.7.1"]
-                 [airtable-clj "0.1.1-SNAPSHOT"]])
+                 [airtable-clj "0.1.1-SNAPSHOT"]
+                 [com.kiranshila/cybermonday "0.2.0"]])
 
   ;               [clj-http "3.8.0"]
   ;               [cheshire "5.8.0"]

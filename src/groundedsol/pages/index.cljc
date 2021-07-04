@@ -6,28 +6,27 @@
     ;[cybermonday.core :as cm]
     #?(:clj [groundedsol.util]
        :cljs [groundedsol.util]
-       :include-macros true)))
-    ;[com.rpl.specter :refer [select ALL FIRST setval transform NONE]]))
+       :include-macros true)
+    [com.rpl.specter :refer [select ALL FIRST setval transform NONE]]))
 
-
-
-
-(comment
+(comment)
   ;markdown parse test with hickory + specter
-  (def myvar
-    ;(into [] (reverse [  "Hello World" :h1]))
-    (setval [FIRST FIRST]
-      :h2
-      (map h/as-hiccup
-           (h/parse-fragment
-             (groundedsol.util/my-airtable-data))))))
+(def myvar
+  (str (groundedsol.util/my-airtable-data)))
+
+;(into [] (reverse [  "Hello World" :h1]))
+    ;(setval [FIRST FIRST]
+    ;  :h2
+    ;  (map h/as-hiccup
+    ;       (h/parse-fragment
+    ;         (groundedsol.util/my-airtable-data)))))
 ;---------------------------
 (comment
   [:div {:dangerouslySetInnerHTML {:__html myvar}}])
 
-(def c (groundedsol.util/content))
+;(def c (groundedsol.util/content))
 
-;markdown parse test with cybermonday
+;markdown parse test with gonday
 ;(def md-hiccup
 ;  (cybermonday.core/parse-md
 ;    (:markdown-test c)))
@@ -103,9 +102,11 @@
   (list
     [:span
      {:style {:color "green"
-              :font-size "2em"}}
+              :font-size "2em"}}]
      ;(str)
-     (:markdown-test c)]))
+    [:h1 myvar]))
+     ;(:hello "world")]))
+     ;(:markdown-test c)]))
 
 
 (comment
@@ -238,7 +239,6 @@ continued dedication to the yard she created. Thanks, Amanda!"]
         [:p.copyright "&copy;"
          [:script {:type "text/javascript"} "document.write(new Date().getFullYear());"] "All Rights Reserved"]
         [:p]]]]]))
-
 
 (comment
   (list
