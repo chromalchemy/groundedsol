@@ -32,6 +32,7 @@
                  ;[girouette "0.0.3"]
                  [com.rpl/specter "1.1.3"]
                  [markdown-clj "1.10.5"]
+                 [rum "0.12.6" :exclusions [cljsjs/react cljsjs/react-dom]]
                  [hickory "0.7.1"]
                  [airtable-clj "0.1.1-SNAPSHOT"]
                  [com.kiranshila/cybermonday "0.2.0"]])

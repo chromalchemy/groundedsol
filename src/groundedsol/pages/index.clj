@@ -1,115 +1,141 @@
 (ns groundedsol.pages.index
   (:require
-    [groundedsol.routes :as routes]
-    [bidi.bidi :as b]
-    ;[hickory.core :as h]
-    ;[cybermonday.core :as cm]
-    #?(:clj [groundedsol.util]
-       :cljs [groundedsol.util]
-       :include-macros true)
+    ;[groundedsol.routes :as routes]
+    ;[bidi.bidi :as b]
+    [hickory.core :as h]
+    [cybermonday.core :as cm]
+    [groundedsol.content :as c]
+    [groundedsol.airtable :as at]
+    [rum.core :as rum]
     [com.rpl.specter :refer [select ALL FIRST setval transform NONE]]))
 
-(comment)
-  ;markdown parse test with hickory + specter
-(def myvar
-  (str (groundedsol.util/my-airtable-data)))
+;markdown parse test with hickory + specter
+(comment
+  (def myvar
+    (str (groundedsol.util/my-airtable-data))))
 
 ;(into [] (reverse [  "Hello World" :h1]))
-    ;(setval [FIRST FIRST]
-    ;  :h2
-    ;  (map h/as-hiccup
-    ;       (h/parse-fragment
-    ;         (groundedsol.util/my-airtable-data)))))
+      ;(setval [FIRST FIRST]
+      ;  :h2
+      ;  (map h/as-hiccup
+      ;       (h/parse-fragment
+      ;         (groundedsol.util/my-airtable-data)))))
 ;---------------------------
 (comment
   [:div {:dangerouslySetInnerHTML {:__html myvar}}])
-
-;(def c (groundedsol.util/content))
 
 ;markdown parse test with gonday
 ;(def md-hiccup
 ;  (cybermonday.core/parse-md
 ;    (:markdown-test c)))
 
-(comment
- (defn img-path [file]
-   (str "images/" file))
+(defn img-path [file]
+  (str "images/" file))
 
- (def routes (:routes c))
- (def images (:images c))
+(defn default-keymap [m]
+  (zipmap
+    (map symbol (keys m))
+    (keys m)))
 
- (defn default-keymap [m]
-   (zipmap
-     (map symbol (keys m))
-     (keys m)))
+(default-keymap (c/intros :consult))
 
- (default-keymap (:consult (:intros c)))
-
- (defn intro-block [m]
-   (let [{title :title,
-          subtitle :subtitle,
-          body :body,
-          link-text :link-text,
-          link :link} m]
-     [:section.contentBox3a
-      [:h3 title]
-      [:div.heading-line]
-      [:p.lead subtitle]
-      [:p body]
-      [:p [:a.btn.btn-main {:href link} link-text]]]))
-
- (def nav
-   (let [r routes]
-     [:nav
-      [:ul.slimmenu
-       [:li [:a {:href (r :home/file)} (r :home/name)]]
-       [:li [:a {:href (r :consultation/file)} (r :services/name)]
-        [:ul
-         [:li [:a {:href (r :consultation/file)} (r :consultation/name)]]
-         [:li [:a {:href (r :consultation/file)} (r :design/name)]]
-         [:li [:a {:href (r :florida-plants/file)} (r :pop-up-shop/name)]]]]
-       [:li [:a {:href (r :florida-plants/file)} (r :florida-plants/name)]
-        [:ul
-         [:li [:a {:href (r :florida-plants/file)} (r :florida-plants-411/name)]] [:li [:a {:href (r :ecosystems/file)} (r :ecosystems/name)]]]]
-       [:li [:a {:href (r :about/file) } (r :about/name)]]
-       [:li [:a {:href (r :contact/file)} (r :contact/name)]]]]))
-
- (def welcome
-   (let [m (:welcome c)]
-     [:div.photoblock
-      [:div.container
-       [:div.inside
-        [:div.photoblockInside
-         [:h1.big (:title m)]
-         [:p.lead (:body m)]
-         [:p [:a.btn.btn-main {:href (:link m)} (:link-text m)]]]]]]))
-
- (def hot-plant-gallery
-   (let [gallery (c :hot-plant-gallery)]
-     (list
-       [:h3.alternate1 (gallery :title)]
-       [:p.center
-        (for [m (:images gallery)]
-          [:a.lightbox.wow.fadeIn
-           {:data-lightbox-gallery (gallery :gallery-name)
-            :data-wow-delay (m :delay)
-            :href (img-path (str "//" (gallery :img-folder) "//" (m :img-file)))
-            :title (m :title)}
-           [:img {:alt (m :title)
-                  :src (img-path (str "//" (gallery :img-folder) "//" (m :thumb-file)))}]])]))))
-
-(defn hiccup []
+(def script-files
   (list
-    [:span
-     {:style {:color "green"
-              :font-size "2em"}}]
-     ;(str)
-    [:h1 myvar]))
-     ;(:hello "world")]))
-     ;(:markdown-test c)]))
+    ;[:script {:src "https://unpkg.com/htmx.org@1.4.1"}]
+    [:script {:src "http://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"}]
+    [:script {:src "scripts/main.js" :type "text/javascript"}]
+    [:script {:src "scripts/jquery.slimmenu.js" :type "text/javascript"}]
+    [:script {:src "scripts/nivo-lightbox.js" :type "text/javascript"}]
+    [:script {:src "scripts/accordionscript.js" :type "text/javascript"}]
+    [:script {:src "scripts/wow.min.js"}]
+    [:script "new WOW().init();"]
+    [:script "$('ul.slimmenu').slimmenu(\n{\n    resizeWidth: '1024',\n    collapserTitle: 'Main Menu',\n    animSpeed: '300',\n    easingEffect: null,\n    indentChildren: true,\n    childrenIndenter: '&nbsp;&nbsp;'\n});\n"]))
+
+(def page-description
+  "We provide ecologically sound landscaping services focused on habitat enhancement using Florida native plant species")
+
+(def css-files
+  (list
+    [:link {:href "css/groundedsol.css" :rel "stylesheet" :type "text/css" :media "screen"}]
+    [:link {:href "css/animate.css" :rel "stylesheet" :type "text/css" :media "screen"}]
+    [:link {:href "css/default.css" :rel "stylesheet" :type "text/css" :media "screen"}]
+    [:link {:href "css/nivo-lightbox.css" :rel "stylesheet" :type "text/css" :media "screen"}]
+    [:link {:href "http://fonts.googleapis.com/css?family=Open+Sans|Poiret+One|Oswald:300" :rel "stylesheet" :type "text/css"}]
+    [:link {:href "https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" :rel "stylesheet"}]
+    [:link {:href "images/lightbox/default.css" :media "screen" :rel "stylesheet" :type "text/css"}]))
+;[:link {:href "https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" :rel "stylesheet"}]))
+
+(def head
+  [:head
+   [:title "Grounded Solutions Landscape Consultation and Design Company"]
+   [:meta {:charset "utf-8"}]
+   [:meta {:content page-description :name "description"}]
+   [:LINK {:REL "SHORTCUT ICON" :HREF "icongs.ico" :type "image/x-icon"}]
+   [:meta {:content "width=device-width, initial-scale=1.0" :name "viewport"}]
+   css-files])
+
+(def mystuff
+  ;(list)
+  [:span
+   {:style {:color "green"
+            :font-size "2em"}}
+   "hello hiccup man alive"])
 
 
-(comment
+(defn intro-block [m]
+  (let [{title :title,
+         subtitle :subtitle,
+         body :body,
+         link-text :link-text,
+         link :link} m]
+    [:section.contentBox3a
+     [:h3 title]
+     [:div.heading-line]
+     [:p.lead subtitle]
+     [:p body]
+     [:p [:a.btn.btn-main {:href link} link-text]]]))
+
+(def nav
+  (let [r c/routes]
+    [:nav
+     [:ul.slimmenu
+      [:li [:a {:href (r :home/file)} (r :home/name)]]
+      [:li [:a {:href (r :consultation/file)} (r :services/name)]
+       [:ul
+        [:li [:a {:href (r :consultation/file)} (r :consultation/name)]]
+        [:li [:a {:href (r :consultation/file)} (r :design/name)]]
+        [:li [:a {:href (r :florida-plants/file)} (r :pop-up-shop/name)]]]]
+      [:li [:a {:href (r :florida-plants/file)} (r :florida-plants/name)]
+       [:ul
+        [:li [:a {:href (r :florida-plants/file)} (r :florida-plants-411/name)]] [:li [:a {:href (r :ecosystems/file)} (r :ecosystems/name)]]]]
+      [:li [:a {:href (r :about/file) } (r :about/name)]]
+      [:li [:a {:href (r :contact/file)} (r :contact/name)]]]]))
+
+(def welcome
+  (let [m c/welcome]
+    [:div.photoblock
+     [:div.container
+      [:div.inside
+       [:div.photoblockInside
+        [:h1.big (:title m)]
+        [:p.lead (:body m)]
+        [:p [:a.btn.btn-main {:href (:link m)} (:link-text m)]]]]]]))
+
+(def hot-plant-gallery
+  (let [gallery c/hot-plant-gallery]
+    (list
+      [:h3.alternate1 (gallery :title)]
+      [:p.center
+       (for [m (:images gallery)]
+         [:a.lightbox.wow.fadeIn
+          {:data-lightbox-gallery (gallery :gallery-name)
+           :data-wow-delay (m :delay)
+           :href (img-path (str "//" (gallery :img-folder) "//" (m :img-file)))
+           :title (m :title)}
+          [:img {:alt (m :title)
+                 :src (img-path (str "//" (gallery :img-folder) "//" (m :thumb-file)))}]])])))
+
+(def body
   (list
     ;[:h1 md-hiccup]
     [:div.scroll-to-top [:a {:href "#"} [:i.fa.fa-angle-double-up.fa-2x]]]
@@ -117,8 +143,8 @@
      [:div.container
       [:div.inside
        [:div.logo
-        [:div.brand [:a {:href (routes :home)} [:img {:alt (images :logo/alt) :height "53" :src (img-path (images :logo/file)) :width "200"}]]]
-        [:div.slogan (c :slogan)]]
+        [:div.brand [:a {:href (c/routes :home)} [:img {:alt (images :logo/alt) :height "53" :src (img-path (images :logo/file)) :width "200"}]]]
+        [:div.slogan c/slogan]]
        nav]
       [:hr.noshow]]]
     welcome
@@ -126,7 +152,7 @@
      [:div.container
       [:div.inside
        [:div.group
-        (for [m (vals (c :intros))]
+        (for [m (vals c/intros)]
           (intro-block m))
         [:div.clear]]]]]
     [:div.row2
@@ -210,7 +236,12 @@ continued dedication to the yard she created. Thanks, Amanda!"]
          [:li [:a {:href "contact.html"} "Contact"]]]]
        [:section.contentBox4b
         [:h5 "Contact:"]
-        [:p.socialmedia "&nbsp;" [:a {:href "https://www.facebook.com/groundedsol/" :target "_blank"} [:img {:alt "Facebook" :height "32" :src "images/icons/fb.png" :title "Facebook" :width "32"}]]]
+        [:p.socialmedia
+         (list
+           ;(rum/render-static-markup
+           ;  (h/parse-fragment "&nbsp;"))
+           [:a {:href "https://www.facebook.com/groundedsol/" :target "_blank"}
+            [:img {:alt "Facebook" :height "32" :src "images/icons/fb.png" :title "Facebook" :width "32"}]])]
         [:p.home "1821 Amherst Ave." [:br] "Orlando, FL 32804"]
         [:p.email [:a {:href "mailto:groundedsolution@gmail.com"} "groundedsolution@gmail.com"] [:br]]
         [:p.phone "352-219-5381"]
@@ -228,7 +259,9 @@ continued dedication to the yard she created. Thanks, Amanda!"]
         [:i.fa.fa-camera.fa-3x.img-left.color3.icon-shadow] "Photography by Amanda Martin. All rights reserved"
         [:br] [:br]]
        [:section.contentBox4d
-        [:h5 "News &amp; Events:"]
+        [:h5  "News"
+         ;(h/parse-fragment "&amp;")
+         "Events:"]
         [:p.center
          [:script {:src "javascripts/calendar02.js" :type "text/javascript"}]]
         [:p.center [:a.btn.btn-main {:href "consultationanddesign.html"} "More Info &raquo;"]]]
@@ -236,24 +269,22 @@ continued dedication to the yard she created. Thanks, Amanda!"]
        [:div.footerbottom
         [:hr.fancy]
         [:h1 "Grounded Solutions, Inc"]
-        [:p.copyright "&copy;"
+        [:p.copyright
+         ;"&copy;"
          [:script {:type "text/javascript"} "document.write(new Date().getFullYear());"] "All Rights Reserved"]
         [:p]]]]]))
 
-(comment
-  (list
-    ;[:h1.myclass myvar]
-    [:p "This really is an index page and its content is up to you! Also visit "
-     [:a {:href (b/path-for routes/routes :page/contact)} "contact page"] "."]
-    [:p {:style {:color            "navy"
-                 :background-color "lightblue"
-                 :padding          5}}
-     "You can use any hiccup you want:"]
-    [:ul (for [index (range 10)]
-           [:li "The element " (inc index)])]))
+(def page
+  [:html
+   head
+   [:body body]])
 
+(def html-string
+  (rum/render-static-markup page))
 
+;(println html-string)
 
+(spit "build/index.html" html-string)
 
 
 

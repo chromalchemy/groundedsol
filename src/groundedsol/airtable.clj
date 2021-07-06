@@ -1,22 +1,18 @@
-(ns groundedsol.core
+(ns groundedsol.airtable
   (:require
+  ;  ;[groundedsol.core]
+  ;  ;[markdown.core :as md]
+    [cybermonday.core :as cm]
     [airtable-clj.core :as airtable]))
-    ;[clojure.java.io :as io]))
-    ;[environ.core :refer [env]]))
+  ;  [groundedsol.mycontent]
+  ;  [com.rpl.specter :refer [select ALL FIRST setval transform NONE]]))
 
-;(defn copy-file [uri file]
-;  (with-open [in (io/input-stream uri)
-;              out (io/output-stream file)]
-;    (io/copy in out)))
-
-;(copy-file
-;  "https://dl.airtable.com/.attachments/c800071442f6589160bf68ec4ef51cc9/af845f97/webcam-5292021102643PM.png"
-;  "resources/images/myimage.jpg")
+(comment)
 
 (def api-key "keyoyjKNMHK4XUP7h")
-  ;(:airtable-api-key env))
+;(:airtable-api-key env))
 (def base "app2480ik2bNPMyti")
-  ;(:airtable-base-id env))
+;(:airtable-base-id env))
 
 (def table "mytable")
 
@@ -27,17 +23,28 @@
      :table table
      :max-records 5}))
 
-(def mytest "hello world")
-
 (def my-airtable-data
   (-> sample-query
-       :records
-       first
-       :fields
-       (get "Notes")))
-    ;(get "Attachments"))
-    ;count)
-    ;:attachments)
+      :records
+      first
+      :fields
+      (get "Notes")
+      cm/parse-md
+      :body))
+      ;cm/md-to-ir))
+      ;:body))
+
+    ;md/md-to-html-string))
+
+;(def my-airtable-data
+;  (-> sample-query
+;      :records
+;      first
+;      :fields
+;      (get "Notes")))
+;(get "Attachments"))
+;count)
+;:attachments)
 
 
 ;(def just-one-record
@@ -62,3 +69,5 @@
 ;       :clj
 ;       (with-open [in (io/input-stream "src/unfufilled-items.json")]
 ;         (t/read (t/reader in :json))))))
+
+
