@@ -39,7 +39,7 @@
     :link-text "Contact for a Consult"
     :link (routes :consultation/file)}
    :flora-and-fauna
-   {:title "FLORA &amp; FAUNA"
+   {:title "FLORA & FAUNA"
     :subtitle "Florida, a fine balance of resources."
     :body "Drought tolerant Florida plants, offering seasonal flowers and berries for many
             other species is the basis for Grounded Solutions landscape designs. But we don’t
@@ -49,7 +49,7 @@
 
 ;(def markdown-test my-airtable-data)
 
-(def slogan "Ecological Landscape Design &amp; Consulting")
+(def slogan "Ecological Landscape Design & Consulting")
 
 (def hot-plant-gallery
   {:title "What's Hot"
