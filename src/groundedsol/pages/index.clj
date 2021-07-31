@@ -55,15 +55,20 @@
   "We provide ecologically sound landscaping services focused on habitat enhancement using Florida native plant species")
 
 (def css-files
-  (list
-    [:link {:href "css/groundedsol.css" :rel "stylesheet" :type "text/css" :media "screen"}]
-    [:link {:href "css/animate.css" :rel "stylesheet" :type "text/css" :media "screen"}]
-    [:link {:href "css/default.css" :rel "stylesheet" :type "text/css" :media "screen"}]
-    [:link {:href "css/nivo-lightbox.css" :rel "stylesheet" :type "text/css" :media "screen"}]
-    [:link {:href "http://fonts.googleapis.com/css?family=Open+Sans|Poiret+One|Oswald:300" :rel "stylesheet" :type "text/css"}]
-    [:link {:href "https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" :rel "stylesheet"}]
-    [:link {:href "images/lightbox/default.css" :media "screen" :rel "stylesheet" :type "text/css"}]))
-;[:link {:href "https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" :rel "stylesheet"}]))
+  ["css/groundedsol.css"
+   "css/animate.css"
+   "css/default.css"
+   "css/nivo-lightbox.css"
+   "http://fonts.googleapis.com/css?family=Open+Sans|Poiret+One|Oswald:300"
+   "https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css"
+   "images/lightbox/default.css"])
+   ;"https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css"])
+
+(def css-links
+  (map
+    (fn [css-url]
+      [:link {:href css-url :rel "stylesheet" :type "text/css" :media "screen"}])
+    css-files))
 
 (def head
   [:head
@@ -72,7 +77,7 @@
    [:meta {:content page-description :name "description"}]
    [:LINK {:REL "SHORTCUT ICON" :HREF "icongs.ico" :type "image/x-icon"}]
    [:meta {:content "width=device-width, initial-scale=1.0" :name "viewport"}]
-   css-files])
+   css-links])
 
 (def mystuff
   ;(list)
@@ -143,7 +148,7 @@
      [:div.container
       [:div.inside
        [:div.logo
-        [:div.brand [:a {:href (c/routes :home)} [:img {:alt (images :logo/alt) :height "53" :src (img-path (images :logo/file)) :width "200"}]]]
+        [:div.brand [:a {:href (c/routes :home)} [:img {:alt (c/images :logo/alt) :height "53" :src (img-path (c/images :logo/file)) :width "200"}]]]
         [:div.slogan c/slogan]]
        nav]
       [:hr.noshow]]]
