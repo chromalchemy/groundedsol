@@ -17,7 +17,7 @@
    :home/title              "Grounded Solutions Landscape Consultation and Design Company"
    :services/name           "Services"
    :services/file           "consultationanddesign"
-   :services/title  "Consultation and Design Eco-Logical Landscapes"
+   :services/title          "Consultation and Design Eco-Logical Landscapes"
    :consultation/name       "CONSULTATION"
    :design/name             "DESIGN"
    :pop-up-shop/name        "POP UP Shop"
@@ -165,7 +165,7 @@
 
 
 (def footer
-  [:footer
+  [:footer {:style {:clear "both"}}
    [:div.container
     [:div.inside
      [:section.contentBox4a
