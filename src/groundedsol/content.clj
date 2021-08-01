@@ -1,22 +1,23 @@
 (ns groundedsol.content)
 
 (def routes
-  {:home/file                   "index.html"
-   :home/name                   "Home"
-   :services/name               "Services"
-   :consultation/name           "CONSULTATION"
-   :design/name                 "DESIGN"
-   :pop-up-shop/name            "POP UP Shop"
-   :consultation/file           "consultationanddesign.html"
-   :florida-plants/name         "Plants"
-   :florida-plants/file         "floridaplants.html"
-   :ecosystems/file             "ecosystems.html"
-   :ecosystems/name "Ecosytems"
-   :about/file                  "about.html"
-   :about/name "About"
+  {:home/file               "index.html"
+   :home/name               "Home"
+   :services/name           "Services"
+   :services/file           "consultationanddesign.html"
+   :consultation/name       "CONSULTATION"
+   :design/name             "DESIGN"
+   :pop-up-shop/name        "POP UP Shop"
+   :consultation/file       "consultationanddesign.html"
+   :florida-plants/name     "Plants"
+   :florida-plants/file     "floridaplants.html"
+   :ecosystems/file         "ecosystems.html"
+   :ecosystems/name         "Ecosytems"
+   :about/file              "about.html"
+   :about/name              "About"
    :florida-plants-411/name "FL Plants 411"
-   :contact/file "contact.html"
-   :contact/name "Contact"})
+   :contact/file            "contact.html"
+   :contact/name            "Contact"})
 
 (def images
   {:logo/file "logo200.png"
@@ -72,5 +73,28 @@ company. We provide ecologically informed landscaping ideas and services to enha
    :link "about.html"
    :link-text "Learn More"})
 
+(def reviews
+  [{:img "reviews3.jpg"
+    :date "March 2, 2018"
+    :name "Patty R."
+    :review
+    "My husband and I had been interested in a landscape of Florida native plants since the house was purchased in July 2013, but we didn’t have
+a clue how to do start or which plants to incorporate. Fortunately we were lead to Amanda Martin. This young woman has a plethora of
+knowledge involving not only Florida native plants, but landscaping with them, and also bee keeping. We are so grateful for her expertise and
+continued dedication to the yard she created. Thanks, Amanda!"}
+   {:img "reviews2.jpg"
+    :date "June 20, 2017"
+    :name "Gina S."
+    :review
+    "Amanda created a beautiful native landscape plan for our new home.
+    She knew what grew here before the orange groves and subdivisions and included the natives that will easily
+    thrive and support the butterflies, birds and other insects and critters that will visit and live in our yard.
+    We are so enjoying our new yard!"}
+   {:img "reviews1.jpg"
+    :date "May 13, 2017"
+    :name "Carla N."
+    :review
+    "Just stopped into a local nursery, met Amanda, bought some great plants, and supported local business. You should do the same. Support this local lady making it happen."}]
+  )
 
 
