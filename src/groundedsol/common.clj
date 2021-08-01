@@ -11,6 +11,33 @@
     [com.rpl.specter :refer [select ALL FIRST setval transform NONE]]))
     ;[goog.string :as gstring]))
 
+(def pages
+  {:home/file               "index"
+   :home/name               "Home"
+   :home/title              "Grounded Solutions Landscape Consultation and Design Company"
+   :services/name           "Services"
+   :services/file           "consultationanddesign"
+   :services/title  "Consultation and Design Eco-Logical Landscapes"
+   :consultation/name       "CONSULTATION"
+   :design/name             "DESIGN"
+   :pop-up-shop/name        "POP UP Shop"
+   :consultation/file       "consultationanddesign"
+   :florida-plants/name     "Plants"
+   :florida-plants/file     "floridaplants"
+   :ecosystems/file         "ecosystems"
+   :ecosystems/name         "Ecosytems"
+   :about/file              "about"
+   :about/name              "About"
+   :florida-plants-411/name "FL Plants 411"
+   :contact/file            "contact"
+   :contact/name            "Contact"})
+
+
+(defn page-kw [page-kw tail-str]
+  (keyword (str (name page-kw) "/" tail-str)))
+
+(def page-keys [:home :services :florida-plants :about :contact])
+
 
 (def page-description
   "We provide ecologically sound landscaping services focused on habitat enhancement using Florida native plant species")
@@ -29,16 +56,15 @@
   (for [css-url css-files]
     [:link {:href css-url :rel "stylesheet" :type "text/css" :media "screen"}]))
 
-(def head
+(defn head [page]
   [:head
-   [:title "Grounded Solutions Landscape Consultation and Design Company"]
+   [:title (:home/title pages)]
    [:meta {:charset "utf-8"}]
    [:meta {:content page-description :name "description"}]
    [:LINK {:REL "SHORTCUT ICON" :HREF "icongs.ico" :type "image/x-icon"}]
    [:meta {:content "width=device-width, initial-scale=1.0" :name "viewport"}]
    ;[:link {:href "http://fonts.googleapis.com/css?family=Open+Sans|Poiret+One|Oswald:300" :rel "stylesheet" :type "text/css"}]
    css-links])
-
 
 
 (def script-files
@@ -54,37 +80,18 @@
     [:script "$('ul.slimmenu').slimmenu(\n{\n    resizeWidth: '1024',\n    collapserTitle: 'Main Menu',\n    animSpeed: '300',\n    easingEffect: null,\n    indentChildren: true,\n    childrenIndenter: '&nbsp;&nbsp;'\n});\n"]))
 
 
+(defn html-filename [page]
+  (str (pages (page-kw page "file")) ".html"))
+
+(defn page-val [page s]
+  (pages (page-kw page s)))
 
 (def nav-links
-  (let [r c/routes
-        ks [:home :services :florida-plants :about :contact]]
-    (map
-      (fn [k]
-        (let [v #(r (keyword (str (name k) "/" %)))]
-          [:li [:a {:href (v "file")} (v "name")]]))
-      ks)))
+  (for [p page-keys]
+    (let [page-name (page-val p "name")
+          filename (html-filename p)]
+      [:li [:a {:href filename} page-name]])))
 
-;[:li [:a {:href (r :home/file)} (r :home/name)]]
-;[:li [:a {:href (r :consultation/file)} (r :services/name)]]
-;;[:ul
-;; [:li [:a {:href (r :consultation/file)} (r :consultation/name)]]
-;; [:li [:a {:href (r :consultation/file)} (r :design/name)]]
-;; [:li [:a {:href (r :florida-plants/file)} (r :pop-up-shop/name)]]]]
-;[:li [:a {:href (r :florida-plants/file)} (r :florida-plants/name)]]
-;;[:ul
-;; [:li [:a {:href (r :florida-plants/file)} (r :florida-plants-411/name)]] [:li [:a {:href (r :ecosystems/file)} (r :ecosystems/name)]]]]
-;[:li [:a {:href (r :about/file) } (r :about/name)]]
-;[:li [:a {:href (r :contact/file)} (r :contact/name)]]
-
-
-(def nav-links
-  (let [r c/routes
-        ks [:home :services :florida-plants :about :contact]]
-    (map
-      (fn [k]
-        (let [v #(r (keyword (str (name k) "/" %)))]
-          [:li [:a {:href (v "file")} (v "name")]]))
-      ks)))
 
 ;[:li [:a {:href (r :home/file)} (r :home/name)]]
 ;[:li [:a {:href (r :consultation/file)} (r :services/name)]]
@@ -100,17 +107,16 @@
 
 
 (def nav
-  (let [r c/routes]
-    [:nav
-     [:ul.slimmenu
-      nav-links]]))
+  [:nav
+   [:ul.slimmenu
+    nav-links]])
 
 (def masthead
   [:header.noborder
    [:div.container
     [:div.inside
      [:div.logo
-      [:div.brand [:a {:href (c/routes :home)} [:img {:alt (c/images :logo/alt) :height "53" :src (u/img-path (c/images :logo/file)) :width "200"}]]]
+      [:div.brand [:a {:href (pages :home/file)} [:img {:alt (c/images :logo/alt) :height "53" :src (u/img-path (c/images :logo/file)) :width "200"}]]]
       [:div.slogan c/slogan]]
      nav]
     [:hr.noshow]]])
@@ -153,7 +159,7 @@
    [:h5 "News & Events:"]
    [:p.center
     [:script {:src "scripts/calendar02.js" :type "text/javascript"}]]
-   [:p.center [:a.btn.btn-main {:href (c/routes :consultation/file)} "More Info ≫"]]])
+   [:p.center [:a.btn.btn-main {:href (pages :consultation/file)} "More Info ≫"]]])
 
 ;&raquo;
 
@@ -180,10 +186,9 @@
 (def scroll-to-top
   [:div.scroll-to-top [:a {:href "#"} [:i.fa.fa-angle-double-up.fa-2x]]])
 
-
-(defn page [body]
+(defn page-hiccup [page body]
   [:html
-   head
+   (head page)
    [:body body]])
 
 (defn body [content-blocks]
@@ -196,7 +201,11 @@
       [footer
        script-files])))
 
-(defn write-page [page-name body-blocks]
-  (spit (str "build/" page-name ".html")
-    (rum/render-static-markup
-      (page (body body-blocks)))))
+(def build-root-path "build/")
+
+(defn write-page [page body-blocks]
+  (let [file-path
+        (str build-root-path (html-filename page))]
+    (spit file-path
+      (rum/render-static-markup
+        (page-hiccup page (body body-blocks))))))

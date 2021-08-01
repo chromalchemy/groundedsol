@@ -169,6 +169,6 @@ crowd that wants to get their hands dirty."]])
    generic-row
    reviews])
 
-
 (common/write-page
-  "index" content-blocks)
+  :home
+  content-blocks)

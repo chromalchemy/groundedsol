@@ -1,24 +1,5 @@
 (ns groundedsol.content)
 
-(def routes
-  {:home/file               "index.html"
-   :home/name               "Home"
-   :services/name           "Services"
-   :services/file           "consultationanddesign.html"
-   :consultation/name       "CONSULTATION"
-   :design/name             "DESIGN"
-   :pop-up-shop/name        "POP UP Shop"
-   :consultation/file       "consultationanddesign.html"
-   :florida-plants/name     "Plants"
-   :florida-plants/file     "floridaplants.html"
-   :ecosystems/file         "ecosystems.html"
-   :ecosystems/name         "Ecosytems"
-   :about/file              "about.html"
-   :about/name              "About"
-   :florida-plants-411/name "FL Plants 411"
-   :contact/file            "contact.html"
-   :contact/name            "Contact"})
-
 (def images
   {:logo/file "logo200.png"
    :logo/alt "Grounded Solutions"})
@@ -94,7 +75,7 @@ continued dedication to the yard she created. Thanks, Amanda!"}
     :date "May 13, 2017"
     :name "Carla N."
     :review
-    "Just stopped into a local nursery, met Amanda, bought some great plants, and supported local business. You should do the same. Support this local lady making it happen."}]
-  )
+    "Just stopped into a local nursery, met Amanda, bought some great plants, and supported local business. You should do the same. Support this local lady making it happen."}])
+
 
 
