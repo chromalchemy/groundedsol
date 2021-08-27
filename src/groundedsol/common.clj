@@ -7,43 +7,13 @@
     [groundedsol.content :as c]
     [groundedsol.util :as u]
     [groundedsol.airtable :as at]
+    [groundedsol.page :as page :refer [pages page-kw page-keys html-filename page-val]]
     [rum.core :as rum]
     [com.rpl.specter :refer [select ALL FIRST setval transform NONE]]))
     ;[goog.string :as gstring]))
 
-(def pages
-  {:home/file               "index"
-   :home/name               "Home"
-   :home/title              "Grounded Solutions Landscape Consultation and Design Company"
-   :services/name           "Services"
-   :services/file           "consultationanddesign"
-   :services/title          "Consultation and Design Eco-Logical Landscapes"
-   :consultation/name       "CONSULTATION"
-   :design/name             "DESIGN"
-   :pop-up-shop/name        "POP UP Shop"
-   :consultation/file       "consultationanddesign"
-   :florida-plants/name     "Plants"
-   :florida-plants/file     "floridaplants"
-   :ecosystems/file         "ecosystems"
-   :ecosystems/name         "Ecosytems"
-   :about/file              "about"
-   :about/name              "About"
-   :florida-plants-411/name "FL Plants 411"
-   :contact/file            "contact"
-   :contact/name            "Contact"})
-
-
-(defn page-kw [page-kw tail-str]
-  (keyword (str (name page-kw) "/" tail-str)))
-
-(def page-keys [:home :services :florida-plants :about :contact])
-
-
-(def page-description
-  "We provide ecologically sound landscaping services focused on habitat enhancement using Florida native plant species")
-
 (def css-files
-  ["http://fonts.googleapis.com/css?family=Open+Sans|Poiret+One|Oswald:300"
+  ["https://fonts.googleapis.com/css?family=Open+Sans|Poiret+One|Oswald:300"
    "https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css"
    "css/default.css"
    "css/groundedsol.css"
@@ -58,9 +28,15 @@
 
 (defn head [page]
   [:head
-   [:title (:home/title pages)]
+   [:title
+    (let [custom-page-title (page-val page "title")]
+      (if custom-page-title
+        custom-page-title
+        (:home/title pages)))]
    [:meta {:charset "utf-8"}]
-   [:meta {:content page-description :name "description"}]
+   [:meta {:name "viewport" :content "width=device-width, initial-scale=1"}]
+   [:meta {:property "og:type" :content "website"}]
+   [:meta {:content page/page-description :name "description"}]
    [:LINK {:REL "SHORTCUT ICON" :HREF "icongs.ico" :type "image/x-icon"}]
    [:meta {:content "width=device-width, initial-scale=1.0" :name "viewport"}]
    ;[:link {:href "http://fonts.googleapis.com/css?family=Open+Sans|Poiret+One|Oswald:300" :rel "stylesheet" :type "text/css"}]
@@ -70,28 +46,20 @@
 (def script-files
   (list
     ;[:script {:src "https://unpkg.com/htmx.org@1.4.1"}]
-    [:script {:src "http://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"}]
+    [:script {:src "//ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"}]
     [:script {:src "scripts/main.js" :type "text/javascript"}]
     [:script {:src "scripts/jquery.slimmenu.js" :type "text/javascript"}]
     [:script {:src "scripts/nivo-lightbox.js" :type "text/javascript"}]
     [:script {:src "scripts/accordionscript.js" :type "text/javascript"}]
     [:script {:src "scripts/wow.min.js"}]
-    [:script "new WOW().init();"]
-    [:script "$('ul.slimmenu').slimmenu(\n{\n    resizeWidth: '1024',\n    collapserTitle: 'Main Menu',\n    animSpeed: '300',\n    easingEffect: null,\n    indentChildren: true,\n    childrenIndenter: '&nbsp;&nbsp;'\n});\n"]))
-
-
-(defn html-filename [page]
-  (str (pages (page-kw page "file")) ".html"))
-
-(defn page-val [page s]
-  (pages (page-kw page s)))
+    [:script "new WOW().init();"]))
+    ;[:script "$('ul.slimmenu').slimmenu(\n{\n    resizeWidth: '1024',\n    collapserTitle: 'Main Menu',\n    animSpeed: '300',\n    easingEffect: null,\n    indentChildren: true,\n    childrenIndenter: '&nbsp;&nbsp;'\n});\n"]))
 
 (def nav-links
   (for [p page-keys]
     (let [page-name (page-val p "name")
           filename (html-filename p)]
       [:li [:a {:href filename} page-name]])))
-
 
 ;[:li [:a {:href (r :home/file)} (r :home/name)]]
 ;[:li [:a {:href (r :consultation/file)} (r :services/name)]]
@@ -116,7 +84,7 @@
    [:div.container
     [:div.inside
      [:div.logo
-      [:div.brand [:a {:href (pages :home/file)} [:img {:alt (c/images :logo/alt) :height "53" :src (u/img-path (c/images :logo/file)) :width "200"}]]]
+      [:div.brand [:a {:href (page/html-filename :home)} [:img {:alt (c/images :logo/alt) :height "53" :src (u/img-path (c/images :logo/file)) :width "200"}]]]
       [:div.slogan c/slogan]]
      nav]
     [:hr.noshow]]])
@@ -159,7 +127,7 @@
    [:h5 "News & Events:"]
    [:p.center
     [:script {:src "scripts/calendar02.js" :type "text/javascript"}]]
-   [:p.center [:a.btn.btn-main {:href (pages :consultation/file)} "More Info ≫"]]])
+   [:p.center [:a.btn.btn-main {:href (page/html-filename :consultation)} "More Info ≫"]]])
 
 ;&raquo;
 
@@ -187,7 +155,7 @@
   [:div.scroll-to-top [:a {:href "#"} [:i.fa.fa-angle-double-up.fa-2x]]])
 
 (defn page-hiccup [page body]
-  [:html
+  [:html {:lang "en"}
    (head page)
    [:body body]])
 
@@ -207,5 +175,9 @@
   (let [file-path
         (str build-root-path (html-filename page))]
     (spit file-path
-      (rum/render-static-markup
-        (page-hiccup page (body body-blocks))))))
+      (str
+        "<!doctype html>\n"
+        (rum/render-static-markup
+          (page-hiccup page (body body-blocks)))))))
+
+

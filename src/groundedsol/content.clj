@@ -1,4 +1,5 @@
-(ns groundedsol.content)
+(ns groundedsol.content
+  (:require [groundedsol.page :refer [pages html-filename]]))
 
 (def images
   {:logo/file "logo200.png"
@@ -12,14 +13,14 @@
             plant material, less water, and eventually less maintenance. Good for you, good for Florida,
             and good for your checkbook."
     :link-text "Read More"
-    :link (routes :consultation/file)}
+    :link (html-filename :consultation)}
    :design
    {:title "Design"
     :subtitle "Natural, organized and beautiful."
     :body "No two properties are the same. Each requires it’s own unique focus. Providing a
             hand-drawn sketch or digital design is the fun part. Let’s start by walking your property together."
     :link-text "Contact for a Consult"
-    :link (routes :consultation/file)}
+    :link (html-filename :consultation)}
    :flora-and-fauna
    {:title "FLORA & FAUNA"
     :subtitle "Florida, a fine balance of resources."
@@ -27,7 +28,7 @@
             other species is the basis for Grounded Solutions landscape designs. But we don’t
             stop there. A pop-up plant shop is now germinating to help spread the seeds of diversity in your landscape."
     :link-text "Gallery"
-    :link (routes :florida-plants/file)}})
+    :link (html-filename :florida-plants)}})
 
 ;(def markdown-test my-airtable-data)
 
@@ -37,7 +38,7 @@
   {:title "What's Hot"
    :img-folder "samples"
    :gallery-name "catalog1"
-   :link (routes :florida-plants/file)
+   :link (html-filename :florida-plants)
    :link-text "View More"
    :images
    [{:delay "1.0s" :img-file "plant1b.jpg" :thumb-file "plant1s.jpg" :title "Deerberry, Vaccinium stamineum"}

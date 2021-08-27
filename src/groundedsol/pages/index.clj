@@ -5,6 +5,7 @@
     [hickory.core :as h]
     [cybermonday.core :as cm]
     [groundedsol.content :as c]
+    [groundedsol.page]
     [groundedsol.common :as common]
     [groundedsol.airtable :as at]
     [groundedsol.util :as u]

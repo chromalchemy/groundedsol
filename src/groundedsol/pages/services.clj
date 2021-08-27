@@ -10,7 +10,6 @@
     [com.rpl.specter :refer [select ALL FIRST setval transform NONE]]))
 
 
-
 (def process
   [:div.contentLeft
    [:h2 "The Process"]
@@ -80,7 +79,7 @@
   (list
     [:h2 "Events"]
     [:p.center
-     [:script {:src "javascripts/calendar02.js" :type "text/javascript"}]]))
+     [:script {:src "scripts/calendar02.js" :type "text/javascript"}]]))
 
 (def faq
   [:dl#acc
@@ -126,7 +125,6 @@
      divider
      process
      faq]]])
-
 
 (common/write-page
   :services
