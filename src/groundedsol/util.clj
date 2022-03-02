@@ -1,4 +1,5 @@
-(ns groundedsol.util)
+(ns groundedsol.util
+  (:require [girouette.]))
 
 (defn img-path [file]
   (str "images/" file))
@@ -7,3 +8,5 @@
   (zipmap
     (map symbol (keys m))
     (keys m)))
+
+(+ 1 1)
