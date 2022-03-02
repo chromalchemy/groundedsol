@@ -26,6 +26,9 @@
     :allowTransparency "true"
     :allow "encrypted-media"}])
 
+(def captcha-button
+  [:div.h-captcha {:data-sitekey "1a09d58a-4353-4310-b15d-1e78b0064ec2"}])
+
 (def raw-page
   [:div.container
    [:div.inside
@@ -39,7 +42,9 @@
         [:label {:for "first_name"} "First Name *"] [:input {:maxlength "50" :name "first_name" :size "30" :type "text"}] [:label {:for "last_name"} "Last Name *"]
         [:input {:maxlength "50" :name "last_name" :size "30" :type "text"}] [:label {:for "email"} "Email Address *"] [:input {:maxlength "80" :name "email" :size "30" :type "text"}]
         [:label {:for "telephone"} "Telephone Number"] [:input {:maxlength "30" :name "telephone" :size "30" :type "text"}] [:label {:for "comments"} "Comments *"]
-        [:textarea {:cols "30" :maxlength "1000" :name "comments" :rows "5"}] "* = required" [:br] [:input.submit {:type "submit" :value "Submit »"}]]]
+        [:textarea {:cols "30" :maxlength "1000" :name "comments" :rows "5"}] "* = required" [:br]
+        ;captcha-button
+        [:input.submit {:type "submit" :value "Submit »"}]]]
       [:section.contentBox2b
        [:p.dropcap "Thank you for visiting Grounded Solutions."]
        [:img.img-right {:alt "Flower" :src "images/samples/flowercontact.png"}]
@@ -53,6 +58,8 @@
 (def content-blocks
   [raw-page])
 
-(common/write-page
-  :contact
-  content-blocks)
+(defn write-page []
+  (common/write-page
+    :contact
+    content-blocks)
+  (println "bulding contact page"))

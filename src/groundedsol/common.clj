@@ -42,10 +42,14 @@
    ;[:link {:href "http://fonts.googleapis.com/css?family=Open+Sans|Poiret+One|Oswald:300" :rel "stylesheet" :type "text/css"}]
    css-links])
 
+;<script src='https://www.hCaptcha.com/1/api.js' async defer></script>
+
+
 
 (def script-files
   (list
     ;[:script {:src "https://unpkg.com/htmx.org@1.4.1"}]
+    ;[:script {:src "https://www.hCaptcha.com/1/api.js" :async "true" :defer "true"}]
     [:script {:src "//ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"}]
     [:script {:src "scripts/main.js" :type "text/javascript"}]
     [:script {:src "scripts/jquery.slimmenu.js" :type "text/javascript"}]

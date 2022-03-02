@@ -21,13 +21,14 @@
    :about/name              "About"
    :florida-plants-411/name "FL Plants 411"
    :contact/file            "contact"
-   :contact/name            "Contact"})
-
+   :contact/name            "Contact"
+   :faq/name "FAQ"
+   :faq/file "faq"})
 
 (defn page-kw [page-kw tail-str]
   (keyword (str (name page-kw) "/" tail-str)))
 
-(def page-keys [:home :services :florida-plants :about :contact])
+(def page-keys [:home :services :florida-plants :faq :about :contact])
 
 (defn html-filename [page]
   (str (pages (page-kw page "file")) ".html"))

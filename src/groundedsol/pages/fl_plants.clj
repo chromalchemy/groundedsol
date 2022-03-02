@@ -7,13 +7,103 @@
     [groundedsol.airtable :as at]
     [groundedsol.util :as u]
     [rum.core :as rum]
-    [com.rpl.specter :refer [select ALL FIRST setval transform NONE]]))
+    [com.rpl.specter :refer [select ALL FIRST setval transform NONE]]
+    [clojure.string :as string]))
 
 (def divider
   [:hr.fancy])
 
+;images/samples/1b.jpg
+
+(def old-image-names
+  (let [removed 3
+        numbers
+          (-> (range 1 15)
+              set
+              (disj removed)
+              sort)]
+    (map #(str "old/" % "b.jpg")
+      numbers)))
+
+(defn image-path [s]
+  (str "images/gallery/" s))
+
+(defn jpeg [s]
+  (str s ".jpg"))
+
+(def old-image-local-paths
+  (conj
+    (vec old-image-names)
+    (str "old/" (jpeg "milkweed2b"))))
+
+(def image-local-paths
+  (concat old-image-local-paths c/new-images-filenames))
+
+(defn image-file-name->short-desc [filename]
+  (-> filename
+      (string/split #"-")
+      drop-last
+      (->> (interpose " ")
+           (apply str))))
+
+(def new-gallery-entries
+  (->> c/new-images-filenames
+    (map
+      (fn [filename]
+        [filename (image-file-name->short-desc filename)]))
+    (into {})))
+
+(def old-gallery-entries
+  {"old/1b.jpg" "Deerberry, Vaccinium stamineum"
+   "old/2b.jpg" "Firebush, Hamelia patens"
+   "old/groundorchidsb.jpg" "Native Ground orchids! Also called terrestrial orchids. Scarlet Ladies’ Tresses, Sacoila lanceolata  #9412_Go"
+   "old/4b.jpg" "A fresh cut flower arrangement"
+   "old/5b.jpg" "Beach verbena, Glandularia maritima"
+   "old/6bb.jpg" "Florida Paintbrush prior to setting bud, Carphephorus"
+   "old/7b.jpg" "Indian-plantain with a beneficial insect getting nectar and pollen, Arnoglossum ovatum"
+   "old/8b.jpg" "False pennyroyal, Piloblephus rigida"
+   "old/9b.jpg" "Wild poinsettia, Poinsettia cyathophora"
+   "old/10b.jpg" "Winter blooming vine Carolina jessamine, Gelsemium sempervirens"
+   "old/11b.jpg" "Spring blooming plum tree, Prunus umbellata"
+   "old/12b.jpg" "Gopher apple as a ground cover, Licania michauxii"
+   "old/13b.jpg" "Pollinator attractor Spiderwort in purple, Tradescantia ohiensis"
+   "old/14b.jpg" "Fruit producing Bigflower pawpaw, Asimina obovata"
+   "old/milkweed2b.jpg" "Aquatic milkweed, also shown in orange. Asclepias perennis"})
+
+
+(def gallery-entries
+  (merge old-gallery-entries new-gallery-entries))
+
+(defn image-tag [local-path description]
+  [:a.lightbox
+   {
+    ;:class ["w-1/3"]
+    :style                 {}
+            ;:height "160px"
+            :display "block"
+            ;:margin "auto"}
+    :data-lightbox-gallery "catalog1"
+    :href                  (image-path local-path)
+    :title                 description}
+   [:img.img-portfolio
+    {:src   (image-path (str "thumb/" local-path))
+     :style {:height "160px"}
+     :alt   description}]])
+
+(def image-tags
+  (map
+    (fn [gallery-path]
+      (let [description (gallery-entries gallery-path)]
+        (image-tag gallery-path description)))
+    image-local-paths))
+
+;(def images)
+
 (def page-title
   [:h1.center "What’s Hot in Florida Plants"])
+
+
+
 
 (def raw-page
   [:div.container
@@ -39,50 +129,27 @@ The proper Florida native name, it’s origin and how to best take care of your 
         Help us keep our bird, butterfly and bees happy by reconnecting the environmental food web."]]]
     [:fieldset
      [:legend "Florida Faves"]
-     [:p.center [:a.lightbox {:data-lightbox-gallery "catalog1" :href "images/samples/1b.jpg" :title "Deerberry, Vaccinium stamineum"}
-                 [:img.img-portfolio {:alt "Deerberry, Vaccinium stamineum" :src "images/samples/1s.jpg"}]]
-      [:a.lightbox {:data-lightbox-gallery "catalog1" :href "images/samples/2b.jpg" :title "Firebush, Hamelia patens"}
-       [:img.img-portfolio {:alt "Firebush, Hamelia patens" :src "images/samples/2s.jpg"}]]
-      [:a.lightbox {:data-lightbox-gallery "catalog1" :href "images/samples/groundorchidsb.jpg" :title "Native Ground orchids! Also called terrestrial orchids. Scarlet Ladies’ Tresses, Sacoila lanceolata  #9412_Go"}
-       [:img.img-portfolio {:alt "Native Ground orchids! Also called terrestrial orchids. Scarlet Ladies’ Tresses, Sacoila lanceolata #9412_Go" :src "images/samples/groundorchids.jpg"}]]
-      [:a.lightbox {:data-lightbox-gallery "catalog1" :href "images/samples/4b.jpg" :title "A fresh cut flower arrangement"}
-       [:img.img-portfolio {:alt "A fresh cut flower arrangement" :src "images/samples/4s.jpg"}]]
-      [:a.lightbox {:data-lightbox-gallery "catalog1" :href "images/samples/5b.jpg" :title "Beach verbena, Glandularia maritima"}
-       [:img.img-portfolio {:alt "Beach verbena, Glandularia maritima" :src "images/samples/5s.jpg"}]]
-      [:a.lightbox {:data-lightbox-gallery "catalog1" :href "images/samples/6bb.jpg" :title "Florida Paintbrush prior to setting bud, Carphephorus"}
-       [:img.img-portfolio {:alt "Florida Paintbrush prior to setting bud, Carphephorus" :src "images/samples/6s.jpg"}]]
-      [:a.lightbox {:data-lightbox-gallery "catalog1" :href "images/samples/7b.jpg" :title "Indian-plantain with a beneficial insect getting nectar and pollen, Arnoglossum ovatum"}
-       [:img.img-portfolio {:alt "Indian-plantain with a beneficial insect getting nectar and pollen, Arnoglossum ovatum" :src "images/samples/7s.jpg"}]]
-      [:a.lightbox {:data-lightbox-gallery "catalog1" :href "images/samples/8b.jpg" :title "False pennyroyal, Piloblephus rigida"}
-       [:img.img-portfolio {:alt "False pennyroyal, Piloblephus rigida" :src "images/samples/8s.jpg"}]]
-      [:a.lightbox {:data-lightbox-gallery "catalog1" :href "images/samples/9b.jpg" :title "Wild poinsettia, Poinsettia cyathophora"}
-       [:img.img-portfolio {:alt "Wild poinsettia, Poinsettia cyathophora" :src "images/samples/9s.jpg"}]]
-      [:a.lightbox {:data-lightbox-gallery "catalog1" :href "images/samples/10b.jpg" :title "Winter blooming vine Carolina jessamine, Gelsemium sempervirens"}
-       [:img.img-portfolio {:alt "Winter blooming vine Carolina jessamine, Gelsemium sempervirens" :src "images/samples/10s.jpg"}]]
-      [:a.lightbox {:data-lightbox-gallery "catalog1" :href "images/samples/11b.jpg" :title "Spring blooming plum tree, Prunus umbellata"}
-       [:img.img-portfolio {:alt "Spring blooming plum tree, Prunus umbellata" :src "images/samples/11s.jpg"}]]
-      [:a.lightbox {:data-lightbox-gallery "catalog1" :href "images/samples/12b.jpg" :title "Gopher apple as a ground cover, Licania michauxii"}
-       [:img.img-portfolio {:alt "Gopher apple as a ground cover, Licania michauxii" :src "images/samples/12s.jpg"}]]
-      [:a.lightbox {:data-lightbox-gallery "catalog1" :href "images/samples/13b.jpg" :title "Pollinator attractor Spiderwort in purple, Tradescantia ohiensis"}
-       [:img.img-portfolio {:alt "Pollinator attractor Spiderwort in purple, Tradescantia ohiensis" :src "images/samples/13s.jpg"}]]
-      [:a.lightbox {:data-lightbox-gallery "catalog1" :href "images/samples/14b.jpg" :title "Fruit producing Bigflower pawpaw, Asimina obovata"}
-       [:img.img-portfolio {:alt "Fruit producing Bigflower pawpaw, Asimina obovata" :src "images/samples/14s.jpg"}]]
-      [:a.lightbox {:data-lightbox-gallery "catalog1" :href "images/samples/milkweed2b.jpg" :title "Aquatic milkweed, also shown in orange. Asclepias perennis  "}
-       [:img.img-portfolio {:alt "Aquatic milkweed, also shown in orange. Asclepias perennis" :src "images/samples/milkweed2s.jpg"}]]]
-     [:p.center [:strong "Click on an image to see a larger view."]]
+     [:p.center
+      {:style {:display "flex"
+               :flex-wrap "wrap"
+               :justify-content "space-evenly"}}
+      image-tags]
+     [:p.center [:strong "Click on an image to see full view."]]
      [:p "Shown above are a few examples of versatility you can find when choosing native plants.
 		Grounded Solutions strives to over you the best quality plant material we possibly can.
 		Pairing plant selection with the area you’d like to plant in is the first step towards habitat reconstruction.
-		 Want the wow factor? We can do that too."]
-     [:div.pagination
-      [:span.disabled_pagination "Prev"]
-      [:span.active_link "1"]
-      [:a {:href "#0"} "Next"]]
-     [:p.dropcap]]]])
+		 Want the wow factor? We can do that too."]]]])
+     ;[:div.pagination
+     ; [:span.disabled_pagination "Prev"]
+     ; [:span.active_link "1"]
+     ; [:a {:href "#0"} "Next"]]
+     ;[:p.dropcap]]]])
 
 (def content-blocks
   [raw-page])
 
-(common/write-page
-  :florida-plants
-  content-blocks)
+(defn write-page []
+  (common/write-page
+    :florida-plants
+    content-blocks)
+  (println "Flora Fauna Page Written"))

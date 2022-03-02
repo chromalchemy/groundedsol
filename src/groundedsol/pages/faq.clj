@@ -1,4 +1,4 @@
-(ns groundedsol.pages.services
+(ns groundedsol.pages.faq
   (:require
     [hickory.core :as h]
     [cybermonday.core :as cm]
@@ -11,7 +11,7 @@
 
 
 (def process
-  [:div
+  [:div.contentLeft
    [:h2 "The Process"]
    [:h6 "Making the most of your consultation: Step One"]
    [:p.newsDate]
@@ -96,7 +96,7 @@
 
 (def faq-block
   (list
-    [:h4 "FREQUENTLY ASKED QUESTIONS"]
+    ;[:h4 "FREQUENTLY ASKED QUESTIONS"]
     [:ul.list2
      [:li "Below are a few frequently asked questions that
   typically come up during the consultation. Since the
@@ -117,18 +117,20 @@
 (def page-title
   [:h1.center "Consultation & Design"])
 
+(def divider
+  [:hr.fancy])
+
 (def content-blocks
   [
    [:div.container
     [:div.inside
-     page-title
+     [:h1.center "Frequently Asked Questions"]
      divider
-     process]]])
-     ;faq]]])
+     faq-block]]])
 
 
 (defn write-page []
   (common/write-page
-    :services
+    :faq
     content-blocks)
-  (println "Wrote services page"))
+  (println "write faq page"))

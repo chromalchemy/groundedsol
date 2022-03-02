@@ -11,6 +11,8 @@
     [groundedsol.util :as u]
     [rum.core :as rum]
     [com.rpl.specter :refer [select ALL FIRST setval transform NONE]]))
+
+
     ;[goog.string :as gstring]))
 
 ;(defn html-entity [s]
@@ -70,6 +72,7 @@
         (intro-block m))
       [:div.clear]]]]])
 
+
 (def welcome
   (let [m c/welcome]
     [:div.photoblock
@@ -79,6 +82,7 @@
         [:h1.big (:title m)]
         [:p.lead (:body m)]
         [:p [:a.btn.btn-main {:href (:link m)} (:link-text m)]]]]]]))
+
 
 (def hot-plants
   (list
@@ -163,6 +167,8 @@ crowd that wants to get their hands dirty."]])
      get-started
      [:div.clear]]]])
 
+(use 'groundedsol.pages.index)
+
 (def content-blocks
   [welcome
    intro-blocks
@@ -170,6 +176,13 @@ crowd that wants to get their hands dirty."]])
    generic-row
    reviews])
 
-(common/write-page
-  :home
-  content-blocks)
+(defn write-page []
+  (common/write-page
+    :home
+    content-blocks)
+  (println "Index Printed"))
+
+
+;(write-page {})
+
+
