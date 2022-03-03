@@ -41,10 +41,6 @@
   (println "Reload HTML"))
 ;(println reload-response-map)
 
-;(def myfile "night-hunt")
-
-(comment)
-
 (defn live-reload-html [driver]
   (beholder/watch
     (partial reload-browser-callback! driver)
@@ -52,8 +48,9 @@
 
 (defn build-on-save-src []
   (beholder/watch
-    (partial gs.build/build-site!)
-    "src/"))
+    (fn [callback-map]
+      (gs.build/build-site!))
+    "src"))
 
 (def web-repl-system
   {::ds/defs
@@ -68,11 +65,7 @@
           (live-reload-html browser-window))
         (println "Started HTML Live Reload")
         (def build-on-save-instance
-          (beholder/watch
-            (fn [x]
-              (gs.build/build-site!))
-            "src")
-          #_(build-on-save-src))
+          (build-on-save-src))
         (println "Started Rebuild on Save src"))
       :stop
       (fn [_ instance _]
