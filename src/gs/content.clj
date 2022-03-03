@@ -1,5 +1,5 @@
-(ns groundedsol.content
-  (:require [groundedsol.page :refer [pages html-filename]]
+(ns gs.content
+  (:require [gs.page :refer [pages html-filename]]
             [clojure.string :as string]))
 
 (def images

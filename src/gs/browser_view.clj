@@ -1,4 +1,4 @@
-(ns groundedsol.browser-view
+(ns gs.browser-view
   (:require [clojure.java.shell :as sh]
             [donut.system :as ds]
             [etaoin.api :as e]

@@ -1,4 +1,4 @@
-(ns groundedsol.util
+(ns gs.util
   (:require
     ;[girouette]
     [garden.color :as gc]

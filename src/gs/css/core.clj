@@ -1,4 +1,4 @@
-(ns groundedsol.css.core)
+(ns gs.css.core)
 
 (def styles
   (list

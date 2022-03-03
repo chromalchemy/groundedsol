@@ -1,11 +1,11 @@
-(ns groundedsol.pages.contact
+(ns gs.pages.contact
   (:require
     [hickory.core :as h]
     [cybermonday.core :as cm]
-    [groundedsol.content :as c]
-    [groundedsol.common :as common]
-    [groundedsol.airtable :as at]
-    [groundedsol.util :as u]
+    [gs.content :as c]
+    [gs.common :as common]
+    [gs.airtable :as at]
+    [gs.util :as u]
     [lambdaisland.hiccup :as hiccup]
     [com.rpl.specter :refer [select ALL FIRST setval transform NONE]]))
 

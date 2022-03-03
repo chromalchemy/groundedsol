@@ -1,4 +1,4 @@
-(ns groundedsol.page)
+(ns gs.page)
 
 (def pages
   {:email-confirmation/file "thankyou"

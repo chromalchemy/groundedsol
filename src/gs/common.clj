@@ -1,10 +1,10 @@
-(ns groundedsol.common
+(ns gs.common
   (:require
     [lambdaisland.hiccup :as hiccup]
     [lambdaisland.ornament :as o :refer [defstyled]]
-    [groundedsol.content :as c]
-    [groundedsol.util :as u]
-    [groundedsol.page :as page :refer [pages page-kw page-keys html-filename page-val]]))
+    [gs.content :as c]
+    [gs.util :as u]
+    [gs.page :as page :refer [pages page-kw page-keys html-filename page-val]]))
 
 (def css-files
   ["https://fonts.googleapis.com/css?family=Open+Sans|Poiret+One|Oswald:300"

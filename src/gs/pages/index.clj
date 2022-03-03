@@ -1,18 +1,18 @@
-(ns groundedsol.pages.index
+(ns gs.pages.index
   (:require
     [hickory.core :as hickory]
     [cybermonday.core :as cm]
-    [groundedsol.content :as c]
-    [groundedsol.page]
-    [groundedsol.common :as common]
-    [groundedsol.airtable :as at]
+    [gs.content :as c]
+    [gs.page]
+    [gs.common :as common]
+    [gs.airtable :as at]
     [lambdaisland.ornament :as o :refer [defstyled]]
     [lambdaisland.hiccup :as h :refer [html]]
     [clojure.string :as string]
     [garden.compiler :as gc])
   (:use
     [com.rpl.specter]
-    [groundedsol.util :as u]))
+    [gs.util :as u]))
 
 (def global-garden-style-rules
   [])
@@ -56,14 +56,14 @@
 ;markdown parse test with hickory + specter
 (comment
   (def myvar
-    (str (groundedsol.util/my-airtable-data))))
+    (str (gs.util/my-airtable-data))))
 
 ;(into [] (reverse [  "Hello World" :h1]))
       ;(setval [FIRST FIRST]
       ;  :h2
       ;  (map hickory/as-hiccup
       ;       (hickory/parse-fragment
-      ;         (groundedsol.util/my-airtable-data)))))
+      ;         (gs.util/my-airtable-data)))))
 ;---------------------------
 (comment
   [:div {:dangerouslySetInnerHTML {:__html myvar}}])
@@ -192,7 +192,7 @@ crowd that wants to get their hands dirty."]])
      get-started
      [:div.clear]]]])
 
-(use 'groundedsol.pages.index)
+(use 'gs.pages.index)
 
 (def content
   [welcome

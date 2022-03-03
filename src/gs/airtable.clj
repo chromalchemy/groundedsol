@@ -1,10 +1,10 @@
-(ns groundedsol.airtable
+(ns gs.airtable
   (:require
-  ;  ;[groundedsol.core]
+  ;  ;[gs.core]
   ;  ;[markdown.core :as md]
     [cybermonday.core :as cm]
     [airtable-clj.core :as airtable]))
-  ;  [groundedsol.mycontent]
+  ;  [gs.mycontent]
   ;  [com.rpl.specter :refer [select ALL FIRST setval transform NONE]]))
 
 (comment)
