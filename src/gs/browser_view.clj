@@ -36,8 +36,8 @@
 (defn view-html! [driver filename]
   (e/go driver (file-url filename)))
 
-(defn load-html-in-browser-callback! [driver filename reload-response-map]
-  (view-html! driver filename)
+(defn reload-browser-callback! [driver reload-response-map]
+  (e/refresh driver)
   (println "Reload HTML"))
 ;(println reload-response-map)
 
@@ -45,11 +45,10 @@
 
 (comment)
 
-(defn live-reload-html [driver filename]
+(defn live-reload-html [driver]
   (beholder/watch
-    (partial load-html-in-browser-callback! driver filename)
+    (partial reload-browser-callback! driver)
     gs.build/build-path))
-
 
 (defn build-on-save-src []
   (beholder/watch
@@ -66,7 +65,7 @@
         (view-html! browser-window filename)
         (println "Started Browser View")
         (def live-reload-instance
-          (live-reload-html browser-window filename))
+          (live-reload-html browser-window))
         (println "Started HTML Live Reload")
         (def build-on-save-instance
           (beholder/watch
