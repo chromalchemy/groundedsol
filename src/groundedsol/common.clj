@@ -1,16 +1,10 @@
 (ns groundedsol.common
   (:require
-    ;[groundedsol.routes :as routes]
-    ;[bidi.bidi :as b]
-    [hickory.core :as h]
-    [cybermonday.core :as cm]
+    [lambdaisland.hiccup :as hiccup]
+    [lambdaisland.ornament :as o :refer [defstyled]]
     [groundedsol.content :as c]
     [groundedsol.util :as u]
-    [groundedsol.airtable :as at]
-    [groundedsol.page :as page :refer [pages page-kw page-keys html-filename page-val]]
-    [rum.core :as rum]
-    [com.rpl.specter :refer [select ALL FIRST setval transform NONE]]))
-    ;[goog.string :as gstring]))
+    [groundedsol.page :as page :refer [pages page-kw page-keys html-filename page-val]]))
 
 (def css-files
   ["https://fonts.googleapis.com/css?family=Open+Sans|Poiret+One|Oswald:300"
@@ -26,10 +20,10 @@
   (for [css-url css-files]
     [:link {:href css-url :rel "stylesheet" :type "text/css" :media "screen"}]))
 
-(defn head [page]
+(defn head [page-key]
   [:head
    [:title
-    (let [custom-page-title (page-val page "title")]
+    (let [custom-page-title (page-val page-key "title")]
       (if custom-page-title
         custom-page-title
         (:home/title pages)))]
@@ -43,8 +37,6 @@
    css-links])
 
 ;<script src='https://www.hCaptcha.com/1/api.js' async defer></script>
-
-
 
 (def script-files
   (list
@@ -126,62 +118,86 @@
    [:i.fa.fa-camera.fa-3x.img-left.color3.icon-shadow] "Photography by Amanda Martin. All rights reserved"
    [:br] [:br]])
 
+(def calendar-script
+  [:script {:src "scripts/calendar02.js" :type "text/javascript"}])
+
 (def news
   [:section.contentBox4d
    [:h5 "News & Events:"]
-   [:p.center
-    [:script {:src "scripts/calendar02.js" :type "text/javascript"}]]
+   [:p.center]
+   calendar-script
    [:p.center [:a.btn.btn-main {:href (page/html-filename :consultation)} "More Info ≫"]]])
 
 ;&raquo;
 
+(def get-date-script
+  [:script {:type "text/javascript"} "document.write(new Date().getFullYear());"])
 
-(def footer
-  [:footer {:style {:clear "both"}}
-   [:div.container
-    [:div.inside
-     [:section.contentBox4a
-      [:h5 "Menu:"]
-      footer-menu]
-     contact
-     certifications
-     news
-     [:hr.noshow]
-     [:div.footerbottom
-      [:hr.fancy]
-      [:h1 "Grounded Solutions, Inc"]
-      [:p.copyright
-       "© " ;"&copy;"
-       [:script {:type "text/javascript"} "document.write(new Date().getFullYear());"] "All Rights Reserved"]
-      [:p]]]]])
+(defstyled fancy-divider :hr.fancy)
+
+(defstyled footer :footer
+  {:clear "both"}
+  ([]
+   [:<>
+    [:div.container
+     [:div.inside
+      [:section.contentBox4a
+       [:h5 "Menu:"]
+       footer-menu]
+      contact
+      certifications
+      news
+      [:hr.noshow]
+      [:div.footerbottom
+       (fancy-divider)
+       [:h1 "Grounded Solutions, Inc"]
+       [:p.copyright
+        "© " ;"&copy;"
+        get-date-script
+        "All Rights Reserved"]]]]]))
 
 (def scroll-to-top
-  [:div.scroll-to-top [:a {:href "#"} [:i.fa.fa-angle-double-up.fa-2x]]])
+  [:div.scroll-to-top
+   [:a {:href "#"}
+    [:i.fa.fa-angle-double-up.fa-2x]]])
 
-(defn page-hiccup [page body]
+(defstyled body :body
+  ([content]
+   [:<>
+    scroll-to-top
+    masthead
+    (into '() content)
+    (footer)
+    script-files]))
+
+(defn page [page-key content]
   [:html {:lang "en"}
-   (head page)
-   [:body body]])
+   (head page-key)
+   (body content)])
 
-(defn body [content-blocks]
-  (->
-    [scroll-to-top
-     masthead]
-    (concat
-      content-blocks)
-    (concat
-      [footer
-       script-files])))
+(def build-path "build/")
 
-(def build-root-path "build/")
+(comment
+  (page page-key content))
 
-(defn write-page [page body-blocks]
-  (let [file-path
-        (str build-root-path (html-filename page))]
-    (spit file-path
-      (str
-        "<!doctype html>\n"
-        (rum/render-static-markup
-          (page-hiccup page (body body-blocks)))))))
+(defn write-page [page-key content]
+  (let [file-path (str build-path (html-filename page-key))]
+    (->>
+      (page page-key content)
+      hiccup/html
+      hiccup/render-html
+      (spit file-path))
+    (println (str "Wrote " (name page-key)))))
 
-
+(comment
+  (defstyled mydiv :div
+    ([]
+     [:<>
+      [:span]
+      [:span]
+      [:span]]))
+  (->>
+    (mydiv)
+    ;hiccup/render-html*)
+    hiccup/html
+    hiccup/render-html))

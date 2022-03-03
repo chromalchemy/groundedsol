@@ -6,12 +6,9 @@
     [groundedsol.common :as common]
     [groundedsol.airtable :as at]
     [groundedsol.util :as u]
-    [rum.core :as rum]
+    [lambdaisland.hiccup :as hiccup]
     [com.rpl.specter :refer [select ALL FIRST setval transform NONE]]
     [clojure.string :as string]))
-
-(def divider
-  [:hr.fancy])
 
 ;images/samples/1b.jpg
 
@@ -109,7 +106,7 @@
   [:div.container
    [:div.inside
     [:h1.center "What’s Hot in Florida Plants"]
-    [:hr.fancy]
+    (common/fancy-divider)
     [:h2.alternate1 "Flora & Fauna"]
     [:div.group
      [:section.contentBox3a

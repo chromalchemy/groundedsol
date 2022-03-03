@@ -6,11 +6,11 @@
     [groundedsol.common :as common]
     [groundedsol.airtable :as at]
     [groundedsol.util :as u]
-    [rum.core :as rum]
+    [lambdaisland.hiccup :as hiccup]
     [com.rpl.specter :refer [select ALL FIRST setval transform NONE]]))
 
 (def divider
-  [:hr.fancy])
+  (common/fancy-divider))
 
 (def page-title
   [:h1.center "Meet Amanda Martin"])
@@ -98,7 +98,7 @@ landscape designs. Our goal is to bring a botanical garden-like atmosphere
 to the landscape while keeping valuable resource inputs to a minimum. I am
 excited to serve the greater Central Florida area in the Eco-Logical landscape
 design field and enjoy the diversity of clients interested in making this transition."]]
-    [:hr.fancy]
+    (common/fancy-divider)
     [:br]
     [:h3 "Biologist:" [:br] "AJM Environmental Services"]
     [:div.group

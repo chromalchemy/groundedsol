@@ -6,7 +6,7 @@
     [groundedsol.common :as common]
     [groundedsol.airtable :as at]
     [groundedsol.util :as u]
-    [rum.core :as rum]
+    [lambdaisland.hiccup :as hiccup]
     [com.rpl.specter :refer [select ALL FIRST setval transform NONE]]))
 
 
@@ -25,7 +25,7 @@
 				It’s all a discussion with suggestions and ideas at this stage.
 				We offer on-site small impact designs, so you can incorporate native plants and build your landscape DIY style after the first meeting."]
    [:p]
-   [:hr.fancy]
+   (common/fancy-divider)
    [:hr.noshow]
    [:h6 "Making the most of your consultation: Step 2 Design"]
    [:p.newsDate]
@@ -39,7 +39,7 @@
 			 If all you need is a direction, we can cover that with the initial consult and an on-site design. Looking for a long term plan? A digital design is the way to go. Wanting someone else to plant the design? We can help coordinate that for you.
 			 Wanting a smaller landscape bed or just a re-fresh of color for spring or fall? We may be able to take care of that quickly by delivering plants, planting and mulching in a day. Getting a design is just a step towards the sustainable Florida landscape you want."]
    [:p]
-   [:hr.fancy]
+   (common/fancy-divider)
    [:hr.noshow]
    [:h6 "Implementing your design and installation"]
    [:p.newsDate]
@@ -55,7 +55,7 @@
 			 When selecting native plants to fill out your flower beds, you'll notice fast growth and bright blooms with our summertime rains, and without unnecessary fertilizer or pesticide treatments.
 			 In-fact, a pesticide free lawn can help bring beneficial insects into the area, diversify the types of butterflies you see, increase dragonfly and damselfly populations, and creating a more interesting landscape for you and any little ones to watch."]
    [:p]
-   [:hr.fancy]
+   (common/fancy-divider)
    [:hr.noshow]
    [:h6 "the growing stage and plant material management"]
    [:p.newsDate " "]
@@ -73,7 +73,7 @@
 			please email us. It will always be our goal to bring sustainable and beautiful landscapes to Florida, and
 			have your property give you a sense of pride in giving back."]
    [:p]
-   [:hr.fancy]])
+   (common/fancy-divider)])
 
 (def events
   (list
@@ -112,7 +112,7 @@
    faq-block])
 
 (def divider
-  [:hr.fancy])
+  (common/fancy-divider))
 
 (def page-title
   [:h1.center "Consultation & Design"])

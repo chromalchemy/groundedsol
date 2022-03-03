@@ -1,19 +1,51 @@
 (ns groundedsol.pages.index
   (:require
-    ;[groundedsol.routes :as routes]
-    ;[bidi.bidi :as b]
-    [hickory.core :as h]
+    [hickory.core :as hickory]
     [cybermonday.core :as cm]
     [groundedsol.content :as c]
     [groundedsol.page]
     [groundedsol.common :as common]
     [groundedsol.airtable :as at]
-    [groundedsol.util :as u]
-    [rum.core :as rum]
-    [com.rpl.specter :refer [select ALL FIRST setval transform NONE]]))
+    [lambdaisland.ornament :as o :refer [defstyled]]
+    [lambdaisland.hiccup :as h :refer [html]]
+    [clojure.string :as string]
+    [garden.compiler :as gc])
+  (:use
+    [com.rpl.specter]
+    [groundedsol.util :as u]))
 
+(def global-garden-style-rules
+  [])
 
-    ;[goog.string :as gstring]))
+(comment
+  (->> global-garden-style-rules
+    gc/compile-css))
+
+(defn local-styles []
+  (list
+    [:style (o/defined-styles)]
+    [:style (gc/compile-css global-garden-style-rules)]))
+
+(defn concatenated-styles-string []
+  (apply str
+    (interpose "\n\n"
+      [
+       (o/defined-styles)
+       (gc/compile-css global-garden-style-rules)])))
+
+(comment
+  (write-hiccup-to-html-file filename local-page))
+
+(comment
+  ;;spit to template file
+  (spit
+    (str template-path filename ".html")
+    (->> bc-hiccup h/html h/render-html*)))
+
+(comment
+  (def running-system
+    (start-live-browser-view! filename))
+  (stop-system! running-system))
 
 ;(defn html-entity [s]
 ;  (gstring/unescapeEntities s))
@@ -29,8 +61,8 @@
 ;(into [] (reverse [  "Hello World" :h1]))
       ;(setval [FIRST FIRST]
       ;  :h2
-      ;  (map h/as-hiccup
-      ;       (h/parse-fragment
+      ;  (map hickory/as-hiccup
+      ;       (hickory/parse-fragment
       ;         (groundedsol.util/my-airtable-data)))))
 ;---------------------------
 (comment
@@ -42,13 +74,6 @@
 ;    (:markdown-test c)))
 
 (u/default-keymap (c/intros :consult))
-
-(def mystuff
-  ;(list)
-  [:span
-   {:style {:color "green"
-            :font-size "2em"}}
-   "hello hiccup man alive"])
 
 (defn intro-block [m]
   (let [{title :title,
@@ -119,12 +144,12 @@
   [:section.contentBox3b.wow.zoomIn {:data-wow-delay ".6s"}
    [:h4.alternate2 "Discover"]
    [:div.callbox
-    [:h6 "Why Buy Native"]
+    [:h6 "Why Buy Natives"]
     [:img {:alt "" :height "111" :src "images/samples/GS%20Icon.png" :width "114"}]
     [:p "Residential landscapes are often filled with plants that grow well in our climate
-                but offer little else to the surrounding environment. My goal is to bring a botanical
-                garden-like atmosphere to the landscape while keeping valuable resource
-                uses, like water, to a minimum."]
+         but offer little else to the surrounding environment. My goal is to bring a botanical
+         garden-like atmosphere to the landscape while keeping valuable resource
+         uses, like water, to a minimum."]
     [:p]]])
 
 (def get-started
@@ -153,7 +178,7 @@ crowd that wants to get their hands dirty."]])
   [:div.row3
    [:div.container
     [:div.inside
-     [:h1.alternate1 "Reviews"]
+     [:h1.alternate1 "Reviewxx"]
      [:div.reviews
       [:ul#ticker
        review-blocks]]]]])
@@ -169,20 +194,10 @@ crowd that wants to get their hands dirty."]])
 
 (use 'groundedsol.pages.index)
 
-(def content-blocks
+(def content
   [welcome
    intro-blocks
    hot-plant-gallery
    generic-row
    reviews])
-
-(defn write-page []
-  (common/write-page
-    :home
-    content-blocks)
-  (println "Index Printed"))
-
-
-;(write-page {})
-
 

@@ -6,11 +6,11 @@
     [groundedsol.common :as common]
     [groundedsol.airtable :as at]
     [groundedsol.util :as u]
-    [rum.core :as rum]
+    [lambdaisland.hiccup :as hiccup]
     [com.rpl.specter :refer [select ALL FIRST setval transform NONE]]))
 
 (def divider
-  [:hr.fancy])
+  (common/fancy-divider))
 
 (def page-title
   [:h1.center "Contact Information"])
