@@ -175,19 +175,8 @@
    (head page-key)
    (body content)])
 
-(def build-path "build/")
-
 (comment
   (page page-key content))
-
-(defn write-page [page-key content]
-  (let [file-path (str build-path (html-filename page-key))]
-    (->>
-      (page page-key content)
-      hiccup/html
-      hiccup/render-html
-      (spit file-path))
-    (println (str "Wrote " (name page-key)))))
 
 (comment
   (defstyled mydiv :div

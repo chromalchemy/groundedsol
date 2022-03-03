@@ -33,9 +33,11 @@
 (defn html-filename [page]
   (str (pages (page-kw page "file")) ".html"))
 
+(comment
+  (html-filename :home))
+
 (defn page-val [page s]
   (pages (page-kw page s)))
-
 
 (def page-description
   "We provide ecologically sound landscaping services focused on habitat enhancement using Florida native plant species")

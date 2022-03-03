@@ -178,7 +178,7 @@ crowd that wants to get their hands dirty."]])
   [:div.row3
    [:div.container
     [:div.inside
-     [:h1.alternate1 "Reviewxx"]
+     [:h1.alternate1 "Review"]
      [:div.reviews
       [:ul#ticker
        review-blocks]]]]])

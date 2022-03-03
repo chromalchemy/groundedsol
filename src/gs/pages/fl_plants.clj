@@ -142,11 +142,5 @@ The proper Florida native name, it’s origin and how to best take care of your 
      ; [:a {:href "#0"} "Next"]]
      ;[:p.dropcap]]]])
 
-(def content-blocks
+(def content
   [raw-page])
-
-(defn write-page []
-  (common/write-page
-    :florida-plants
-    content-blocks)
-  (println "Flora Fauna Page Written"))
