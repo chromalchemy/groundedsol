@@ -3,7 +3,7 @@
     [hickory.core :as h]
     [cybermonday.core :as cm]
     [gs.content :as c]
-    [gs.common :as common]
+    [gs.components :as common]
     [gs.airtable :as at]
     [gs.util :as u]
     [lambdaisland.hiccup :as hiccup]
@@ -29,7 +29,7 @@
 (def captcha-button
   [:div.h-captcha {:data-sitekey "1a09d58a-4353-4310-b15d-1e78b0064ec2"}])
 
-(def raw-page
+(def page-hiccup
   [:div.container
    [:div.inside
     [:div.inside
@@ -55,11 +55,4 @@
         facebook-widget]]]
      [:p]]]])
 
-(def content-blocks
-  [raw-page])
 
-(defn write-page []
-  (common/write-page
-    :contact
-    content-blocks)
-  (println "bulding contact page"))

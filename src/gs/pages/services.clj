@@ -3,7 +3,7 @@
     [hickory.core :as h]
     [cybermonday.core :as cm]
     [gs.content :as c]
-    [gs.common :as common]
+    [gs.components :as common]
     [gs.airtable :as at]
     [gs.util :as u]
     [lambdaisland.hiccup :as hiccup]
@@ -117,18 +117,10 @@
 (def page-title
   [:h1.center "Consultation & Design"])
 
-(def content-blocks
-  [
-   [:div.container
-    [:div.inside
-     page-title
-     divider
-     process]]])
+(def page-hiccup
+  [:div.container
+   [:div.inside
+    page-title
+    divider
+    process]])
      ;faq]]])
-
-
-(defn write-page []
-  (common/write-page
-    :services
-    content-blocks)
-  (println "Wrote services page"))

@@ -3,7 +3,7 @@
     [hickory.core :as h]
     [cybermonday.core :as cm]
     [gs.content :as c]
-    [gs.common :as common]
+    [gs.components :as common]
     [gs.airtable :as at]
     [gs.util :as u]
     [lambdaisland.hiccup :as hiccup]
@@ -120,17 +120,9 @@
 (def divider
   (common/fancy-divider))
 
-(def content-blocks
-  [
-   [:div.container
-    [:div.inside
-     [:h1.center "Frequently Asked Questions"]
-     divider
-     faq-block]]])
-
-
-(defn write-page []
-  (common/write-page
-    :faq
-    content-blocks)
-  (println "write faq page"))
+(def page-hiccup
+  [:div.container
+   [:div.inside
+    [:h1.center "Frequently Asked Questions"]
+    divider
+    faq-block]])

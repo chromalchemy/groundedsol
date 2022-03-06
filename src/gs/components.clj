@@ -1,10 +1,9 @@
-(ns gs.common
+(ns gs.components
   (:require
-    [lambdaisland.hiccup :as hiccup]
     [lambdaisland.ornament :as o :refer [defstyled]]
     [gs.content :as c]
-    [gs.util :as u]
-    [gs.page :as page :refer [pages page-kw page-keys html-filename page-val]]))
+    [gs.site :as site :refer [pages page-kw page-keys html-filename page-val]])
+  (:use [gs.util]))
 
 (def css-files
   ["https://fonts.googleapis.com/css?family=Open+Sans|Poiret+One|Oswald:300"
@@ -30,7 +29,7 @@
    [:meta {:charset "utf-8"}]
    [:meta {:name "viewport" :content "width=device-width, initial-scale=1"}]
    [:meta {:property "og:type" :content "website"}]
-   [:meta {:content page/page-description :name "description"}]
+   [:meta {:content c/page-description :name "description"}]
    [:LINK {:REL "SHORTCUT ICON" :HREF "icongs.ico" :type "image/x-icon"}]
    [:meta {:content "width=device-width, initial-scale=1.0" :name "viewport"}]
    ;[:link {:href "http://fonts.googleapis.com/css?family=Open+Sans|Poiret+One|Oswald:300" :rel "stylesheet" :type "text/css"}]
@@ -69,7 +68,6 @@
 ;[:li [:a {:href (r :about/file) } (r :about/name)]]
 ;[:li [:a {:href (r :contact/file)} (r :contact/name)]]
 
-
 (def nav
   [:nav
    [:ul.slimmenu
@@ -80,7 +78,7 @@
    [:div.container
     [:div.inside
      [:div.logo
-      [:div.brand [:a {:href (page/html-filename :home)} [:img {:alt (c/images :logo/alt) :height "53" :src (u/img-path (c/images :logo/file)) :width "200"}]]]
+      [:div.brand [:a {:href (site/html-filename :home)} [:img {:alt (c/images :logo/alt) :height "53" :src (gs.site/img-path (c/images :logo/file)) :width "200"}]]]
       [:div.slogan c/slogan]]
      nav]
     [:hr.noshow]]])
@@ -126,7 +124,7 @@
    [:h5 "News & Events:"]
    [:p.center]
    calendar-script
-   [:p.center [:a.btn.btn-main {:href (page/html-filename :consultation)} "More Info ≫"]]])
+   [:p.center [:a.btn.btn-main {:href (site/html-filename :consultation)} "More Info ≫"]]])
 
 ;&raquo;
 
@@ -174,19 +172,3 @@
   [:html {:lang "en"}
    (head page-key)
    (body content)])
-
-(comment
-  (page page-key content))
-
-(comment
-  (defstyled mydiv :div
-    ([]
-     [:<>
-      [:span]
-      [:span]
-      [:span]]))
-  (->>
-    (mydiv)
-    ;hiccup/render-html*)
-    hiccup/html
-    hiccup/render-html))

@@ -1,6 +1,9 @@
 (ns gs.airtable
   (:require
-  ;  ;[gs.core]
+    [hickory.core :as hickory]
+    [cybermonday.core :as cm]
+
+    ;  ;[gs.core]
   ;  ;[markdown.core :as md]
     [cybermonday.core :as cm]
     [airtable-clj.core :as airtable]))
@@ -71,3 +74,26 @@
 ;         (t/read (t/reader in :json))))))
 
 
+;-------
+
+
+;(into [] (reverse [  "Hello World" :h1]))
+;(setval [FIRST FIRST]
+;  :h2
+;  (map hickory/as-hiccup
+;       (hickory/parse-fragment
+;         (gs.util/my-airtable-data)))))
+;---------------------------
+(comment
+  [:div {:dangerouslySetInnerHTML {:__html myvar}}])
+
+
+
+;markdown parse test with hickory + specter
+(comment
+  (def myvar
+    (str (gs.util/my-airtable-data))))
+
+;markdown parse test with gonday
+;(def md-hiccup
+;  (cybermonday.core/parse-md

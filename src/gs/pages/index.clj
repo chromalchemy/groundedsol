@@ -1,10 +1,7 @@
 (ns gs.pages.index
   (:require
-    [hickory.core :as hickory]
-    [cybermonday.core :as cm]
     [gs.content :as c]
-    [gs.page]
-    [gs.common :as common]
+    [gs.components :as common]
     [gs.airtable :as at]
     [lambdaisland.ornament :as o :refer [defstyled]]
     [lambdaisland.hiccup :as h :refer [html]]
@@ -14,66 +11,8 @@
     [com.rpl.specter]
     [gs.util :as u]))
 
-(def global-garden-style-rules
-  [])
-
 (comment
-  (->> global-garden-style-rules
-    gc/compile-css))
-
-(defn local-styles []
-  (list
-    [:style (o/defined-styles)]
-    [:style (gc/compile-css global-garden-style-rules)]))
-
-(defn concatenated-styles-string []
-  (apply str
-    (interpose "\n\n"
-      [
-       (o/defined-styles)
-       (gc/compile-css global-garden-style-rules)])))
-
-(comment
-  (write-hiccup-to-html-file filename local-page))
-
-(comment
-  ;;spit to template file
-  (spit
-    (str template-path filename ".html")
-    (->> bc-hiccup h/html h/render-html*)))
-
-(comment
-  (def running-system
-    (start-live-browser-view! filename))
-  (stop-system! running-system))
-
-;(defn html-entity [s]
-;  (gstring/unescapeEntities s))
-
-;(require 'goog.string)
-;(s/transform [(s/walker string?)] goog.string.unescapeEntities my-hiccup-vector)
-
-;markdown parse test with hickory + specter
-(comment
-  (def myvar
-    (str (gs.util/my-airtable-data))))
-
-;(into [] (reverse [  "Hello World" :h1]))
-      ;(setval [FIRST FIRST]
-      ;  :h2
-      ;  (map hickory/as-hiccup
-      ;       (hickory/parse-fragment
-      ;         (gs.util/my-airtable-data)))))
-;---------------------------
-(comment
-  [:div {:dangerouslySetInnerHTML {:__html myvar}}])
-
-;markdown parse test with gonday
-;(def md-hiccup
-;  (cybermonday.core/parse-md
-;    (:markdown-test c)))
-
-(u/default-keymap (c/intros :consult))
+  (u/default-keymap (c/intros :consult)))
 
 (defn intro-block [m]
   (let [{title :title,
@@ -97,7 +36,6 @@
         (intro-block m))
       [:div.clear]]]]])
 
-
 (def welcome
   (let [m c/welcome]
     [:div.photoblock
@@ -108,7 +46,6 @@
         [:p.lead (:body m)]
         [:p [:a.btn.btn-main {:href (:link m)} (:link-text m)]]]]]]))
 
-
 (def hot-plants
   (list
     [:h3.alternate1 (c/hot-plant-gallery :title)]
@@ -118,10 +55,10 @@
          [:a.lightbox.wow.fadeIn
           {:data-lightbox-gallery (:gallery-name c/hot-plant-gallery)
            :data-wow-delay (:delay m)
-           :href (u/img-path (str "//" img-folder "//" (:img-file m)))
+           :href (gs.site/img-path (str "//" img-folder "//" (:img-file m)))
            :title (:title m)}
           [:img {:alt (m :title)
-                 :src (u/img-path (str "//" img-folder "//" (:thumb-file m)))}]]))]))
+                 :src (gs.site/img-path (str "//" img-folder "//" (:thumb-file m)))}]]))]))
 
 (def hot-plant-gallery
   [:div.row2
@@ -130,15 +67,13 @@
      hot-plants
      [:p [:a.btn.btn-color {:href "floridaplants.html"} "View More"]]]]])
 
-
 (def about-us
   [:section.contentBox3a.wow.zoomIn {:data-wow-delay ".2s"}
    [:h4.alternate2 "About Us"]
    [:p [:img.img-left.img-round.img-small {:alt "Amanda" :src "images/samples/mandy.jpg"}] "A long time Winter Park resident, Amanda Martin is no stranger to the beauty that a
             planned landscape brings to our Florida neighborhoods. With expansive knowledge in horticulture,
             agricultural research, and landscape design, Amanda’s passion is
-            bringing out the best in our sustainable landscapes."]
-   [:p]])
+            bringing out the best in our sustainable landscapes."]])
 
 (def discover
   [:section.contentBox3b.wow.zoomIn {:data-wow-delay ".6s"}
@@ -192,12 +127,10 @@ crowd that wants to get their hands dirty."]])
      get-started
      [:div.clear]]]])
 
-(use 'gs.pages.index)
-
-(def content
-  [welcome
-   intro-blocks
-   hot-plant-gallery
-   generic-row
-   reviews])
-
+(def page-hiccup
+  (list
+    welcome
+    intro-blocks
+    hot-plant-gallery
+    generic-row
+    reviews))
