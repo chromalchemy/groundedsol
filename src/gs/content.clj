@@ -1,6 +1,10 @@
 (ns gs.content
-  (:require [gs.page :refer [pages html-filename]]
-            [clojure.string :as string]))
+  (:require
+    [clojure.string :as string]))
+
+
+(def page-description
+  "We provide ecologically sound landscaping services focused on habitat enhancement using Florida native plant species")
 
 (def images
   {:logo/file "logo200.png"
@@ -14,14 +18,14 @@
             plant material, less water, and eventually less maintenance. Good for you, good for Florida,
             and good for your checkbook."
     :link-text "Read More"
-    :link (html-filename :consultation)}
+    :link :consultation}
    :design
    {:title "Design"
     :subtitle "Natural, organized and beautiful."
     :body "No two properties are the same. Each requires it’s own unique focus. Providing a
             hand-drawn sketch or digital design is the fun part. Let’s start by walking your property together."
     :link-text "Contact for a Consult"
-    :link (html-filename :consultation)}
+    :link :consultation}
    :flora-and-fauna
    {:title "FLORA & FAUNA"
     :subtitle "Florida, a fine balance of resources."
@@ -29,7 +33,7 @@
             other species is the basis for Grounded Solutions landscape designs. But we don’t
             stop there. A pop-up plant shop is now germinating to help spread the seeds of diversity in your landscape."
     :link-text "Gallery"
-    :link (html-filename :florida-plants)}})
+    :link :florida-plants}})
 
 ;(def markdown-test my-airtable-data)
 
@@ -39,7 +43,7 @@
   {:title "What's Hot"
    :img-folder "samples"
    :gallery-name "catalog1"
-   :link (html-filename :florida-plants)
+   :link :florida-plants
    :link-text "View More"
    :images
    [{:delay "1.0s" :img-file "plant1b.jpg" :thumb-file "plant1s.jpg" :title "Deerberry, Vaccinium stamineum"}

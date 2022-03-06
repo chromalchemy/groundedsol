@@ -3,12 +3,13 @@
     [hickory.core :as h]
     [cybermonday.core :as cm]
     [gs.content :as c]
-    [gs.common :as common]
+    [gs.components :as common]
     [gs.airtable :as at]
     [gs.util :as u]
     [lambdaisland.hiccup :as hiccup]
     [com.rpl.specter :refer [select ALL FIRST setval transform NONE]]
-    [clojure.string :as string]))
+    [clojure.string :as string])
+  (:use [gs.util]))
 
 ;images/samples/1b.jpg
 
@@ -22,11 +23,8 @@
     (map #(str "old/" % "b.jpg")
       numbers)))
 
-(defn image-path [s]
+(defn gallery-image-path [s]
   (str "images/gallery/" s))
-
-(defn jpeg [s]
-  (str s ".jpg"))
 
 (def old-image-local-paths
   (conj
@@ -80,10 +78,10 @@
             :display "block"
             ;:margin "auto"}
     :data-lightbox-gallery "catalog1"
-    :href                  (image-path local-path)
+    :href                  (gallery-image-path local-path)
     :title                 description}
    [:img.img-portfolio
-    {:src   (image-path (str "thumb/" local-path))
+    {:src   (gallery-image-path (str "thumb/" local-path))
      :style {:height "160px"}
      :alt   description}]])
 
@@ -98,9 +96,6 @@
 
 (def page-title
   [:h1.center "What’s Hot in Florida Plants"])
-
-
-
 
 (def raw-page
   [:div.container
