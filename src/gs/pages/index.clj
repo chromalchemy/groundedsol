@@ -128,9 +128,9 @@ crowd that wants to get their hands dirty."]])
      [:div.clear]]]])
 
 (def page-hiccup
-  (list
-    welcome
-    intro-blocks
-    hot-plant-gallery
-    generic-row
-    reviews))
+  [:<>
+   welcome
+   intro-blocks
+   hot-plant-gallery
+   generic-row
+   reviews])

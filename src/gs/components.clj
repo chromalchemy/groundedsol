@@ -164,7 +164,7 @@
    [:<>
     scroll-to-top
     masthead
-    (into '() content)
+    content
     (footer)
     script-files]))
 

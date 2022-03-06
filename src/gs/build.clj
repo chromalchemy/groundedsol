@@ -20,6 +20,7 @@
       (spit file-path))
     (println (str "Wrote " (name page-key)))))
 
+
 ;todo: generate require from page kw
 (defn build-site! []
   (require 'gs.pages.index :reload)
@@ -33,6 +34,12 @@
   (write-page :faq gs.pages.faq/page-hiccup)
   (write-page :contact gs.pages.contact/page-hiccup)
   (println "Site Built"))
+
+(comment
+  (->> gs.pages.index/page-hiccup
+    (gs.components/page :home)))
+    ;hiccup/html
+    ;hiccup/render-html*))
 
 #_
 (build-site!)
