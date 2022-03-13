@@ -28,8 +28,6 @@
 (def content-blocks
   [raw-page])
 
-
-
 (common/write-page
   :email-confirmation
   content-blocks)

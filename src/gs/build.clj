@@ -6,20 +6,19 @@
     [gs.components]
     [lambdaisland.hiccup :as hiccup]
     [criterium.core :refer [bench]]
-    [gs.pages.fl-plants]))
-    ;[gs.pages.faq]
-    ;[gs.pages.services]
-    ;[gs.pages.contact]))
+    [gs.pages.fl-plants]
+    [gs.pages.faq]
+    [gs.pages.services]
+    [gs.pages.contact]))
 
-(defn write-page [page-key content]
+(defn write-page [page-key page-hiccup]
   (let [file-path (str gs.site/build-path (gs.site/html-filename page-key))]
-    (->> content
-      (gs.components/page page-key)
+    (->> page-hiccup
+      (gs.components/html-el page-key)
       hiccup/html
       hiccup/render-html
       (spit file-path))
     (println (str "Wrote " (name page-key)))))
-
 
 ;todo: generate require from page kw
 (defn build-site! []
@@ -37,7 +36,7 @@
 
 (comment
   (->> gs.pages.index/page-hiccup
-    (gs.components/page :home)))
+    (gs.components/html-el :home)))
     ;hiccup/html
     ;hiccup/render-html*))
 

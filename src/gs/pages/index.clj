@@ -6,7 +6,8 @@
     [lambdaisland.ornament :as o :refer [defstyled]]
     [lambdaisland.hiccup :as h :refer [html]]
     [clojure.string :as string]
-    [garden.compiler :as gc])
+    [garden.compiler :as gc]
+    [cybermonday.core :as md])
   (:use
     [com.rpl.specter]
     [gs.util :as u]))

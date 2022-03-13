@@ -1,6 +1,6 @@
-(ns gs.css.core)
+(ns gs.garden.page)
 
-(def styles
+(def rules
   (list
     [:h1.myclass {:color "red"}]))
 

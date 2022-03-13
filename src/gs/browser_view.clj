@@ -101,7 +101,10 @@
 
 ;-----------------
 
-(comment
+(defn start-system! []
   (def running-system
-    (start-live-browser-view! "index"))
+    (start-live-browser-view! "index")))
+
+(comment
+  (start-system!)
   (stop-system! running-system))
