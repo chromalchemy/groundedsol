@@ -12,7 +12,7 @@
         [gs.meta]
         [com.rpl.specter]))
 
-(def nav-pages
+(def page-keys
   [:home :services :florida-plants :faq :about :contact])
 
 (defn page-name [page-key]
@@ -21,28 +21,19 @@
     (if specified-name specified-name
       (string/capitalize (name page-key)))))
 
-(def nav-links
-  (for [p nav-pages]
-    [:li
-     [:a {:href (html-filename p)}
-      (page-name p)]]))
+(defstyled nav-link :li
+  ([p]
+   [:a {:href (html-filename p)}
+    (page-name p)]))
 
-;[:li [:a {:href (r :home/file)} (r :home/name)]]
-;[:li [:a {:href (r :consultation/file)} (r :services/name)]]
-;;[:ul
-;; [:li [:a {:href (r :consultation/file)} (r :consultation/name)]]
-;; [:li [:a {:href (r :consultation/file)} (r :design/name)]]
-;; [:li [:a {:href (r :florida-plants/file)} (r :pop-up-shop/name)]]]]
-;[:li [:a {:href (r :florida-plants/file)} (r :florida-plants/name)]]
-;;[:ul
-;; [:li [:a {:href (r :florida-plants/file)} (r :florida-plants-411/name)]] [:li [:a {:href (r :ecosystems/file)} (r :ecosystems/name)]]]]
-;[:li [:a {:href (r :about/file) } (r :about/name)]]
-;[:li [:a {:href (r :contact/file)} (r :contact/name)]]
+(defstyled nav-links-wrapper :ul.slimmenu
+  :text-center)
+   ;:md:text-right])
 
-(def nav-menu
-  [:nav
-   [:ul.slimmenu
-    nav-links]])
+(defstyled nav-menu :nav
+  ([page-keys]
+   (nav-links-wrapper
+     (map nav-link page-keys))))
 
 (def masthead
   [:header.noborder
@@ -51,7 +42,7 @@
      [:div.logo
       [:div.brand [:a {:href (site/html-filename :home)} [:img {:alt (c/images :logo/alt) :height "53" :src (gs.site/img-path (c/images :logo/file)) :width "200"}]]]
       [:div.slogan c/slogan]]
-     nav-menu]
+     (nav-menu page-keys)]
     [:hr.noshow]]])
 
 (def footer-menu
