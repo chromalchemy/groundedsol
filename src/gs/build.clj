@@ -9,7 +9,8 @@
     [gs.pages.fl-plants]
     [gs.pages.faq]
     [gs.pages.services]
-    [gs.pages.contact]))
+    [gs.pages.contact]
+    [gs.pages.about]))
 
 (defn write-page [page-key page-hiccup]
   (let [file-path (str gs.site/build-path (gs.site/html-filename page-key))]
@@ -27,11 +28,13 @@
   (require 'gs.pages.services :reload)
   (require 'gs.pages.faq :reload)
   (require 'gs.pages.contact :reload)
+  (require 'gs.pages.about :reload)
   (write-page :home gs.pages.index/page-hiccup)
   (write-page :florida-plants gs.pages.fl-plants/page-hiccup)
   (write-page :services gs.pages.services/page-hiccup)
   (write-page :faq gs.pages.faq/page-hiccup)
   (write-page :contact gs.pages.contact/page-hiccup)
+  (write-page :about gs.pages.about/page-hiccup)
   (println "Site Built"))
 
 (comment
