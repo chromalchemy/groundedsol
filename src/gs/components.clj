@@ -46,8 +46,8 @@
     [:hr.noshow]]])
 
 (def footer-menu
-  [:ul
-   nav-links])
+  [:ul])
+   ;nav-links])
 
 (def social-media-links
   [:p.socialmedia
