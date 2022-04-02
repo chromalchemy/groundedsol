@@ -21,6 +21,8 @@
     (if specified-name specified-name
       (string/capitalize (name page-key)))))
 
+
+
 (defstyled nav-link :li
   ([p]
    [:a {:href (html-filename p)}
@@ -34,6 +36,9 @@
   ([page-keys]
    (nav-links-wrapper
      (map nav-link page-keys))))
+
+(comment
+  (map nav-link page-keys))
 
 (def masthead
   [:header.noborder

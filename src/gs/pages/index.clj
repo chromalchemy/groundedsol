@@ -71,10 +71,13 @@
 (def about-us
   [:section.contentBox3a.wow.zoomIn {:data-wow-delay ".2s"}
    [:h4.alternate2 "About Us"]
-   [:p [:img.img-left.img-round.img-small {:alt "Amanda" :src "images/samples/mandy.jpg"}] "A long time Winter Park resident, Amanda Martin is no stranger to the beauty that a
-            planned landscape brings to our Florida neighborhoods. With expansive knowledge in horticulture,
-            agricultural research, and landscape design, Amanda’s passion is
-            bringing out the best in our sustainable landscapes."]])
+   [:img.img-round.img-small
+    {:style {:margin "auto"
+             :display "block"}
+     :alt "Amanda" :src "images/samples/mandy.jpg"}]
+   [:p
+    "Orlando native Amanda Martin is no stranger to the seasonal changes of Central Florida and the beauty a planned landscape can bring to a home."]
+   [:p "With expansive knowledge in horticulture, landscape design and agricultural practices, Amanda brings passion and creativity to each sustainable landscape project."]])
 
 (def discover
   [:section.contentBox3b.wow.zoomIn {:data-wow-delay ".6s"}
@@ -82,22 +85,30 @@
    [:div.callbox
     [:h6 "Why Buy Natives"]
     [:img {:alt "" :height "111" :src "images/samples/GS%20Icon.png" :width "114"}]
-    [:p "Residential landscapes are often filled with plants that grow well in our climate
-         but offer little else to the surrounding environment. My goal is to bring a botanical
-         garden-like atmosphere to the landscape while keeping valuable resource
-         uses, like water, to a minimum."]
+    (let [p-style
+          {:style {:padding-left "15px"
+                   :padding-right "15px"
+                   :text-align "justify"}}]
+      [:<>
+       [:p p-style
+        "Residential landscapes are often filled with plants that grow well but offer little else to the surrounding environment."]
+       [:p p-style
+        "Native Plants offer leaves as food, nectar for sugar, pollen with complex proteins, nuts and other seeds for birds and larger animals. A well balanced diet for our wildlife will help our local populations become more resilient and the climate changes."]])
     [:p]]])
 
 (def get-started
   [:section.contentBox3c.wow.zoomIn {:data-wow-delay "1.0s"}
    [:h4.alternate2 "Get Started"]
-   [:p [:span.bignumber "1"] "Let’s walk your grounds together.
-			Consultations take about an hour and involve identifying existing problems, future dreams or a whole new plan."]
-   [:p [:span.bignumber "2"] "Next, we work together to review plants, producing a design or viable plan for the
-            best solutions."]
-   [:p [:span.bignumber "3"] "Design in hand, you are connected
-to established installers or plant material is delivered for the DIY
-crowd that wants to get their hands dirty."]])
+   [:div {:style {:display :flex
+                  :justify-content :center}}
+      [:span.bignumber "1"]
+      [:span.bignumber "2"]
+      [:span.bignumber "3"]]
+
+   [:p {:style {:clear "both"}}
+    "Let’s walk your landscape! Schedule an appointment for an On-site analysis to look at what’s growing, identify existing problems, and begin to dream up a new plan."]
+   [:p "Next we review a new concept for the property, look up each native plant and discuss longterm maintenance strategies."]
+   [:p "Design in hand, we can assist in delivering, staging and planting native plants with the help of the DIY homeowner."]])
 
 (def review-blocks
   (for [m c/reviews]
