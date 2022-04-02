@@ -44,21 +44,29 @@
      [:div.heading-line]
      [:p "Drought tolerant, low maintenance plants, offering food and habitat for many other species are the basis for Grounded Solutions landscape designs. Our goal is to bring a botanical garden-like atmosphere to the landscape while keeping valuable resource inputs to a minimum. I am excited to serve the greater Central Florida area in the Eco-Logical landscape design field and enjoy the diversity of clients interested in making this transition."]]))
 
+(defn resume-item [item items]
+  (let [[img-path text] item
+        class
+        (str "contentBox3"
+          (case (inc (.indexOf items item))
+            1 "a" 2 "b" 3 "c"))]
+    [:section {:class class}
+     [:p [:img.img-left {:alt "About Amanda" :height "125" :src (str "images/" img-path) :width "125"}] text]
+     [:p]]))
+
+(def ajm-resume-items
+  [["samples/grass.jpg"
+    "My first company! I became a certified wetland delineator, able to identify hydric soils, wetland plant indicators and understand the laws affecting wetland boundary identification."]
+   ["samples/grassbed.jpg"
+    "I used this knowledge to enhance residential lakefront properties, acquiring the necessary DEP permits for each site. Upland native plants were used in residential landscape design projects. I managed installation crews and designed management plans per site."]
+   ["samples/flowerbed.jpg"
+    "My expertise in native plant material was sought out for consultation and maintenance for LEED certified green-roof systems. I was able to install selected material on three Central Florida roof-tops with great success."]])
+
 (def resume
   (list
     [:h3 "Biologist:" [:br] "AJM Environmental Services"]
     [:div.group
-     [:section.contentBox3a
-      [:p [:img.img-left {:alt "About Amanda" :height "125" :src "images/samples/grass.jpg" :width "125"}] "My first company! I became a certified wetland delineator, able to identify hydric soils, wetland plant indicators and understand the laws affecting wetland boundary identification."]
-      [:p]]
-     [:section.contentBox3b
-      [:p
-       [:img.img-left {:alt "About Amanda" :height "125" :src "images/samples/grassbed.jpg" :width "125"}] "I used this knowledge to enhance residential lakefront properties, acquiring the necessary DEP permits for each site. Upland native plants were used in residential landscape design projects. I managed installation crews and designed management plans per site."]
-      [:p]]
-     [:section.contentBox3c
-      [:p
-       [:img.img-left {:alt "About Amanda" :height "125" :src "images/samples/flowerbed.jpg" :width "125"}] "My expertise in native plant material was sought out for consultation and maintenance for LEED certified green-roof systems. I was able to install selected material on three Central Florida roof-tops with great success."]
-      [:br]]]
+     (map #(resume-item % ajm-resume-items) ajm-resume-items)]
     [:h3 "Research Scientist:" [:br] "Eurofins"]
     [:div.group
      [:section.contentBox3a
@@ -109,6 +117,19 @@
      [:section.contentBox3c
       [:p
        [:img.img-left {:alt "About Amanda" :height "125" :src "images/samples/cg3.jpg" :width "125"}] "I had fun coordinating a raw chef to come in and share a few recipes strait from the garden to the plate in just a few hours. I was able to create a small cucumber trial organic fertilizer trial to see which blends worked best. A few of the gardeners enjoyed learning the process. Counting and weighing the cucumbers as they grew."]
+      [:p]]]
+    [:h3 "President:" [:br] "Tarflower Native Plant Society"]
+    [:div.group
+     [:section.contentBox3a
+      [:p [:img.img-left {:alt "About Amanda" :height "125" :src "images/resume/tarflower-board-sq.jpg" :width "125"}] "Helped host meetings and arrange for speakers to present to our local chapter"]
+      [:p]]
+     [:section.contentBox3c
+      [:p
+       [:img.img-left {:alt "About Amanda" :height "125" :src "images/resume/tarflower-talk-sq.jpg" :width "125"}] "Facilitated meetings for the general public and coordinated speakers."]
+      [:p]]
+     [:section.contentBox3b
+      [:p
+       [:img.img-left {:alt "About Amanda" :height "125" :src "images/resume/tarflower-sale-sq.jpg" :width "125"}] "Organized, arranged, and sold plants as a chapter fundraiser for Native plant community projects and educational grants."]
       [:p]]]))
 
 (def page-hiccup
