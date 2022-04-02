@@ -19,30 +19,26 @@
   [:p.dropcap "I love anything to do with being outside in this wonderful state. Growing up in Winter Park gave me the visual appreciation of the immense value that flora and fauna added to any landscape. Becoming aware of the impact it made on our natural resources, gave the curiosity and ecological consciousness to pursue a lifetime passion and career in the field of sustainable ecosytems. To explore how all living things affect one another, six years ago I became a certified Florida Beekeeper and now have four hives and produce small batch raw wildflower honey."])
 
 (def about-me-article
-  (list
-    [:h2 "From the beginning"]
+  [:<>
     [:br]
     [:img.img-left {:alt "About Amanda" :height "300" :src "images/samples/amanda2.jpg" :width "300"}]
     [:blockquote.rightside
-     [:p [:strong "I would like to "]
-      "continue creating pop-up plant shop opportunities to bring hard to find native plants and ecological education to neighborhoods around Orlando."]]
+     [:p [:strong "In the works"]
+      " is a pop-up plant shop on wheels! I hope to bring retail native plants, delivery and suggested placement options to homeowners and their neighborhood at large. "]]
     "I began my adventure in horticulture by getting a B.S. in Environmental Horticulture from the University of Florida. I enjoyed learning all about plant physiology, growth condition requirements, identification markers, along with disease, insect and nutrient strategies. Prior to my degree I always loved flowers and took a job taking care of interior plants. Interior plant-scaping brought me to more philosphical conversations about plants and plant care. Bringing plants out of nature and into offices, both high-rises and small offices brought various constraints to what kind of plant material can be used, how it needed to be grown in low light conditions, and most importantly, how to keep plants alive for those who tend to kill plants in their personal experiences. I was driven to learn what plants like and how to accomodate for their needs. See below for both a definition of what a horticulturist does and some of my work/project history."
     [:br] [:br]
     "In Decemebr of 2013, I began Grounded Solutions Inc. Having found the genera of Native plants and their importance in our landscapes I was able to focus on this wide range of plant material and begin understanding the relationships they have with our soils, our rainfall, our seasonal temperature and our precious pollinators. Taking this education and awareness to my clients, I help educate others about individual plants and how they attract beneficial wildlife through an aesthetically pleasing design. My goal is to increase biodiversity in the landscape and help my clients notice and appreciate the diversity they are witnessing. Maintenance habits can be built in to weekly walks through the landscape and with observation it becomes easier to know when and how to prune these plants. Grounded Solutions Inc has provided me with endless opportunities to see native plants growing in all kinds of conditions and I grow more aware of how to make a sod-free landscape look manicured and functional for the homeowner."
     [:br] [:br]
-    "As climate change continues to accelerate, native lanscapes are becoming an obvious way to reduce fertilizer and water use. Noise pollution and CO2 pollution from lawn mowers, edgers and trimmers are greatly reduced. And with food sources for our pollinators and birds, you will see a dramatic change in the natural activity of your front and/or back yard."))
+    "As climate change continues to accelerate, native lanscapes are becoming an obvious way to reduce fertilizer and water use. Noise pollution and CO2 pollution from lawn mowers, edgers and trimmers are greatly reduced. And with food sources for our pollinators and birds, you will see a dramatic change in the natural activity of your front and/or back yard."])
 
 (def other-blocks
   (list
-    [:section.contentBox2a
+    [:section
      [:h3 "What Is A Horticulturist?"]
      [:div.heading-line]
      [:p
-      [:a {:href "https://en.wikipedia.org/wiki/Horticulture" :target "_blank"} "Wikipedia definition"] ": A Horticulturist is someone who applies their knowledge, skills, and technologies used to grow intensively produced plants for human food and non-food uses and for personal or social needs. Their work involves plant propagation and cultivation with the aim of improving plant growth, yields, quality, nutritional value, and resistance to insects, diseases, and environmental stresses. They work as gardeners, growers, therapists, designers, and technical advisors in the food and non-food sectors of horticulture. Horticulture even refers to the growing of plants in a field or garden."]]
-    [:section.contentBox2b
-     [:h3 {:style {:color "white"}} "."]
-     [:div.heading-line]
-     [:p "Drought tolerant, low maintenance plants, offering food and habitat for many other species are the basis for Grounded Solutions landscape designs. Our goal is to bring a botanical garden-like atmosphere to the landscape while keeping valuable resource inputs to a minimum. I am excited to serve the greater Central Florida area in the Eco-Logical landscape design field and enjoy the diversity of clients interested in making this transition."]]))
+      [:a {:href "https://en.wikipedia.org/wiki/Horticulture" :target "_blank"} "Wikipedia definition"] ": A Horticulturist is someone who applies their knowledge, skills, and technologies used to grow intensively produced plants for human food and non-food uses and for personal or social needs. Their work involves plant propagation and cultivation with the aim of improving plant growth, yields, quality, nutritional value, and resistance to insects, diseases, and environmental stresses. They work as gardeners, growers, therapists, designers, and technical advisors in the food and non-food sectors of horticulture. Horticulture even refers to the growing of plants in a field or garden."]]))
+
 
 (defn resume-item [item items]
   (let [[img-path text] item
@@ -140,6 +136,8 @@
      divider
      intro
      ;[:br] [:br]
+     [:h2 "From the beginning"]
+     [:div.heading-line]
      about-me-article
      [:br] [:br]
      other-blocks
