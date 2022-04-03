@@ -7,7 +7,7 @@
     [lambdaisland.hiccup :as hiccup]
     [criterium.core :refer [bench]]
     [gs.pages.fl-plants]
-    [gs.pages.faq]
+    [gs.pages.consultation]
     [gs.pages.services]
     [gs.pages.contact]
     [gs.pages.about]))
@@ -26,13 +26,13 @@
   (require 'gs.pages.index :reload)
   (require 'gs.pages.fl-plants :reload)
   (require 'gs.pages.services :reload)
-  (require 'gs.pages.faq :reload)
+  (require 'gs.pages.consultation :reload)
   (require 'gs.pages.contact :reload)
   (require 'gs.pages.about :reload)
   (write-page :home gs.pages.index/page-hiccup)
   (write-page :florida-plants gs.pages.fl-plants/page-hiccup)
   (write-page :services gs.pages.services/page-hiccup)
-  (write-page :faq gs.pages.faq/page-hiccup)
+  (write-page :consultation gs.pages.consultation/page-hiccup)
   (write-page :contact gs.pages.contact/page-hiccup)
   (write-page :about gs.pages.about/page-hiccup)
   (println "Site Built"))

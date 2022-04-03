@@ -13,7 +13,7 @@
         [com.rpl.specter]))
 
 (def page-keys
-  [:home :services :florida-plants :faq :about :contact])
+  [:home :services :consultation :florida-plants :about :contact])
 
 (defn page-name [page-key]
   (let [page (pages page-key)

@@ -20,19 +20,17 @@
      {:filename "thankyou"
       :name "Thank You"}
    ;:ecosystems {}
-   :services
+   :consultation
      {:filename "consultationanddesign"
-      :name "Services"
+      :name "Consultation"
       :title "Consultation and Design Eco-Logical Landscapes"}
    :about
      {:name "About"
       :filename "about"}
-   :consultation
-     {:name (string/upper-case "Consultation")
-      :filename "consultationanddesign"}
    ;:design {:name (string/upper-case "Design")}
    :contact {}
-   :faq {:name "FAQ"}})
+   :services {:filename "services"
+              :name "Services"}})
    ;:florida-plants-411 "FL Plants 411"
    ;:pop-up-shop {:name "POP UP Shop"}})
 
