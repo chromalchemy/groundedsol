@@ -25,7 +25,7 @@
       :name "Services"
       :title "Consultation and Design Eco-Logical Landscapes"}
    :about
-     {:name (string/upper-case "About")
+     {:name "About"
       :filename "about"}
    :consultation
      {:name (string/upper-case "Consultation")
