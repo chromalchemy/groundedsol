@@ -50,9 +50,19 @@
      (nav-menu page-keys)]
     [:hr.noshow]]])
 
+(defstyled footer-nav-link nav-link
+  :mb-1
+  ([p]
+   [:a {:href (html-filename p)}
+    (page-name p)]))
+
 (def footer-menu
-  [:ul])
-   ;nav-links])
+  [:ul
+   {:style
+    {:text-align "left"}}
+   (map
+     footer-nav-link
+     page-keys)])
 
 (def social-media-links
   [:p.socialmedia
