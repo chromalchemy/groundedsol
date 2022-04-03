@@ -60,27 +60,35 @@ company. We provide ecologically informed landscaping ideas and services to enha
    :link-text "Learn More"})
 
 (def reviews
-  [{:img "reviews3.jpg"
-    :date "March 2, 2018"
+  [{:img "Kelly-t-portrait-sq.jpg"
+    :name "Kelly T."
+    :review
+    [:<>
+     [:p
+      "We would highly recommend Grounded Solutions! Amanda came to our home and did an On-Site hand drawn design. It was perfect for what we wanted to accomplish. We wanted a guide on how to slowly transition our space into a more Florida Friendly landscape, using as many Florida native species as possible. We wanted to do the work in phases and be hands on in the process. This is why Amanda’s on site hand drawn option was perfect for us."]
+     [:p
+      "Amanda is clearly passionate and knowledgeable in her field. She walked the yard with us listening to our goals and vision. She shared her knowledge to guide us to what was possible and suggested options we had not even considered. When she was finished with the drawing... which is lovely on its own, we had a good plan to get started. We had names of plant species, best placement, where to shop and what to expect. We learned a lot!"]
+     [:p "So far our we are pleased with the results and will continue to work the plan outlined by Amanda. I highly recommend Amanda with Grounded Solutions. You will not regret it and you will be making your yard and the ecosystem beautiful and balanced!"]]}
+   {:img "Adrian2-sq.jpg"
+    :name "Adrian M."
+    :review
+    [:<>
+     [:p
+      "Amanda has done an awesome job designing, installing, and maintaining a beautiful native landscape for us as part of a new build. Her design works really well with a modern home - giving a clean, open  look with definite structure in places and being a bit more relaxed in others."]
+     [:p
+      "Regular reapplication of pine straw, especially when the landscape was getting established,  has build a strong weed barrier. Weekly maintenance takes about 10 minutes, mostly blowing off the driveway and sidewalk plus removing with a few weeds. We are delighted with the results"]]}
+   {:img "reviews3.jpg"
     :name "Patty R."
     :review
-    "My husband and I had been interested in a landscape of Florida native plants since the house was purchased in July 2013, but we didn’t have
-a clue how to do start or which plants to incorporate. Fortunately we were lead to Amanda Martin. This young woman has a plethora of
-knowledge involving not only Florida native plants, but landscaping with them, and also bee keeping. We are so grateful for her expertise and
-continued dedication to the yard she created. Thanks, Amanda!"}
+    [:<>
+     [:p
+      "My husband and I had been interested in a landscape of Florida native plants since the house was purchased in July 2013, but we didn’t have a clue how to do start or which plants to incorporate. Fortunately we were lead to Amanda Martin."
+      [:p
+       "This young woman has a plethora of knowledge involving not only Florida native plants, but landscaping with them, and also bee keeping. We are so grateful for her expertise and continued dedication to the yard she created. Thanks, Amanda!"]]]}
    {:img "reviews2.jpg"
-    :date "June 20, 2017"
     :name "Gina S."
     :review
-    "Amanda created a beautiful native landscape plan for our new home.
-    She knew what grew here before the orange groves and subdivisions and included the natives that will easily
-    thrive and support the butterflies, birds and other insects and critters that will visit and live in our yard.
-    We are so enjoying our new yard!"}
-   {:img "reviews1.jpg"
-    :date "May 13, 2017"
-    :name "Carla N."
-    :review
-    "Just stopped into a local nursery, met Amanda, bought some great plants, and supported local business. You should do the same. Support this local lady making it happen."}])
+    "Amanda created a beautiful native landscape plan for our new home. She knew what grew here before the orange groves and subdivisions and included the natives that will easily thrive and support the butterflies, birds and other insects and critters that will visit and live in our yard. We are so enjoying our new yard!"}])
 
 (def faq
   [["What is the best time of year to plant?"
@@ -97,14 +105,7 @@ continued dedication to the yard she created. Thanks, Amanda!"}
              Perennials or shrubs with woody stems will need a little bit longer, in the range of 3 - 6 months.
               Trees are often planted and left to do their thing, but this can give the tree a rough start and stunt long term growth. Trees enjoy regular watering for approximately a year. Regular watering can be through targeted pooling around the base with a hose, 2 - 3 times a week for the first 3 months, and expanding the intervals (but not quantity) over time. Trees should continue to receive water at least 1 time a week for up to, and beyond a year depending on how the tree acclimates to its new soil and light conditions."]
    ["What is site prep?"
-    "Site prep is the first step of the long term maintenance strategy.
-           When you look at the bed you'd like to re-vamp, or the sodded yard you'd like to reduce,
-            you are looking at your site. Preparation is the process of getting it ready for planting.
-             A short sighted view is to slash down weeds or shrubs, till the ground, then plant.
-             This will disturb the natural seed bank and encourage rapid germination of undesired weeds.
-             Mulch or landscape fabrics won't be able to keep them all down. Good preparation is giving time
-             for that seed bank to become exhausted. Knowing what will grow back after you plant is a big part
-             of the maintenance strategy."]
+    "Site prep is the first step of the long term maintenance strategy. When you look at the bed you'd like to re-vamp, or the sodded yard you'd like to reduce, you are looking at your site. Preparation is the process of getting it ready for planting. A short sighted view is to slash down weeds or shrubs, till the ground, then plant. This will disturb the natural seed bank and encourage rapid germination of undesired weeds. Mulch or landscape fabrics won't be able to keep them all down. Good preparation is giving time for that seed bank to become exhausted. Knowing what will grow back after you plant is a big part of the maintenance strategy."]
    ["What is your rate?"
     "My rate is $150/hr. As I work with various clients it becomes clear that each project has a unique
            scope of attention. Sometimes the homeowner just needs a site review so they can begin to make informed decisions.

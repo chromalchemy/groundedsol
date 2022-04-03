@@ -112,13 +112,13 @@
 
 (def review-blocks
   (for [m c/reviews]
-    (let [title (str (:name m) ", " (:date m))
-          img-path (str "images/samples/" (:img m))]
+    (let [customer-name (:name m)
+          img-path (str "images/reviews/" (:img m))]
       [:li
        [:section.content
-        [:p [:img.img-round-border {:alt title :src img-path}]]
+        [:p [:img.img-round-border {:alt customer-name :src img-path}]]
         [:p (:review m)]
-        [:p.small (str "~ " title)]
+        [:p.small (str "~ " customer-name)]
         [:hr.noshow]]])))
 
 (def reviews
