@@ -54,7 +54,7 @@ $('.scroll-to-top').click(function () {
 })(jQuery);
 $(function() {
     $('#ticker').list_ticker({
-        speed: 8000,
+        speed: 12000,
         effect: 'fade'
     })
 });
