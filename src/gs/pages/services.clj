@@ -9,7 +9,6 @@
     [lambdaisland.hiccup :as hiccup]
     [com.rpl.specter :refer [select ALL FIRST setval transform NONE]]))
 
-
 (def process
   [:div
    [:h2 "The Process"]
@@ -37,38 +36,6 @@
    [:p]
    (common/fancy-divider)])
 
-(def events
-  (list
-    [:h2 "Events"]
-    [:p.center
-     [:script {:src "scripts/calendar02.js" :type "text/javascript"}]]))
-
-(def faq
-  [:dl#acc
-   (list
-     (for [f c/faq]
-       (let [question (first f)
-             answer (last f)]
-         (list
-           [:dt question]
-           [:dd
-            [:p.dropcap answer]
-            [:p]])))
-     [:hr.noshow])])
-
-(def faq-block
-  (list
-    [:h4 "FREQUENTLY ASKED QUESTIONS"]
-    [:ul.list2
-     [:li "Below are a few frequently asked questions that typically come up during the consultation. Since the consult is based on an hourly fee, I thought I would address a few of these now so that your time is best spent on the consultation."]]
-    faq))
-
-(def faq
-  [:aside.sidebarRight
-   events
-   [:br]
-   faq-block])
-
 (def divider
   (common/fancy-divider))
 
@@ -81,4 +48,3 @@
     page-title
     divider
     process]])
-     ;faq]]])
