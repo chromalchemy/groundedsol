@@ -126,11 +126,11 @@ The proper Florida native name, it’s origin and how to best take care of your 
                :flex-wrap "wrap"
                :justify-content "space-evenly"}}
       image-tags]
-     [:p.center [:strong "Click on an image to see full view."]]
-     [:p "Shown above are a few examples of versatility you can find when choosing native plants.
-		Grounded Solutions strives to over you the best quality plant material we possibly can.
-		Pairing plant selection with the area you’d like to plant in is the first step towards habitat reconstruction.
-		 Want the wow factor? We can do that too."]]]])
+     [:p.center [:strong "Click on an image to see full view."]]]]])
+    ; [:p "Shown above are a few examples of versatility you can find when choosing native plants.
+    ;Grounded Solutions strives to over you the best quality plant material we possibly can.
+    ;Pairing plant selection with the area you’d like to plant in is the first step towards habitat reconstruction.
+    ; Want the wow factor? We can do that too."]]]])
      ;[:div.pagination
      ; [:span.disabled_pagination "Prev"]
      ; [:span.active_link "1"]

@@ -13,15 +13,13 @@
         [com.rpl.specter]))
 
 (def page-keys
-  [:home :services :consultation :florida-plants :about :contact])
+  [:home :consultation :services :florida-plants :about :contact])
 
 (defn page-name [page-key]
   (let [page (pages page-key)
         specified-name (:name page)]
     (if specified-name specified-name
       (string/capitalize (name page-key)))))
-
-
 
 (defstyled nav-link :li
   ([p]
