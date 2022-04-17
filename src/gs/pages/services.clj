@@ -11,6 +11,10 @@
     [com.rpl.specter :refer [select ALL FIRST setval transform NONE]]))
 
 
+(def divider
+  (common/fancy-divider))
+
+
 (def consult-level
   [{:title "Site Analysis Consultation"
     :price "$150"
@@ -129,14 +133,8 @@
   spent on the consultation."]]
     faq])
 
-(def divider
-  (common/fancy-divider))
-
 (def page-title
   [:h1.center "Consultation & Design"])
-
-(def divider
-  (common/fancy-divider))
 
 (def page-hiccup
   [:<>

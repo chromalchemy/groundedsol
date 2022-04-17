@@ -361,7 +361,7 @@ company. We provide ecologically informed landscaping ideas and services to enha
    "Fruit-Grapes-Mexico-0067.jpg"
    "Fruit-passiflora-suberosa-0111.jpg"
    "Fruit-Wild-coffee-matte-0477.jpg"
-   "Landscape-Adrian-Marshall-Backyard-0131.jpg"
+   "Landscape-Adrian-Backyard-0131.jpg"
    "Landscape-Amherst-Ave-Bird-Dirt-Bath-0092.jpg"
    "Landscape-Amherst-ave-street-view-Muhly-0176.jpg"
    "Landscape-Architecture-inspire-0040.jpg"
