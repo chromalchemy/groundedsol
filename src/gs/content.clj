@@ -51,9 +51,8 @@
     {:delay ".6s" :img-file "plant4b.jpg" :thumb-file "plant4s.jpg" :title "A fresh cut flower arrangement"}
     {:delay "1.0s" :img-file "plant5b.jpg" :thumb-file "plant5s.jpg" :title "Beach verbena, Glandularia maritima"}]})
 
-
 (def welcome
-  {:title "Welcome World"
+  {:title "Welcome"
    :body "Grounded Solutions is a Florida native focused landscape consultation and design
 company. We provide ecologically informed landscaping ideas and services to enhance the natural habitat of developing Florida."
    :link "about.html"
