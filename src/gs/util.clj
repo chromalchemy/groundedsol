@@ -1,6 +1,7 @@
 (ns gs.util
   (:require
-    [lambdaisland.hiccup :as hiccup]))
+    [lambdaisland.hiccup :as hiccup]
+    [clojure.string :as string]))
 
 (defn default-keymap [m]
   (zipmap
@@ -39,6 +40,19 @@
 (defn render-hiccup [h]
   (hiccup/render-html* h))
 
+
+(defn remove-first-semicolon [s]
+  (if (string/starts-with? s ":")
+    (->> s (drop 1) (apply str))
+    s))
+
+(defn pred-k [& ks]
+  (keyword
+    (remove-first-semicolon
+      (->> ks (apply str)))))
+
+(defn sentences [& strs]
+  (->> strs (interpose " ")))
 
 ;(defn html-entity [s]
 ;  (gstring/unescapeEntities s))

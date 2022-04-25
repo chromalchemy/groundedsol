@@ -12,14 +12,25 @@
         [gs.meta]
         [com.rpl.specter]))
 
-(def page-keys
-  [:home :consultation :services :florida-plants :about :contact])
+(defn spacer [n]
+  [:div
+   {:style {:height (px n)}}])
 
-(defn page-name [page-key]
-  (let [page (pages page-key)
-        specified-name (:name page)]
-    (if specified-name specified-name
-      (string/capitalize (name page-key)))))
+(defstyled btn :a
+  :border
+  :border-#333
+  :text-#333
+  :border-solid
+  :inline-block
+  :text-lg
+  :font-normal
+  :mb-0
+  :py-4px :px-12px
+  :text-center
+  :align-middle
+  :whitespace-nowrap
+  :rounded-4px
+  :no-underline)
 
 (defstyled nav-link :li
   ([p]

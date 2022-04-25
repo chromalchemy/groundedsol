@@ -10,7 +10,8 @@
     [cybermonday.core :as md])
   (:use
     [com.rpl.specter]
-    [gs.util :as u]))
+    [gs.util :as u]
+    [gs.site]))
 
 (comment
   (u/default-keymap (c/intros :consult)))
@@ -26,7 +27,7 @@
      [:div.heading-line]
      [:p.lead subtitle]
      [:p body]
-     [:p [:a.btn.btn-main {:href link} link-text]]]))
+     [:p [:a.btn.btn-main {:href (html-filename link)} link-text]]]))
 
 (def intro-blocks
   [:div.row1

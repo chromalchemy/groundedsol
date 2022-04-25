@@ -10,3 +10,12 @@
 
 (defn hsla [h s l a]
   (str "hsla(" h ", " s "%, " l "%, " (* 0.1 a) ")"))
+
+(defn hsl-k [k h s l]
+  (keyword (str (name k) "-" (hsl->hex h s l))))
+
+(comment
+  (hsl-k :hello 20 20 20))
+
+(def gold-yellow
+  "#d1c583")

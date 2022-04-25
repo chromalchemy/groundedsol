@@ -26,7 +26,7 @@
     :link-text "Contact for a Consult"
     :link :consultation}
    :flora-and-fauna
-   {:title "FLORA & FAUNA"
+   {:title "Flora & Fauna"
     :subtitle "Florida, a fine balance of resources."
     :body "Drought tolerant Florida plants, offering seasonal flowers and berries for many
             other species is the basis for Grounded Solutions landscape designs. But we don’t

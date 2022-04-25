@@ -34,6 +34,15 @@
    ;:florida-plants-411 "FL Plants 411"
    ;:pop-up-shop {:name "POP UP Shop"}})
 
+(def page-keys
+  [:home :consultation :services :florida-plants :about :contact])
+
+(defn page-name [page-key]
+  (let [page (pages page-key)
+        specified-name (:name page)]
+    (if specified-name specified-name
+      (string/capitalize (name page-key)))))
+
 (defn html-filename [page-key]
   (let [page (pages page-key)
         specified-name (:filename page)]
@@ -43,7 +52,7 @@
       (str ".html"))))
 
 (comment
-  (html-filename :home))
+  (html-filename :consultation))
 
 (def image-root
   (str "images/"))
