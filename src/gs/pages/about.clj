@@ -136,7 +136,7 @@
      divider
      intro
      ;[:br] [:br]
-     [:h2 "From the beginning"]
+     [:h2 "Getting Growing"]
      [:div.heading-line]
      about-me-article
      [:br] [:br]

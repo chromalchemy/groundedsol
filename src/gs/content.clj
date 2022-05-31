@@ -189,6 +189,11 @@ company. We provide ecologically informed landscaping ideas and services to enha
  pesticides to the landscape."]])
 
 
+(def steps
+  ["Let’s walk your landscape! Schedule an appointment for a site analysis to look at what’s growing, identify existing problems and begin to dream up a new plan."
+   "We meet up again to review a new concept for the property, look up each native plant and discuss longterm maintenance strategies."
+   "Finished design in hand, we can assist in delivering, staging and planting native plants with any homeowner. We love the DIY type!"])
+
 (def new-images-filenames
   ["Bees-defending-flowers-0123.jpg"
    "Bees-guarding-flower-0124.jpg"
@@ -476,6 +481,8 @@ company. We provide ecologically informed landscaping ideas and services to enha
    "Tree-cretagus--0040.jpg"
    "Tree-cypress-tree-small-0175.jpg"
    "Tree-pine-0035.jpg"])
+
+
 
 (map
   #(-> %

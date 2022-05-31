@@ -23,8 +23,8 @@ var DATE_HIGHLIGHT_FONT			= 'Arial';
 var DAY_OF_WEEK_FONT			= 'Arial';
 var HIGHLIGHT_DAY_OF_WEEK_FONT		= 'Arial';
 var DATE_FONT				= 'Arial';
-var MONTH_FONT				= 'Arial';
-var YEAR_FONT				= 'Arial';
+var MONTH_FONT				= 'Oswald, Verdana, Helvetica, sans-serif';
+var YEAR_FONT				= 'Oswald, Verdana, Helvetica, sans-serif';
 
 /***********
 FONT SIZES
@@ -34,8 +34,8 @@ var DATE_HIGHLIGHT_BORDER_SIZE		= 1;
 var DATE_SIZE				= 2;
 var DAY_OF_WEEK_SIZE			= 2;
 var HIGHLIGHT_DAY_OF_WEEK_SIZE		= 2;
-var MONTH_SIZE				= 3;
-var YEAR_SIZE				= 3;
+var MONTH_SIZE				= 5;
+var YEAR_SIZE				= 5;
 var CALENDAR_BORDER_SIZE		= 0; 
 
 /**************

@@ -14,6 +14,10 @@
 (defn hsl-k [k h s l]
   (keyword (str (name k) "-" (hsl->hex h s l))))
 
+(defn hex-k [k hex]
+  (keyword (str (name k) "-" hex)))
+
+
 (comment
   (hsl-k :hello 20 20 20))
 

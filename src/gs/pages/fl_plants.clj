@@ -4,6 +4,7 @@
     [cybermonday.core :as cm]
     [gs.content :as c]
     [gs.components :as common]
+    [lambdaisland.ornament :refer [defstyled]]
     [gs.airtable :as at]
     [gs.util :as u]
     [lambdaisland.hiccup :as hiccup]
@@ -97,36 +98,49 @@
 (def page-title
   [:h1.center "What’s Hot in Florida Plants"])
 
+(def gallery
+  [:fieldset
+   [:legend "Florida Faves"]
+   [:p.center
+    {:style {:display "flex"
+             :flex-wrap "wrap"
+             :justify-content "space-evenly"}}
+    image-tags]
+   [:p.center [:strong "Click on an image to see full view."]]])
+
+
+
+
+
+
+(def gallery-intro
+  [:div.group
+   [:section.contentBox3a
+    [:p
+     [:img.img-left.img-curved
+      {:alt "" :src "images/samples/green125.jpg"}]
+     "Our native Florida plants are as versatile as they are colorful. Grounded Solutions specializes in ecosystem identification and assisting the property owner in re-developing for a native landscape. Many of our clients are interested in attracting birds, butterflies and other pollinators. "]
+    [:p "With Grounded Solutions, you get the whole story. The proper Florida native name, its origin and how to best take care of your new plants in the landscape."]]
+
+   [:section.contentBox3b
+    [:p "Many homeowners are shifting towards a low water, no fertilizer, low maintenance landscape. Upland native plants can fit that bill. Methods of maintenance for these plants can vary from the subtropical, fast growing plants we commonly use in residential landscapes today."]
+    [:p "Below are macro flower photos and some wide angle photos to show the beauty of individual flowers, pollinator interactions, and how the plant persists in the landscapes we find them in. Please enjoy the photos as we add to and edit this gallery over time. Email with any requests to use these photos."]]
+
+   [:section.contentBox3c
+    [:p "There are plenty of native plants to discover and we hope to see more planted. This gallery showcases some of our favorites that may be right for you too. Soon we will be open for business in our pop-up plant shop. We want to help spread the seeds of diversity in the landscape."]
+    [:p "Please follow Grounded Solutions Inc on Facebook, Instagram and Youtube for individual plant stories, growing organically each season."]
+    (common/social-icons "images/social-icons/")]])
+
 (def page-hiccup
   [:div.container
    [:div.inside
     [:h1.center "What’s Hot in Florida Plants"]
     (common/fancy-divider)
     [:h2.alternate1 "Flora & Fauna"]
-    [:div.group
-     [:section.contentBox3a
-      [:p [:img.img-left.img-curved {:alt "" :src "images/samples/green125.jpg"}] "Our native Florida plants are as versatile as they are colorful. Grounded Solutions specializes in ecosystem
-        identification and assisting the property owner in re-developing for a native landscape.
-        Many of our clients are interested in attracting birds, butterflies and other pollinators."]]
-     [:section.contentBox3b
-      [:p "Whenever we discover a wonderful native plant we want to see it everywhere.
-        This gallery showcases some of our favorites that may be right for you too.
-        Soon we will be open for business in our pop-up plant shop. We want to help spread the seeds of diversity in the landscape."]
-      [:p "With Grounded Solutions, you get the whole story.
-The proper Florida native name, it’s origin and how to best take care of your new plants in the landscape."]]
-     [:section.contentBox3c
-      [:p "We also tell you where you can purchase your plant material yourself if you so choose,
-        from a verified Florida Native Plant nursery. Half the fun of our consultations is discovering Florida native treasures
-        that you did not even know you had. So, welcome to the Florida friendly landscape family.
-        Help us keep our bird, butterfly and bees happy by reconnecting the environmental food web."]]]
-    [:fieldset
-     [:legend "Florida Faves"]
-     [:p.center
-      {:style {:display "flex"
-               :flex-wrap "wrap"
-               :justify-content "space-evenly"}}
-      image-tags]
-     [:p.center [:strong "Click on an image to see full view."]]]]])
+    gallery-intro
+    gallery]])
+
+
     ; [:p "Shown above are a few examples of versatility you can find when choosing native plants.
     ;Grounded Solutions strives to over you the best quality plant material we possibly can.
     ;Pairing plant selection with the area you’d like to plant in is the first step towards habitat reconstruction.

@@ -94,22 +94,93 @@
        [:p p-style
         "Residential landscapes are often filled with plants that grow well but offer little else to the surrounding environment."]
        [:p p-style
-        "Native Plants offer leaves as food, nectar for sugar, pollen with complex proteins, nuts and other seeds for birds and larger animals. A well balanced diet for our wildlife will help our local populations become more resilient and the climate changes."]])
+        "Native Plants offer leaves as food, nectar for sugar and pollen for complex proteins.  Seeds, nuts and acorns can provide a meal for birds and larger animals. A well balanced diet for our wildlife will help our local populations become more resilient as the climate changes."]])
     [:p]]])
 
-(def get-started
-  [:section.contentBox3c.wow.zoomIn {:data-wow-delay "1.0s"}
-   [:h4.alternate2 "Get Started"]
-   [:div {:style {:display :flex
-                  :justify-content :center}}
-      [:span.bignumber "1"]
-      [:span.bignumber "2"]
-      [:span.bignumber "3"]]
 
-   [:p {:style {:clear "both"}}
-    "Let’s walk your landscape! Schedule an appointment for an On-site analysis to look at what’s growing, identify existing problems, and begin to dream up a new plan."]
-   [:p "Next we review a new concept for the property, look up each native plant and discuss longterm maintenance strategies."]
-   [:p "Design in hand, we can assist in delivering, staging and planting native plants with the help of the DIY homeowner."]])
+(defstyled bold-number :span
+  :text-#b12b5a
+  :border-1
+  :circle
+  :border-solid
+  :border-#b12b5a
+  :my-1
+  :mx-2
+  :text-center
+  :uppercase
+  :h-50px
+  :w-50px
+  :rounded-full
+  {:font "normal 30px/50px Garamond, Georgia, serif;"}
+  ([n]
+   [:<>]
+   (str n)))
+
+(defstyled inline-bold-number bold-number
+  :border-none
+  {:font "normal 30px/50px Garamond, Georgia, serif;"})
+
+
+(defstyled step-title :h2
+  :w-40px
+  :text-center
+  :text-2xl
+  :text-red-700
+  :float-left :mr-6 :mb-1 :pt-0 :mt-0)
+
+(defstyled step :div
+  :mb-4
+  :clear-both
+  ;:h-40
+  ;[:p {:color "red"}]
+  ([step-number children]
+   [:<>
+     (step-title step-number)
+     children]))
+
+
+;color: #b12b5a;
+;        border: 1px solid #b12b5a;
+;        display: block;
+;font: normal 30px/50px Garamond, Georgia, serif;
+;margin: 5px 10px 5px 0;
+;text-align: center;
+;text-transform: uppercase;
+;height: 50px;
+;width: 50px;
+;bo
+
+
+
+
+
+
+(defstyled numbers :div
+  :flex :justify-center :mb-4
+  ([]
+   (for [n [1 2 3]]
+     (bold-number n))))
+
+
+(def steps c/steps)
+
+
+(def get-started
+  [:section.contentBox3c
+   {:class "wow zoomIn"
+    :data-wow-delay "1.0s"}
+   [:h4.alternate2 "Get Started"]
+   (numbers)
+   (for [s steps]
+     (step
+       (case (+ 1 (.indexOf steps s))
+         1 "One"
+         2 "Two"
+         3 "Three")
+       s))])
+
+
+
 
 (def review-blocks
   (for [m c/reviews]

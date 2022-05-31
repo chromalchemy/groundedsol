@@ -1,3 +1,5 @@
+console.log("hello");
+
 //LIGHTBOX
 $(document).ready(function(){
     $('.lightbox').nivoLightbox();
