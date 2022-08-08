@@ -36,6 +36,10 @@
 
 (defstyled flex-stack :div
   :flex :md:flex-row :flex-col)
+
+(def fancy-font
+  {:font-family "'Poiret One', Verdana, Helvetica, sans-serif"})
+
 ;----------------------------------------
 (defstyled nav-link :li
   ([p]

@@ -22,7 +22,7 @@
 (defn image-rotate [n]
   {:transform "rotate(" n "deg)"})
 
-(defstyled hand-sketch-image :img
+(defstyled hand-sketch-image :a
   ;{:transform "rotate(4deg)"}
   ;(image-rotate 4)
   :w-full
@@ -32,21 +32,26 @@
   :float-right
   :ml-8
   :mb-4
-  image-shadow)
+  :pb-0
+  image-shadow
+  ([]
+   ^{:class ["wow" "zoomIn" "lightbox"]
+     :data-lightbox-gallery "catalog2"
+     :href "images/hand-drawn-designs/hand-sketch.jpg"
+     :data-wow-delay ".6s"}
+   [:<>
+    [:img
+     {:src "images/hand-drawn-designs/hand-sketch.jpg"
+      :alt "Hand Drawn Design"}]]))
 
+(defstyled image-gallery-block :div
+  :ml-8 :mt-0 :mb-4 :float-right :w-40%)
 
-;(defstyled )
-[:a.lightbox.wow.fadeIn.animated
- {:data-lightbox-gallery "catalog1"
-  :data-wow-delay ".6s"
-  :title "Firebush, Hamelia patens"
-  :style "visibility: visible; animation-delay: 0.6s; animation-name: fadeIn;"}
- [:img {:alt "Firebush, Hamelia patens" :src "images///samples//plant2s.jpg"}]]
+(defstyled image-gallery-block-caption :p
+  :text-xs :text-center)
 
 (defstyled final-design-image :a
-  :ml-8 :mt-0 :mb-4 :float-right
    ;:transform "rotate(4deg)"}
-  :w-40%
   :rounded
   image-shadow
   ([]
@@ -58,6 +63,13 @@
     [:img
      {:src "images/final-designs/design-1-vert.png"
       :alt "Digital Final Design"}]]))
+
+(def hand-drawn-designs
+  [; "hand-sketch.jpg"
+   ;"k-cropped.jpg"
+   "k.jpg"
+   "pr.jpg"
+   "sketch.jpg"])
 
 (def final-design-files
   [;"p.jpg" already used by primary
@@ -81,9 +93,16 @@
      :href (str "images/final-designs/" filename)}
    [:<>]))
 
+(defstyled hand-drawn-design-gallery-img :a
+  :hidden
+  ([filename]
+   ^{:class ["lightbox"]
+     :data-lightbox-gallery "catalog2"
+     :href (str "images/hand-drawn-designs/" filename)}
+   [:<>]))
 
 (defstyled design-stages :div
-  :flex :flex-col :md:flex-row)
+  :flex :flex-col :md:flex-row :clear-both)
 
 (defstyled design-stage :div
   :w-full :md:w-50%
@@ -119,7 +138,7 @@
   :text-center
   :rounded-4px
   :no-underline
-  fancy-font
+  common/fancy-font
   :uppercase
   :text-base
   {:box-shadow (str "5px 5px 10px #5c524080")})
@@ -176,81 +195,75 @@
          consultation-process-btn)]}
 
    {:title "Small Area Design, Hand Drawn"
-    :price "$400-$600"
+    :price "$500-$750"
     :time "2-3 Hours"
     :notes
-      (list
-        [:p
-         (hand-sketch-image
-           {:class ["wow""zoomIn"]
-            :data-wow-delay ".6s"
-            :alt "Hand Sketch"
-            :src "images/hand-sketch.jpg"})
-         "Looking to add a butterfly garden? Wanting to feed the bees? Desire to plant more privacy with a fence-line screen or buffer the property line with bird attracting shrubs?"]
-        [:p
-         "Small area designs start with a well-defined area that is ready to be reimagined with native plants. A site analysis consultation is included in this package. We meet, we review the areas in question and a hand-rendered design is made. Each design provides plant names, sizes, quantities, and spatial details you need for a DIY installation. Plant acquisition and delivery services can be provided."])}
+      [:<>
+       [:p
+        (hand-sketch-image)
+        (for [x hand-drawn-designs]
+          (hand-drawn-design-gallery-img x))
+        "Looking to add a butterfly garden? Wanting to feed the bees? Desire to plant more privacy with a fence-line screen or buffer the property line with bird attracting shrubs?"]
+       [:p
+        "Small area designs start with a well-defined area that is ready to be reimagined with native plants. A site analysis consultation is included in this package. We meet, we review the areas in question and a hand-rendered design is made. Each design provides plant names, sizes, quantities, and spatial details you need for a DIY installation. Plant acquisition and delivery services can be provided."]]}
 
    {:title "Full Property Digital Design"
-    :price "$1,200 - $1,600"
+    :price "$1,200 - $1,800"
     :time "4-8 Weeks"
     :notes
-    (list
-      [:div
-       [:p
-         (final-design-image)
-         (for [x final-design-files]
-           (final-design-gallery-img x))
-         (final-design-image-2)
-
-        (sentences
-          "A digital design starts with producing a flexible concept where the goals of each area is spelled out. Using our consultation discussions and photos of the property, extra time is used to brainstorm, sketch out and identify landscape details, keeping long-term plant development and maintenance in mind."
-          "To get us started. I collect a"
-          [:strong "$750 deposit"]
-          "(towards the full cost) at the initial consultation."
-          "Please have a property survey available to work from, a digital copy is best.")]
-
-       [:p
-        "The second meeting is for our concept review. With a large-format printed design, we review the concept, discuss what works and what doesn't and walk the landscape to envision the changes. Any needed alterations are made after the concept review and a viable planting plan with plant specs and planting details is provided as a high resolution pdf."]
-       [:p
-        "With the planting details in place, we are finished with the design process. You can choose to implement the design yourself, request plant installation bids from other companies, or request Grounded Solutions assist you in acquiring the plants and adjusting them in the landscape for planting."]
-
+      [:<>
        [:div
-        ;{:style {:clear "both"}}
+        (image-gallery-block
+          (final-design-image)
+          (for [x final-design-files]
+            (final-design-gallery-img x))
+          (image-gallery-block-caption "Click for more..."))
         [:p
-         "Each design contains different information."]
-        (design-stages
-          (design-stage
-            [:h6
-             "Concept Design"]
-            ;(hand-sketch-image
-            ;  {:alt "Digital Hand Sketch"
-            ;   :src "images/digital-hand-sketch.jpg"})
-            [:span
-             {:style {:padding-left (px 10)}}
-             "Concepts and ideas include:"]
-            [:ul
-             [:li "Flow of of the landscape and use of each area"]
-             [:li "Multiple Plant Options"]
-             [:li "Flower Color"]
-             [:li "Seasonal Bloom"]
-             [:li "Larval host species"
-              [:li "Bird Foraging and habitat opportunities"]]])
-          (design-stage
-            [:h6
-             {:style {:color gold-yellow
-                      :border :none}}
-             "Final Design"]
-            [:span
-             {:style {:padding-left (px 10)}}
-             "Fully specified installation plan includes:"]
-            [:ul
-             [:li "Plant Common & Botanical Names"]
-             [:li "Recommended Plant Sizes"]
-             [:li "Quantity of Plants"]
-             [:li "Recommended Planting Spacing"]
-             [:li "Average Plant Heights when mature"]
-             [:li
-              "HOA submission can be made with finalized design"]]))]])}])
+         (sentences
+           "A digital design starts with producing a flexible concept where the goals of each area is spelled out. Using our consultation discussions and photos of the property, extra time is used to brainstorm, sketch out and identify landscape details, keeping long-term plant development and maintenance in mind."
+           "To get us started. I collect a"
+           [:strong "$750 deposit"]
+           "(towards the full cost) at the initial consultation."
+           "Please have a property survey available to work from, a digital copy is best.")]
+
+        [:p
+         "The second meeting is for our concept review. With a large-format printed design, we review the concept, discuss what works and what doesn't and walk the landscape to envision the changes. Any needed alterations are made after the concept review and a viable planting plan with plant specs and planting details is provided as a high resolution pdf."]
+        [:p
+         "With the planting details in place, we are finished with the design process. You can choose to implement the design yourself, request plant installation bids from other companies, or request Grounded Solutions assist you in acquiring the plants and adjusting them in the landscape for planting."]
+
+        [:div
+         [:p
+          "Each design contains different information."]
+         (design-stages
+           (design-stage
+             [:h6
+              "Concept Design"]
+             [:span
+              {:style {:padding-left (px 10)}}
+              "Concepts and ideas include:"]
+             [:ul
+              [:li "Flow of of the landscape and use of each area"]
+              [:li "Multiple Plant Options"]
+              [:li "Flower Color"]
+              [:li "Seasonal Bloom"]
+              [:li "Larval host species"
+               [:li "Bird Foraging and habitat opportunities"]]])
+           (design-stage
+             [:h6
+              {:style {:color gold-yellow
+                       :border :none}}
+              "Final Design"]
+             [:span
+              {:style {:padding-left (px 10)}}
+              "Fully specified installation plan includes:"]
+             [:ul
+              [:li "Plant Common & Botanical Names"]
+              [:li "Recommended Plant Sizes"]
+              [:li "Quantity of Plants"]
+              [:li "Recommended Planting Spacing"]
+              [:li "Average Plant Heights when mature"]
+              [:li
+               "HOA submission can be made with finalized design"]]))]]]}])
 
 
 (defstyled example-block :div
@@ -299,9 +312,6 @@
    [:p "Please Like and Follow as we grow"]
    (social-icons)))
 
-(def fancy-font
-  {:font-family "'Poiret One', Verdana, Helvetica, sans-serif"})
-
 
 ;font: 34px 'Oswald', Verdana, Helvetica, sans-serif;
 ;    color: #333;
@@ -309,7 +319,6 @@
 ;    text-align: left;
 ;    position: relative;
 ;    overflow: hidden;
-
 
 (defstyled rate-item-block :div
   :inline-block
@@ -325,7 +334,7 @@
 ;         :flex-wrap "on"}}
 
 (defstyled rate-time :div.lead
-  fancy-font
+  common/fancy-font
   :my-2
   :mb-0
   :pb-0)
@@ -355,7 +364,7 @@
   :capitalize
   :md:text-3xl
   :py-1
-  fancy-font)
+  common/fancy-font)
 
 
 (defstyled rate-price :span
@@ -364,7 +373,7 @@
   :block
   :pl-2
   ;:float-right
-  fancy-font)
+  common/fancy-font)
 
 (defstyled rate-notes :span)
 
@@ -414,11 +423,11 @@
    (for [f c/faq]
      (let [question (first f)
            answer (last f)]
-       (list
+       [:<>
          [:dt question]
          [:dd
           [:p.dropcap answer]
-          [:p]])))
+          [:p]]]))
    [:hr.noshow]])
 
 (def faq-block

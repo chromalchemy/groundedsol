@@ -45,8 +45,8 @@
       [:div.inside
        [:div.photoblockInside
         [:h1.big (:title m)]
-        [:p.lead (:body m)]
-        [:p [:a.btn.btn-main {:href (:link m)} (:link-text m)]]]]]]))
+        [:p.lead (:body m)]]]]]))
+        ;[:p [:a.btn.btn-main {:href (:link m)} (:link-text m)]]]]]]))
 
 (def hot-plants
   (list

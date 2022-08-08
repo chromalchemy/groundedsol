@@ -11,27 +11,25 @@
 
 (def intros
   {:consult
-   {:title "Consultation"
+   {:title "Personal Consultation"
     :subtitle "The Landscape that gives back."
     :body "Grounded Solutions gives you a Florida yard that gives back with pollinator friendly
             plant material, less water, and eventually less maintenance. Good for you, good for Florida,
             and good for your checkbook."
-    :link-text "Read More"
+    :link-text "About our Process"
     :link :consultation}
    :design
-   {:title "Design"
+   {:title "Landscape Design"
     :subtitle "Natural, organized and beautiful."
-    :body "No two properties are the same. Each requires it’s own unique focus. Providing a
-            hand-drawn sketch or digital design is the fun part. Let’s start by walking your property together."
-    :link-text "Contact for a Consult"
-    :link :consultation}
+    :body "No two properties are the same. Each requires it’s own unique focus. We can sketch out some ideas... Let’s start by walking your property together."
+    :link-text "Design Services"
+    :link :services}
    :flora-and-fauna
-   {:title "Flora & Fauna"
+   {:title "Native Flora & Fauna"
     :subtitle "Florida, a fine balance of resources."
     :body "Drought tolerant Florida plants, offering seasonal flowers and berries for many
-            other species is the basis for Grounded Solutions landscape designs. But we don’t
-            stop there. A pop-up plant shop is now germinating to help spread the seeds of diversity in your landscape."
-    :link-text "Gallery"
+            other species is the basis for Grounded Solutions landscape designs. A pop-up plant shop is now germinating to help spread the seeds of diversity in your landscape."
+    :link-text "Plant Gallery"
     :link :florida-plants}})
 
 ;(def markdown-test my-airtable-data)
@@ -90,7 +88,19 @@ company. We provide ecologically informed landscaping ideas and services to enha
     "Amanda created a beautiful native landscape plan for our new home. She knew what grew here before the orange groves and subdivisions and included the natives that will easily thrive and support the butterflies, birds and other insects and critters that will visit and live in our yard. We are so enjoying our new yard!"}])
 
 (def faq
-  [["What is the best time of year to plant?"
+  [["What is a low maintenance landscape?"
+    "All landscapes require some maintenance, but there are degrees to which maintenance
+ can be minimized. For example, a sod landscape with viburnum or podocarpus hedge may need to be trimmed
+ weekly during the summer and monthly during the winter. Native shrubs and trees tend to have a slower
+ growth rate which reduces the trimming schedule to once a year. Shrubs and small perennial bushes may
+ need trimming twice a year to keep shape in the summer and the dead wood cut back in the Spring.
+ Annuals can get away with weeding and deadheading four times a year between each season.
+ So a 12 visit cycle, or 18 visit maintenance cycle per year turns into a 4 visit cycle with the summer
+ and spring visit lasting longer than the others. This cuts down on gas emissions and noise pollution from
+ hand held equipment. Reduced water requirements save money and water as we watch our pristine resources
+ grow scarce. And the biological diversity that occurs with native landscapes can eliminate the need to apply
+ pesticides to the landscape."]
+   ["What is the best time of year to plant?"
     "In Florida you can plant any time of year. In winter, colder temperatures reduce growth rate in most plants,
            therefore plants require less water to get established than in summer months where the growth rate is high and temperatures
            can be stressful. When planting in spring and summer, supplemental water will help the new root system stay hydrated in naturally hot,
@@ -174,19 +184,8 @@ company. We provide ecologically informed landscaping ideas and services to enha
  temperatures warm and the sun rises in the sky."]
    ["Do you know small project contractors?"
     "Yes. I have a few contacts that I've been referring to clients to help with tree work,
- small builds or paver-stone pathways."]
-   ["What is a low maintenance landscape?"
-    "All landscapes require some maintenance, but there are degrees to which maintenance
- can be minimized. For example, a sod landscape with viburnum or podocarpus hedge may need to be trimmed
- weekly during the summer and monthly during the winter. Native shrubs and trees tend to have a slower
- growth rate which reduces the trimming schedule to once a year. Shrubs and small perennial bushes may
- need trimming twice a year to keep shape in the summer and the dead wood cut back in the Spring.
- Annuals can get away with weeding and deadheading four times a year between each season.
- So a 12 visit cycle, or 18 visit maintenance cycle per year turns into a 4 visit cycle with the summer
- and spring visit lasting longer than the others. This cuts down on gas emissions and noise pollution from
- hand held equipment. Reduced water requirements save money and water as we watch our pristine resources
- grow scarce. And the biological diversity that occurs with native landscapes can eliminate the need to apply
- pesticides to the landscape."]])
+ small builds or paver-stone pathways."]])
+
 
 
 (def steps
