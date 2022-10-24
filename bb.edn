@@ -1,0 +1,30 @@
+{:paths ["."]
+ :deps
+ {org.babashka/http-server {:mvn/version "0.1.11"}}
+  ;org.babashka/cli {:mvn/version "0.2.23"}}
+ ;:bbin/bin
+ ;{http-server
+ ; {
+ ;  ;:main-opts ["-m" "babashka.http-server"]
+ ;  ;:exec-fn
+ ;  ;'(babashka.http-server/exec
+ ;  ;   {:port 1337
+ ;  ;    :dir "./build/"})
+ ;  :main-opts
+ ;  ["-port" "1337"
+ ;   "-dir" "build"]}}
+ :tasks
+ {:requires ([babashka.cli :as cli])
+  serve
+    ;or just use http-server --port 8888 --dir build (run from bbin)
+    {:doc "Serve static assets"
+     :requires ([babashka.http-server :as server])
+     :task (server/exec {:port 1337
+                         :dir "build"})}
+
+  prn {:task (clojure "-X clojure.core/prn")}
+
+  -dev {:depends [serve prn]}
+
+  dev {:task (run '-dev {:parallel true})}}}
+   ;:exec-args {:task-data 1234}}}}

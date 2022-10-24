@@ -9,7 +9,8 @@
     [gs.util :as u]
     [lambdaisland.hiccup :as hiccup]
     [com.rpl.specter :refer [select ALL FIRST setval transform NONE]]
-    [clojure.string :as string])
+    [clojure.string :as string]
+    [gs.meta])
   (:use [gs.util]))
 
 ;images/samples/1b.jpg
@@ -109,10 +110,6 @@
    [:p.center [:strong "Click on an image to see full view."]]])
 
 
-
-
-
-
 (def gallery-intro
   [:div.group
    [:section.contentBox3a
@@ -140,6 +137,7 @@
     gallery-intro
     gallery]])
 
+  ;(comment)
 
     ; [:p "Shown above are a few examples of versatility you can find when choosing native plants.
     ;Grounded Solutions strives to over you the best quality plant material we possibly can.

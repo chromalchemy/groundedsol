@@ -4,6 +4,7 @@
     [cybermonday.core :as cm]
     [gs.content :as c]
     [gs.components :as common]
+    [lambdaisland.ornament :as o]
     [lambdaisland.ornament :refer [defstyled]]
     [garden.selectors :as gs]
     [gs.airtable :as at]
@@ -35,11 +36,11 @@
   :pb-0
   image-shadow
   ([]
-   ^{:class ["wow" "zoomIn" "lightbox"]
+   [:<>
+    {:class ["wow" "zoomIn" "lightbox"]
      :data-lightbox-gallery "catalog2"
      :href "images/hand-drawn-designs/hand-sketch.jpg"
      :data-wow-delay ".6s"}
-   [:<>
     [:img
      {:src "images/hand-drawn-designs/hand-sketch.jpg"
       :alt "Hand Drawn Design"}]]))
@@ -47,22 +48,31 @@
 (defstyled image-gallery-block :div
   :ml-8 :mt-0 :mb-4 :float-right :w-40%)
 
-(defstyled image-gallery-block-caption :p
+(defstyled image-gallery-block-caption :span
   :text-xs :text-center)
 
 (defstyled final-design-image :a
    ;:transform "rotate(4deg)"}
+  :w-full
+  :md:w-50%
+  :lg:w-40%
   :rounded
-  image-shadow
+  :float-right
+  :ml-8
+  :mb-4
+  :pb-0
+  [:img image-shadow :mb-2]
+  [:span :block :text-center :text-xl]
   ([]
-   ^{:class ["wow" "zoomIn" "lightbox"]
+   [:<>
+    {:class ["wow" "zoomIn" "lightbox"]
      :data-lightbox-gallery "catalog1"
      :href "images/final-designs/design-1-vert.png"
-     :data-wow-delay "1.0s"}
-   [:<>
+     :data-wow-delay "0.9s"}
     [:img
      {:src "images/final-designs/design-1-vert.png"
-      :alt "Digital Final Design"}]]))
+      :alt "Digital Final Design"}]
+    [image-gallery-block-caption "Click for more..."]]))
 
 (def hand-drawn-designs
   [; "hand-sketch.jpg"
@@ -88,18 +98,18 @@
 (defstyled final-design-gallery-img :a
   :hidden
   ([filename]
-   ^{:class ["lightbox"]
+   [:<>
+    {:class ["lightbox"]
      :data-lightbox-gallery "catalog1"
-     :href (str "images/final-designs/" filename)}
-   [:<>]))
+     :href (str "images/final-designs/" filename)}]))
 
 (defstyled hand-drawn-design-gallery-img :a
   :hidden
   ([filename]
-   ^{:class ["lightbox"]
+   [:<>
+    {:class ["lightbox"]
      :data-lightbox-gallery "catalog2"
-     :href (str "images/hand-drawn-designs/" filename)}
-   [:<>]))
+     :href (str "images/hand-drawn-designs/" filename)}]))
 
 (defstyled design-stages :div
   :flex :flex-col :md:flex-row :clear-both)
@@ -181,61 +191,60 @@
   ;:mr-0)
   ;:position-relative)
 
-(def consult-level
+(def consult-levels
   [{:title "Site Analysis Consultation"
     :price "$150"
     :time "1 Hour"
     :notes
       [analysis-body
        [:p.text "During a site analysis consultation we discuss desirable elements of your landscape, problematic areas and where you would like recommendations for change. A full discussion lets you decide what are the most important priorities in the landscape and how a long term native landscape plan can be implemented around your home."]
-       (consultation-links
+       [consultation-links
          {:class ["wow" "zoomIn"]
           :data-wow-delay ".3s"}
          consultation-appt-btn
-         consultation-process-btn)]}
+         consultation-process-btn]]}
 
    {:title "Small Area Design, Hand Drawn"
     :price "$500-$750"
     :time "2-3 Hours"
     :notes
-      [:<>
-       [:p
-        (hand-sketch-image)
-        (for [x hand-drawn-designs]
-          (hand-drawn-design-gallery-img x))
-        "Looking to add a butterfly garden? Wanting to feed the bees? Desire to plant more privacy with a fence-line screen or buffer the property line with bird attracting shrubs?"]
-       [:p
-        "Small area designs start with a well-defined area that is ready to be reimagined with native plants. A site analysis consultation is included in this package. We meet, we review the areas in question and a hand-rendered design is made. Each design provides plant names, sizes, quantities, and spatial details you need for a DIY installation. Plant acquisition and delivery services can be provided."]]}
+      (list
+        [:p
+         [hand-sketch-image]
+         (for [x hand-drawn-designs]
+           [hand-drawn-design-gallery-img x])
+         "Looking to add a butterfly garden? Wanting to feed the bees? Desire to plant more privacy with a fence-line screen or buffer the property line with bird attracting shrubs?"]
+        [:p
+         "Small area designs start with a well-defined area that is ready to be reimagined with native plants. A site analysis consultation is included in this package. We meet, we review the areas in question and a hand-rendered design is made. Each design provides plant names, sizes, quantities, and spatial details you need for a DIY installation. Plant acquisition and delivery services can be provided."])}
 
    {:title "Full Property Digital Design"
     :price "$1,200 - $1,800"
     :time "4-8 Weeks"
     :notes
-      [:<>
-       [:div
-        (image-gallery-block
-          (final-design-image)
-          (for [x final-design-files]
-            (final-design-gallery-img x))
-          (image-gallery-block-caption "Click for more..."))
+      (list
         [:p
-         (sentences
-           "A digital design starts with producing a flexible concept where the goals of each area is spelled out. Using our consultation discussions and photos of the property, extra time is used to brainstorm, sketch out and identify landscape details, keeping long-term plant development and maintenance in mind."
-           "To get us started. I collect a"
-           [:strong "$750 deposit"]
-           "(towards the full cost) at the initial consultation."
-           "Please have a property survey available to work from, a digital copy is best.")]
-
-        [:p
-         "The second meeting is for our concept review. With a large-format printed design, we review the concept, discuss what works and what doesn't and walk the landscape to envision the changes. Any needed alterations are made after the concept review and a viable planting plan with plant specs and planting details is provided as a high resolution pdf."]
-        [:p
-         "With the planting details in place, we are finished with the design process. You can choose to implement the design yourself, request plant installation bids from other companies, or request Grounded Solutions assist you in acquiring the plants and adjusting them in the landscape for planting."]
-
-        [:div
+         ;;;;(image-gallery-block)
+         [final-design-image]
+         (for [x final-design-files]
+           [final-design-gallery-img x])
          [:p
-          "Each design contains different information."]
-         (design-stages
-           (design-stage
+          (sentences
+            "A digital design starts with producing a flexible concept where the goals of each area is spelled out. Using our consultation discussions and photos of the property, extra time is used to brainstorm, sketch out and identify landscape details, keeping long-term plant development and maintenance in mind."
+            "To get us started. I collect a"
+            [:strong "$750 deposit"]
+            "(towards the full cost) at the initial consultation."
+            "Please have a property survey available to work from, a digital copy is best.")]
+
+         [:p
+          "The second meeting is for our concept review. With a large-format printed design, we review the concept, discuss what works and what doesn't and walk the landscape to envision the changes. Any needed alterations are made after the concept review and a viable planting plan with plant specs and planting details is provided as a high resolution pdf."]
+         [:p
+          "With the planting details in place, we are finished with the design process. You can choose to implement the design yourself, request plant installation bids from other companies, or request Grounded Solutions assist you in acquiring the plants and adjusting them in the landscape for planting."]
+
+         [:div
+          [:p
+           "Each design contains different information."]
+          [design-stages
+           [design-stage
              [:h6
               "Concept Design"]
              [:span
@@ -246,9 +255,9 @@
               [:li "Multiple Plant Options"]
               [:li "Flower Color"]
               [:li "Seasonal Bloom"]
-              [:li "Larval host species"
-               [:li "Bird Foraging and habitat opportunities"]]])
-           (design-stage
+              [:li "Larval host species"]
+              [:li "Bird Foraging and habitat opportunities"]]]
+           [design-stage
              [:h6
               {:style {:color gold-yellow
                        :border :none}}
@@ -263,7 +272,7 @@
               [:li "Recommended Planting Spacing"]
               [:li "Average Plant Heights when mature"]
               [:li
-               "HOA submission can be made with finalized design"]]))]]]}])
+               "HOA submission can be made with finalized design"]]]]]])}])
 
 
 (defstyled example-block :div
@@ -285,17 +294,15 @@
 (defstyled video-embed :iframe
   :mx-auto :block :border-8 :border-solid
   (hex-k :border color/gold-yellow)
-
-
   ([]
-   ^{:width "560"
+   [:<>
+    {:width "560"
      :height "315"
      :src "https://www.youtube.com/embed/ewdExZt_98c"
      :title "YouTube video player"
      :frameborder "0"
      :allow "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-     :allowfullscreen "true"}
-   [:<>]))
+     :allowfullscreen "true"}]))
 
 (comment
   "More native plant photos and horiticultural information on my "
@@ -306,12 +313,11 @@
   " ")
 
 (def examples
-  (example-block
-   (video-title "Tour a full native landscape by Grounded Solutions")
-   (video-embed)
+  [example-block
+   [video-title "Tour a full native landscape by Grounded Solutions"
+    [video-embed]]
    [:p "Please Like and Follow as we grow"]
-   (social-icons)))
-
+   [social-icons]])
 
 ;font: 34px 'Oswald', Verdana, Helvetica, sans-serif;
 ;    color: #333;
@@ -323,7 +329,6 @@
 (defstyled rate-item-block :div
   :inline-block
   :mb-6)
-
 
 (defstyled rate-header :div
   :flex
@@ -366,7 +371,6 @@
   :py-1
   common/fancy-font)
 
-
 (defstyled rate-price :span
   ;:ml-2
   :text-xl
@@ -377,24 +381,18 @@
 
 (defstyled rate-notes :span)
 
-
 (def rates-list
-  (for [c consult-level]
-    (let [{title :title
-           price :price
-           time-est :time
-           notes :notes} c]
-      (rate-item-block
-       (rate-header
-        (rate-title title)
-        (rate-price price))
+  (for [c consult-levels]
+    (let [{:keys [notes price title]
+           time-est :time} c]
+      [rate-item-block
+       [rate-header
+        [rate-title title]
+        [rate-price price]]
        [:div
         {:style {:padding-left "15px"}}
-        ;[:div.heading-line
-        ;  {:style {:width (percent 50)}}]
-        (rate-time time-est)
-        (rate-notes notes)]))))
-
+        [rate-time time-est]
+        [rate-notes notes]]])))
 
 ;--------------------------------
 
@@ -413,21 +411,19 @@
 (def rates
   [:<>
    [:h1.center "Services & Rates"]
-   (common/fancy-divider)
+   [common/fancy-divider]
    (common/spacer 20)
    rates-list])
 
 
 (def faq
   [:dl#acc
-   (for [f c/faq]
-     (let [question (first f)
-           answer (last f)]
-       [:<>
-         [:dt question]
-         [:dd
-          [:p.dropcap answer]
-          [:p]]]))
+   (for [[question answer] c/faq]
+     [:<>
+       [:dt question]
+       [:dd
+        [:p.dropcap answer]
+        [:p]]])
    [:hr.noshow]])
 
 (def faq-block
@@ -450,7 +446,7 @@
     [:div.inside
      rates
      examples]]
-   (common/fancy-divider)
+   [common/fancy-divider]
    [:div.container
     [:div.inside
      [:h1.center "Frequently Asked Questions"]

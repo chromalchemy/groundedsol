@@ -2,6 +2,130 @@
   (:require
     [clojure.string :as string]))
 
+
+(def consultion-steps
+  [{:title "Step one: Making the most out of your consultation"
+    :image-side :left
+    :alt "Florida Front Yard with Grass"
+    :src "images/samples/yard.jpg"
+    :text
+    [:<>
+     [:p
+      "Let’s walk your grounds together. Your first consultation provides a roadmap from a professional’s point of view. The first hour is all about being able to see the property and understand the scope of the projected change. We discuss what is possible, clarifying ideas and keeping a budget in mind as we go. During the site analysis consultation we spend time identifying existing problems, discuss future solutions, labor benefits and time drawbacks for each idea or dream. "
+      [:p
+       "Are you looking to create a bird and butterfly foraging ground? Do you want to reduce the monthly or weekly mowing maintenance required? Is water conservation a concern for you? Just need and area to sit and enjoy the view?  Sometimes the best way to move forward is to cut things back. Remove fast growing shrubs and prepare the ground for new plantings. You may want to keep some of your existing plants and only change a few areas. It’s all a discussion with suggestions and ideas at this stage."]]]}
+   {:title "Step two: The Concept Design, Hand rendered or Full Digital"
+    :image-side :right
+    :alt "Digital Layout Design for Yard"
+    :src "images/samples/yard2.jpg"
+    :text
+    [:<>
+     [:p "By the second hour, we are on our way, working together to produce a hand drawn design or detailing a viable plan to move forward. There are two types of design, a small impact design and a digital design."]
+     [:p "A small impact design is created on-site. An on-site design brings to paper the ideas suggested during the consult with color and detail. During the drawing I have an opportunity to look up individual plants with you, share which plants will work for each spot, and why they were selected for your landscape. I leave you with a small design, labeled with botanical and common names so you can move forward at your own pace. The second is a digital design that showcases the full property."]
+     [:p "A digital design allows me to take home the property survey and create a drawing that is true to scale. Over the course of a few weeks I create a concept plan complete with distinct icons indicating plant size and bloom color. Outlined thoughts and intentions for each area is listed in the margins to communicate the details of the concept design. We then meet again to review the concept, walk through the plant suggestions, discuss longer term maintenance requirements and seasonal flow of the landscape. We take notes, incorporate changes, and I return home to complete and finalize planting details for each listed species. Billing for the final design takes place in 2 stages. At the time of the initial consult and at the concept meeting. The final design is emailed as a high resolution PDF for printing on any size paper."]
+     [:p
+      "If all you need is a direction, we can cover that with the initial consult and an on-site design. Looking for a long term plan? A digital design is the way to go. Wanting someone else to plant the design? Using the final design details, we can help coordinate that for you. Getting a design is the first steps towards the sustainable Florida landscape you want."]]}
+
+   {:title "Step three: Implementing your design And Phased installation"
+    :image-side :left
+    :alt "Florida's sandy dry soils"
+    :src "images/samples/yard3.jpg"
+    :text
+    [:<>
+     [:p "With your design in hand, you are connected to established installation, irrigation and lighting contractors for a full yard installation. If you choose to have a professional do the digging, that is. Small orders of plant material can be delivered and staged for the DIY crowd wanting to get their hands dirty and keep costs low."]
+     [:p "Phased installation works best when the homeowner has a few years to fully implement the design. To begin planting with trees and shrubs, or a specific area can make a big difference in the landscape without the cost and disruption of doing the entire yard at once. Longterm maintenance in wildflower areas is dependent on quality site preparation and elimination of undesirable weedy annuals. Taking a full year to groom these areas leads to easier maintenance later on. When the days are hot and rainy, you’ll be glad to see nothing but flowers growing in your garden. A phased installation approach can span 1 -3 years, depending on the speed and budget the homeowner wishes to work with."]
+     [:p "A Pop-Up plant shop is in the works to bring a regular supply of native plants to Orlando and surrounding neighborhoods. Grounded solutions recommends nurseries or garden centers stocking true Florida natives to shop at. Keeping to the mission of restoring ecological diversity natural to this area we recommend species with high nectar content and quality pollen content that is nourishing to our pollinators. Cultivated varieties and exotic species don't always provide the best nutrients, if any at all. We enjoy working closely with the Florida Association of Native Nurseries to find our plant material."
+      [:p "We encourage involving kids in the planting process. We hope they pick the flowers, collect the seeds, and become familiar with native plants and all the insects they attract. Developing some math and science exercises in the garden can help any young homeschooler find an interest in the natural world."]]]}
+   {:title "Step four: The Growing Stage And Plant Material Management"
+    :image-side :right
+    :alt "Florida Native Plants"
+    :src "images/samples/yard4.jpg"
+    :text
+    [:<>
+     [:p "Just like a new haircut, this stage is the one to get used to. Many native plants thrive in our hot, sunny, sandy landscapes. Quite a few thrive in hot, shady, wet areas. Some are adapted for areas in-between. Selecting the right plant for the right place will allow for each plant to grow to maturity with less attention as it grows."]
+     [:p "All plants will need to be monitored, watered frequently and kept mulched in the first few months to a year. After the plant has established roots in the area, watering can drift towards seasonal rain supply and pruning can be addressed on a quarterly basis. It’s usually a good idea to keep a 3 inch mulch barrier down to keep drifting weed seeds from taking root. We prefer to use pine needles and fine pine mulch over dyed mulches or hardwood mulch. Recently, we have begun to mulch with sand and crushed shell for more pollinator habitat opportunities. Over time the type of mulch used can change as weedy populations are brought under control."]
+     [:p "It takes some time to get to know the growth habits of these native plant species, and we won’t leave you hanging, just call for a maintenance consult. Grounded Solutions wants your landscape to be successful. So, if for any reason you have questions or concerns, please email or call. It will always be our goal to bring sustainable and beautiful landscapes to Florida, and have your property give you a sense of pride in giving back."]]}
+   #_
+   {:title
+    :image-side :left
+    :alt
+    :src
+    :text}])
+
+(def ajm-resume-experience
+  [{:role "Biologist"
+    :company "AJM Environmental Services"
+    :experience-items
+    [{:img-alt-text "About Amanda"
+      :img-path "samples/grass.jpg"
+      :text "My first company! I became a certified wetland delineator, able to identify hydric soils, wetland plant indicators and understand the laws affecting wetland boundary identification."}
+     {:img-path "samples/grassbed.jpg"
+      :text "I used this knowledge to enhance residential lakefront properties, acquiring the necessary DEP permits for each site. Upland native plants were used in residential landscape design projects. I managed installation crews and designed management plans per site."}
+     {:img-path "samples/flowerbed.jpg"
+      :text "My expertise in native plant material was sought out for consultation and maintenance for LEED certified green-roof systems. I was able to install selected material on three Central Florida roof-tops with great success."}]}
+   {:role "Research Scientist"
+    :company "Eurofins"
+    :experience-items
+    [{:img-path "images/samples/euro1.jpg"
+      :text "I worked as a principle investigator for field trials on agricultural crops, As a research scientist I performed applications of registered and experimental compounds on food crops, then collected time sensitive samples, environmental data, and crop assessment/evaluation figures."}
+     {:img-path "images/samples/euro2.jpg"
+      :text "In many instances, a larger crew of people assemble to assist with trial activities. Most trials performed were RAC trials and Efficacy trials. Magnitude of Residue (RAC) trials were comprised of an application then sampling for analysis of residues. Efficacy trials tested the effectiveness of newly formulated compounds against pest and weed populations."}
+     {:img-path "images/samples/euro3.jpg"
+      :text "Other trials I performed included environmental fate studies for dissipation in sandy soils, bee toxicity studies around citrus tree blossoms and best practices for hand pollination in corn. I became a Fl registered beekeeper and a commercial pesticide applicator during this time."}]}
+   {:role "Horticulturist"
+    :company "Evolving Landscapes"
+    :experience-items
+    [{:img-path "images/samples/evolve1.jpg"
+      :text "While serving as a horticulturist with Evolving Landscapes, I provided consulting for design and installation of plants, selected for the Florida Landscape. We specialized in ecosystem identification and assisting the property owner in re-developing for a native landscape."}
+     {:img-path "images/samples/evolve2.jpg"
+      :text "Many of our clients were interested in attracting birds, butterflies and other pollinators while enjoying a low resource intensive landscape. Concept designs, plant selection, budget development, project timelines and client coordination were vital components of each job."}
+     {:img-path "images/samples/evolve3.jpg"
+      :text "Presentations on the topics of Native landscapes and Permaculture principles were provided to garden societies for the promotion of environmentally sustainable landscapes."}]}
+   {:role "Research Assistant"
+    :company "Florida Pesticide Research"
+    :experience-items
+    [{:img-path "images/samples/fpr1.jpg"
+      :text "FPR is an agricultural research company, operating for almost 30 years out of Oviedo, FL. FPR evaluates the effectiveness of cultural practices, organic and synthetic compounds on various crops, diseases and pests."}
+     {:img-path "images/samples/fpr2.jpg"
+      :text "Through the sampling of leaf tissues, root systems, whole fruit, soil and water they are able to provide analytic labs with the material they need for more accurate detection of residues. No trial is complete without detailed documentation."}
+     {:img-path "images/samples/fpr3.jpg"
+      :text "Through paper records and evaluations, statistical analysis of numbers, and database input per trial. It takes time and energy to search and research, but I thoroughly enjoyed figuring these things out."}]}
+   {:role "Horticulturist"
+    :company "Community Garden Organizer"
+    :experience-items
+    [{:img-path "images/samples/cg1.jpg"
+      :text "I was given the opportunity to lead a community supported agriculture garden. The community garden had 12 paying members that gathered twice a week for two hours. On each Thursdays I would gather with the gardeners and collectively learn about and tend to the garden needs. Most gardens allow you to rent one plot for what you'd like to grow."}
+     {:img-path "images/samples/cg2.jpg"
+      :text "This garden allowed everyone to work together to harvest from the entire garden. This helped ensure plenty of produce and greens were available for the taking each week. As each seasonal vegetable lived it's life, we would pull and replant the expired areas and trim back and harvest the producing areas."}
+     {:img-path "images/samples/cg3.jpg"
+      :text "I had fun coordinating a raw chef to come in and share a few recipes strait from the garden to the plate in just a few hours. I was able to create a small cucumber trial organic fertilizer trial to see which blends worked best. A few of the gardeners enjoyed learning the process. Counting and weighing the cucumbers as they grew."}]}
+   {:role "President"
+    :company "Tarflower Native Plant Society"
+    :experience-items
+    [{:img-path "images/resume/tarflower-board-sq.jpg"
+      :text "Helped host meetings and arrange for speakers to present to our local chapter"}
+     {:img-path "images/resume/tarflower-talk-sq.jpg"
+      :text "Facilitated meetings for the general public and coordinated speakers."}
+     {:img-path "images/resume/tarflower-sale-sq.jpg"
+      :text "Organized, arranged, and sold plants as a chapter fundraiser for Native plant community projects and educational grants."}]}])
+
+
+(def horticulturalist-description
+  [:<>
+   [:a {:href "https://en.wikipedia.org/wiki/Horticulture" :target "_blank"} "Wikipedia definition"]
+   ": A Horticulturist is someone who applies their knowledge, skills, and technologies used to grow intensively produced plants for human food and non-food uses and for personal or social needs. Their work involves plant propagation and cultivation with the aim of improving plant growth, yields, quality, nutritional value, and resistance to insects, diseases, and environmental stresses. They work as gardeners, growers, therapists, designers, and technical advisors in the food and non-food sectors of horticulture. Horticulture even refers to the growing of plants in a field or garden."])
+
+(def in-the-works-text
+  " is a pop-up plant shop on wheels! I hope to bring retail native plants, delivery and suggested placement options to homeowners and their neighborhood at large. ")
+
+(def about-me-intro-text
+  "I love anything to do with being outside in this wonderful state. Growing up in Winter Park gave me the visual appreciation of the immense value that flora and fauna added to any landscape. Becoming aware of the impact it made on our natural resources, gave the curiosity and ecological consciousness to pursue a lifetime passion and career in the field of sustainable ecosytems. To explore how all living things affect one another, six years ago I became a certified Florida Beekeeper and now have four hives and produce small batch raw wildflower honey.")
+
+(def about-me-text
+  ["I began my adventure in horticulture by getting a B.S. in Environmental Horticulture from the University of Florida. I enjoyed learning all about plant physiology, growth condition requirements, identification markers, along with disease, insect and nutrient strategies. Prior to my degree I always loved flowers and took a job taking care of interior plants. Interior plant-scaping brought me to more philosphical conversations about plants and plant care. Bringing plants out of nature and into offices, both high-rises and small offices brought various constraints to what kind of plant material can be used, how it needed to be grown in low light conditions, and most importantly, how to keep plants alive for those who tend to kill plants in their personal experiences. I was driven to learn what plants like and how to accomodate for their needs. See below for both a definition of what a horticulturist does and some of my work/project history."
+   "In Decemebr of 2013, I began Grounded Solutions Inc. Having found the genera of Native plants and their importance in our landscapes I was able to focus on this wide range of plant material and begin understanding the relationships they have with our soils, our rainfall, our seasonal temperature and our precious pollinators. Taking this education and awareness to my clients, I help educate others about individual plants and how they attract beneficial wildlife through an aesthetically pleasing design. My goal is to increase biodiversity in the landscape and help my clients notice and appreciate the diversity they are witnessing. Maintenance habits can be built in to weekly walks through the landscape and with observation it becomes easier to know when and how to prune these plants. Grounded Solutions Inc has provided me with endless opportunities to see native plants growing in all kinds of conditions and I grow more aware of how to make a sod-free landscape look manicured and functional for the homeowner."
+   "As climate change continues to accelerate, native lanscapes are becoming an obvious way to reduce fertilizer and water use. Noise pollution and CO2 pollution from lawn mowers, edgers and trimmers are greatly reduced. And with food sources for our pollinators and birds, you will see a dramatic change in the natural activity of your front and/or back yard."])
+
 (def page-description
   "We provide ecologically sound landscaping services focused on habitat enhancement using Florida native plant species")
 

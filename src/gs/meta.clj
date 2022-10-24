@@ -24,7 +24,7 @@
   (for [css-url css-files]
     [:link {:href css-url :rel "stylesheet" :type "text/css" :media "screen"}]))
 
-(defn head [page-key]
+(defn head-elem [page-key]
   [:head
    [:title
     (let [custom-page-title (:title (pages page-key))]
@@ -49,6 +49,7 @@
   (list
     ;[:script {:src "https://unpkg.com/htmx.org@1.4.1"}]
     ;[:script {:src "https://www.hCaptcha.com/1/api.js" :async "true" :defer "true"}]
+    [:script {:src "scripts/live.js" :type "text/javascript"}]
     [:script {:src "//ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"}]
     [:script {:src "scripts/main.js" :type "text/javascript"}]
     [:script {:src "scripts/jquery.slimmenu.js" :type "text/javascript"}]

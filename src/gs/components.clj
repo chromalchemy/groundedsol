@@ -6,12 +6,42 @@
     [clojure.string :as string]
     [gs.site :as site :refer [pages html-filename]]
     [garden.compiler :as gc]
-    [gs.color :as color])
+    [garden.selectors]
+    [gs.color :as color]
+    [lambdaisland.hiccup :as hiccup])
   (:use [gs.util]
         [gs.site]
         [gs.garden.page]
         [gs.meta]
         [com.rpl.specter]))
+
+(defstyled left-img :img
+  :mt-5 :mr-10 :float-left
+  ([{:keys [src alt size]}]
+   [:<> {:width (px size) :height (px size)}]))
+
+(defstyled right-img :img
+  :mt-5 :ml-10 :float-right
+  ([{:keys [src alt size]}]
+   [:<> {:width (px size) :height (px size)}]))
+
+(defstyled img-rotate-left :img
+  :m-20
+  {:transform "rotate(-4deg)"})
+
+(defstyled img-rotate-right :img
+  :m-20
+  {:transform "rotate(4deg)"})
+
+;todo: can i use this mor generically, not on just an img?
+(defstyled img-shadow :img
+  {:box-shadow "0 10px 15px -9px rgba(0, 0, 0, 0.5)"})
+
+(defstyled drop-cap-p :p.dropcap)
+
+(defstyled alternate-header-1 :h1.alternate1)
+(defstyled alternate-header-2 :h4.alternate2)
+
 
 (defn spacer [n]
   [:div
@@ -47,24 +77,24 @@
     (page-name p)]))
 
 (defstyled nav-links-wrapper :ul.slimmenu
-  :text-center)
-   ;:md:text-right])
+  :text-center
+  ([links]
+   [:<> links]))
+  ;:md:text-right])
 
 (defstyled nav-menu :nav
   ([page-keys]
-   (nav-links-wrapper
-     (map nav-link page-keys))))
+   [nav-links-wrapper
+    (map nav-link page-keys)]))
 
 (comment
   (map nav-link page-keys))
-
 
 ;--------------------------------
 
 (defstyled social-icon :a
   ([img-filepath link]
-   ^{:href link}
-   [:<>
+   [:<> {:href link}
     [:img {:src img-filepath}]]))
 
 (def social-data
@@ -75,39 +105,48 @@
 (defstyled social-icons :div
   :x :flex
   ([icon-folder-path]
-   [:<>
-    (for [[img-filename link] social-data]
-      (social-icon (str icon-folder-path img-filename) link))]))
-
-
+   (for [[img-filename link] social-data]
+     [social-icon (str icon-folder-path img-filename) link])))
 
 ;--------------------------------
 
+(defstyled container :div #_:div.container
+  :p-0 :my-0 :mx-auto :w-1200px
+  :sm:w-98% :sm:border-box)
+
+(defstyled inside :div #_:div.inside
+  :w-96% :py-0 :px-2%)
+
+(defstyled group :div.group)
 
 
-(def masthead
-  [:header.noborder
-   [:div.container
-    [:div.inside
-     [:div.logo
-      [:div.brand [:a {:href (site/html-filename :home)} [:img {:alt (c/images :logo/alt) :height "53" :src (gs.site/img-path (c/images :logo/file)) :width "200"}]]]
-      [:div.slogan c/slogan]]
-     (nav-menu page-keys)]
-    [:hr.noshow]]])
+(defstyled masthead :header.noborder
+  ([]
+   [:<>
+    [container
+     [:div.inside
+      [:div.logo
+       [:div.brand [:a {:href (site/html-filename :home)} [:img {:alt (c/images :logo/alt) :height "53" :src (gs.site/img-path (c/images :logo/file)) :width "200"}]]]
+       [:div.slogan c/slogan]]
+      (nav-menu page-keys)]
+     [:hr.noshow]]]))
 
 (defstyled footer-nav-link nav-link
   :mb-1
-  ([p]
-   [:a {:href (html-filename p)}
-    (page-name p)]))
+  ([page-key]
+   [:a {:href (html-filename page-key)}
+    (page-name page-key)]))
 
-(def footer-menu
-  [:ul
-   {:style
-    {:text-align "left"}}
-   (map
-     footer-nav-link
-     page-keys)])
+(defstyled footer-menu :ul
+  :text-left
+  ([]
+   (map footer-nav-link page-keys)))
+
+(comment
+  (->>
+    [footer-menu]
+    hiccup/html
+    hiccup/render-html*))
 
 ;(def social-media-links
 ;  [:p.socialmedia
@@ -120,22 +159,28 @@
   [:div :a :w-130px]
   [:div :flex :space-x-4 :-left]
   ([]
-   (social-icons "images/social-icons/small/")))
+   [social-icons "images/social-icons/small/"]))
 
-(def contact
-  [:section.contentBox4b
-   [:h5 "Contact:"]
-   (footer-social-icons)
-   [:p.home "1821 Amherst Ave." [:br] "Orlando, FL 32804"]
-   [:p.email
-      [:a {:href "mailto:groundedsolution@gmail.com"}
-       "groundedsolution@gmail.com"]
-    [:br]]
-   [:p.phone "352-219-5381"]
-   [:p.hours "By appointment only" [:br]]])
+(defstyled hours :p.hours)
+(defstyled phone :p.phone)
+(defstyled home :p.home)
+(defstyled email :p.email)
 
-(def certifications
-  [:section.contentBox4c
+(defstyled contact :section.contentBox4b
+  ([]
+   [:<>
+    [:h5 "Contact:"]
+    [footer-social-icons]
+    [home "1821 Amherst Ave." [:br] "Orlando, FL 32804"]
+    [email
+     [:a {:href "mailto:groundedsolution@gmail.com"}
+      "groundedsolution@gmail.com"]
+     [:br]]
+    [phone "352-219-5381"]
+    [hours "By appointment only" [:br]]]))
+
+(defstyled certifications :section.contentBox4c
+  [:<>
    [:h5 "Certifications / Affiliations"]
    [:i.fa.fa-trophy.fa-3x.img-left.color3.icon-shadow] "B.S. Environmental Science"
    [:br] "Certified Wetland Delineator"
@@ -158,14 +203,12 @@
     {:href (site/html-filename :contact)}
     "Contact"]))
 
-
-(def news
-  [:section.contentBox4d
+(defstyled news :section.contentBox4d
+  [:<>
    ;[:h5 {:id "calendar"} "News & Events:"]
    [:p.center]
    calendar-script
    (contact-btn)])
-
 
 ;&raquo;
 
@@ -174,42 +217,80 @@
 
 (defstyled fancy-divider :hr.fancy)
 
+(defstyled copyright :p.copyright
+  [:<>
+   "© " ;"&copy;"
+   get-date-script
+   "All Rights Reserved"])
+
+(defstyled hidden-hr :hr.noshow)
+
+(defstyled content-section :section.content)
+
+(defstyled clear :div.clear)
+
+(defstyled heading-line :div.heading-line)
+
+(defstyled middle-of-line-title :h3
+  :text-#fff :my-1 :mx-0 :text-center :relative :overflow-hidden :normal-case
+  [:&:before :&:after
+   :inline-block :relative :align-middle :w-50% :mb-1 :text-#fff
+   {:border-bottom
+      {:width (px 1)
+       :style "solid"
+       :color "#fff"}
+    :content "' '"
+    :height (em 0.2)}]
+  {:font
+   {:size (px 38)
+    :variant "normal"
+    :family "'Poiret One', Verdana, Helvetica, sans-serif"}}
+  [:&:before
+   {:right (em 0.4)
+    :margin-left (percent -50)}]
+  [:&:after
+   {:left (em 0.4)
+    :margin-right (percent -50)}])
+
+
+(defstyled small-round-img :img.img-round.img-small
+  :mx-auto :block)
+
 (defstyled footer :footer
   :clear-both
   ([]
    [:<>
-    [:div.container
-     [:div.inside
+    [container
+     [inside
       [:section.contentBox4a
        [:h5 "Menu:"]
-       footer-menu]
-      contact
-      certifications
-      news
-      [:hr.noshow]
+       [footer-menu]]
+      [contact]
+      [certifications]
+      [news]
+      [hidden-hr]
       [:div.footerbottom
-       (fancy-divider)
+       [fancy-divider]
        [:h1 "Grounded Solutions, Inc"]
-       [:p.copyright
-        "© " ;"&copy;"
-        get-date-script
-        "All Rights Reserved"]]]]]))
+       [copyright]]]]]))
 
-(def scroll-to-top
-  [:div.scroll-to-top
-   [:a {:href "#"}
-    [:i.fa.fa-angle-double-up.fa-2x]]])
 
-(defstyled body :body
+(defstyled scroll-to-top :div.scroll-to-top
+  ([]
+   [:<>
+    [:a {:href "#"}
+     [:i.fa.fa-angle-double-up.fa-2x]]]))
+
+(defstyled body-elem :body
   ([content]
    [:<>
-    scroll-to-top
-    masthead
+    [scroll-to-top]
+    [masthead]
     content
-    (footer)
+    [footer]
     script-files]))
 
 (defn html-el [page-key content]
   [:html {:lang "en"}
-   (head page-key)
-   (body content)])
+   (head-elem page-key)
+   [body-elem content]])

@@ -14,6 +14,9 @@
 (defn px [s]
   (str s "px"))
 
+(defn em [s]
+  (str s "em"))
+
 (defn v
   ([x]
    (str x))

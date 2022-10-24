@@ -1,102 +1,124 @@
 (ns gs.pages.index
   (:require
-    [gs.content :as c]
-    [gs.components :as common]
+    [gs.content :as content]
+    [garden.selectors :as gs]
+    [garden.core :as g :refer [css style]]
+    ;[gs.components :as common]
     [gs.airtable :as at]
     [lambdaisland.ornament :as o :refer [defstyled]]
-    [lambdaisland.hiccup :as h :refer [html]]
+    [lambdaisland.hiccup :as hiccup :refer [html]]
     [clojure.string :as string]
-    [garden.compiler :as gc]
     [cybermonday.core :as md])
   (:use
+    [gs.components]
     [com.rpl.specter]
     [gs.util :as u]
     [gs.site]))
 
 (comment
-  (u/default-keymap (c/intros :consult)))
+  (u/default-keymap (content/intros :consult)))
 
-(defn intro-block [m]
-  (let [{title :title,
-         subtitle :subtitle,
-         body :body,
-         link-text :link-text,
-         link :link} m]
-    [:section.contentBox3a
-     [:h3 title]
-     [:div.heading-line]
-     [:p.lead subtitle]
-     [:p body]
-     [:p [:a.btn.btn-main {:href (html-filename link)} link-text]]]))
+(defstyled intro-block :section.contentBox3a
+  ([{:keys [title subtitle body link-text link]}]
+   [:<>
+    [:h3 title]
+    [heading-line]
+    [:p.lead subtitle]
+    [:p body]
+    [:p [:a.btn.btn-main
+         {:href (html-filename link)} link-text]]]))
 
-(def intro-blocks
-  [:div.row1
-   [:div.container
-    [:div.inside
-     [:div.group
-      (for [m (vals c/intros)]
-        (intro-block m))
-      [:div.clear]]]]])
+(defstyled intro-blocks :div.row1
+  ([]
+   [:<>
+    [container
+     [inside
+      [group
+       (for [m (vals content/intros)]
+         [intro-block m])
+       [clear]]]]]))
 
-(def welcome
-  (let [m c/welcome]
-    [:div.photoblock
-     [:div.container
-      [:div.inside
-       [:div.photoblockInside
-        [:h1.big (:title m)]
-        [:p.lead (:body m)]]]]]))
+(defstyled welcome :div.photoblock
+  ([]
+   (let [{:keys [title body]} content/welcome]
+     [:<>
+      [container
+       [inside
+        [:div.photoblockInside
+         [:h1.big title]
+         [:p.lead body]]]]])))
         ;[:p [:a.btn.btn-main {:href (:link m)} (:link-text m)]]]]]]))
 
-(def hot-plants
-  (list
-    [:h3.alternate1 (c/hot-plant-gallery :title)]
-    [:p.center
-     (let [img-folder (:img-folder c/hot-plant-gallery)]
-       (for [m (:images c/hot-plant-gallery)]
-         [:a.lightbox.wow.fadeIn
-          {:data-lightbox-gallery (:gallery-name c/hot-plant-gallery)
-           :data-wow-delay (:delay m)
-           :href (gs.site/img-path (str "//" img-folder "//" (:img-file m)))
-           :title (:title m)}
-          [:img {:alt (m :title)
-                 :src (gs.site/img-path (str "//" img-folder "//" (:thumb-file m)))}]]))]))
 
-(def hot-plant-gallery
-  [:div.row2
-   [:div.container
-    [:div.inside
-     hot-plants
-     [:p [:a.btn.btn-color {:href "floridaplants.html"} "View More"]]]]])
+;.row2 .alternate1 {color: #fff};}
+;.row2 .alternate1:before, .row2 .alternate1:after {border-bottom: 1px solid #fff};}
 
-(def about-us
-  [:section.contentBox3a.wow.zoomIn {:data-wow-delay ".2s"}
-   [:h4.alternate2 "About Us"]
-   [:img.img-round.img-small
-    {:style {:margin "auto"
-             :display "block"}
-     :alt "Amanda" :src "images/samples/mandy.jpg"}]
-   [:p
-    "Orlando native Amanda Martin is no stranger to the seasonal changes of Central Florida and the beauty a planned landscape can bring to a home."]
-   [:p "With expansive knowledge in horticulture, landscape design and agricultural practices, Amanda brings passion and creativity to each sustainable landscape project."]])
 
-(def discover
-  [:section.contentBox3b.wow.zoomIn {:data-wow-delay ".6s"}
-   [:h4.alternate2 "Discover"]
-   [:div.callbox
-    [:h6 "Why Buy Natives"]
-    [:img {:alt "" :height "111" :src "images/samples/GS%20Icon.png" :width "114"}]
-    (let [p-style
-          {:style {:padding-left "15px"
-                   :padding-right "15px"
-                   :text-align "justify"}}]
-      [:<>
-       [:p p-style
-        "Residential landscapes are often filled with plants that grow well but offer little else to the surrounding environment."]
-       [:p p-style
-        "Native Plants offer leaves as food, nectar for sugar and pollen for complex proteins.  Seeds, nuts and acorns can provide a meal for birds and larger animals. A well balanced diet for our wildlife will help our local populations become more resilient as the climate changes."]])
-    [:p]]])
+(defstyled hot-plants-link :a.lightbox.wow.fadeIn
+  [:img :m-10px :rounded-full :border-2 :border-#fff :border-solid :max-w-200px :h-auto
+   [:&:hover :border-#af9e41]]
+  ([{:keys [delay img-file title thumb-file]} img-folder]
+   [:<>
+    {:data-lightbox-gallery
+       (:gallery-name content/hot-plant-gallery)
+     :data-wow-delay delay
+     :href
+       (gs.site/img-path
+         (str "//" img-folder "//" img-file))
+     :title title}
+    [:img {:alt title
+           :src (gs.site/img-path (str "//" img-folder "//" thumb-file))}]]))
 
+(defstyled hot-plants :div
+  [:div :text-center]
+  ([{:keys [title images img-folder]}]
+   [:<>
+     [middle-of-line-title title]
+     [:div
+      (for [img-map images]
+        [hot-plants-link img-map img-folder])]]))
+
+(defstyled hot-plant-gallery container
+  :bg-#d1c583 :text-#fff :py-40px :px-0 :text-center :w-full
+  ([]
+   [:<>
+    [inside
+     [hot-plants content/hot-plant-gallery]
+     [:p
+      [:a.btn.btn-color
+       {:href "floridaplants.html"}
+       "View More"]]]]))
+
+;----------------
+
+(defstyled about-us :section.contentBox3a.wow.zoomIn
+  ([]
+   [:<> {:data-wow-delay ".2s"}
+    [alternate-header-2 "About Us"]
+    [small-round-img
+     {::o/attrs
+      {:alt "Amanda" :src "images/samples/mandy.jpg"}}]
+    [:p
+     "Orlando native Amanda Martin is no stranger to the seasonal changes of Central Florida and the beauty a planned landscape can bring to a home."]
+    [:p "With expansive knowledge in horticulture, landscape design and agricultural practices, Amanda brings passion and creativity to each sustainable landscape project."]]))
+
+(defstyled discover :section.contentBox3b.wow.zoomIn
+  ([]
+   [:<> {:data-wow-delay ".6s"}
+    [alternate-header-2 "Discover"]
+    [:div.callbox
+     [:h6 "Why Buy Natives"]
+     [:img {:alt "" :height "111" :src "images/samples/GS%20Icon.png" :width "114"}]
+     (let [p-style
+           {:style {:padding-left "15px"
+                    :padding-right "15px"
+                    :text-align "justify"}}]
+       [:<>
+        [:p p-style
+         "Residential landscapes are often filled with plants that grow well but offer little else to the surrounding environment."]
+        [:p p-style
+         "Native Plants offer leaves as food, nectar for sugar and pollen for complex proteins.  Seeds, nuts and acorns can provide a meal for birds and larger animals. A well balanced diet for our wildlife will help our local populations become more resilient as the climate changes."]])
+     [:p]]]))
 
 (defstyled bold-number :span
   :text-#b12b5a
@@ -111,15 +133,11 @@
   :h-50px
   :w-50px
   :rounded-full
-  {:font "normal 30px/50px Garamond, Georgia, serif;"}
-  ([n]
-   [:<>]
-   (str n)))
+  {:font "normal 30px/50px Garamond, Georgia, serif;"})
 
 (defstyled inline-bold-number bold-number
   :border-none
   {:font "normal 30px/50px Garamond, Georgia, serif;"})
-
 
 (defstyled step-title :h2
   :w-40px
@@ -133,11 +151,10 @@
   :clear-both
   ;:h-40
   ;[:p {:color "red"}]
-  ([step-number children]
+  ([step-number step-str]
    [:<>
-     (step-title step-number)
-     children]))
-
+     [step-title step-number]
+     step-str]))
 
 ;color: #b12b5a;
 ;        border: 1px solid #b12b5a;
@@ -150,71 +167,104 @@
 ;width: 50px;
 ;bo
 
-
-
-
-
-
 (defstyled numbers :div
   :flex :justify-center :mb-4
   ([]
-   (for [n [1 2 3]]
-     (bold-number n))))
+   (for [n ["1" "2" "3"]]
+     [bold-number n])))
 
+(def steps-strs content/steps)
 
-(def steps c/steps)
-
-
-(def get-started
-  [:section.contentBox3c
-   {:class "wow zoomIn"
-    :data-wow-delay "1.0s"}
-   [:h4.alternate2 "Get Started"]
-   (numbers)
-   (for [s steps]
-     (step
-       (case (+ 1 (.indexOf steps s))
+(defstyled get-started :section.contentBox3c
+  ([]
+   [:<>
+    {:class "wow zoomIn"
+     :data-wow-delay "1.0s"}
+    [alternate-header-2 "Get Started"]
+    [numbers]
+    (for [step-str steps-strs]
+      [step
+       (case (+ 1 (.indexOf steps-strs step-str))
          1 "One"
          2 "Two"
          3 "Three")
-       s))])
+       step-str])]))
 
+(defstyled review-img :p
+  ([customer-name img-path]
+   [:<>
+    [:img.img-round-border
+     {:alt customer-name :src img-path}]]))
 
+(defstyled reviewer-name :p.small)
 
+(defstyled review-text :p)
 
 (def review-blocks
-  (for [m c/reviews]
-    (let [customer-name (:name m)
-          img-path (str "images/reviews/" (:img m))]
+  (for [{:keys [name img review]} content/reviews]
+    (let [customer-name name
+          img-path (str "images/reviews/" img)]
       [:li
-       [:section.content
-        [:p [:img.img-round-border {:alt customer-name :src img-path}]]
-        [:p (:review m)]
-        [:p.small (str "~ " customer-name)]
-        [:hr.noshow]]])))
+       [content-section
+        [review-img customer-name img-path]
+        [review-text review]
+        [reviewer-name (str "~ " customer-name)]
+        [hidden-hr]]])))
 
-(def reviews
-  [:div.row3
-   [:div.container
-    [:div.inside
-     [:h1.alternate1 "Review"]
-     [:div.reviews
-      [:ul#ticker
-       review-blocks]]]]])
+(defstyled reviews :div.row3
+  ([]
+   [:<>
+    [container
+     [inside
+      [middle-of-line-title "Review"]
+      [:div.reviews
+       [:ul#ticker
+        review-blocks]]]]]))
 
-(def generic-row
-  [:div.row1
-   [:div.container
-    [:div.inside
-     about-us
-     discover
-     get-started
-     [:div.clear]]]])
+(defstyled generic-row :div.row1
+  ([]
+   [:<>
+    [container
+     [inside
+      [about-us]
+      [discover]
+      [get-started]
+      [clear]]]]))
+
+(defstyled pruning-notes-pdf-link :div
+  :text-2xl :text-center
+  [:a :mx-3]
+  [:.new :text-red-500 :font-bold]
+  [:.link-type :text-xl :text-gray-300]
+  [:.description :text-lg :mt-2]
+  ([]
+   [:<>
+    [:span.new "New!"]
+    [:a
+     {:href "/media/Pruning_Notes_for_Native_Plants_3.pdf"}
+     "Pruning Notes Newsletter"]
+    [:span.link-type "(pdf)"]
+    [:p.description "Includes Seasonal Planting Guide, & how to \"Prune like Fire\"!"]]))
+
+
+(comment
+  (defstyled mybox :div
+    {:border "1px solid black"})
+
+  (defstyled myelem :p
+    :text-red-500
+    [:&:before :&:after
+     :text-blue-500
+     {:content "'------------'"}]))
+
 
 (def page-hiccup
   [:<>
-   welcome
-   intro-blocks
-   hot-plant-gallery
-   generic-row
-   reviews])
+   ;[mybox [myelem "hello"]]
+   [welcome]
+   [pruning-notes-pdf-link]
+   [intro-blocks]
+   [hot-plant-gallery]
+   [generic-row]
+   [reviews]])
+

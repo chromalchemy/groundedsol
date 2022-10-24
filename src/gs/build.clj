@@ -5,12 +5,16 @@
     [gs.site]
     [gs.components]
     [lambdaisland.hiccup :as hiccup]
-    [criterium.core :refer [bench]]
+    ;[criterium.core :refer [bench]]
     [gs.pages.fl-plants]
     [gs.pages.consultation]
     [gs.pages.services]
     [gs.pages.contact]
-    [gs.pages.about]))
+    [gs.pages.about]
+    [flow-storm.api :as fs-api]))
+
+(comment
+  (fs-api/local-connect))
 
 (defn write-page [page-key page-hiccup]
   (let [file-path (str gs.site/build-path (gs.site/html-filename page-key))]
@@ -20,6 +24,17 @@
       hiccup/render-html
       (spit file-path))
     (println (str "Wrote " (name page-key)))))
+
+(comment
+  (let [page-key :florida-plants
+        page-hiccup gs.pages.fl-plants/page-hiccup
+        file-path
+        (str gs.site/build-path
+          (gs.site/html-filename page-key))]
+    (->> page-hiccup
+      (gs.components/html-el page-key)
+      hiccup/html)))
+      ;hiccup/render-html)))
 
 ;todo: generate require from page kw
 (defn build-site! []
@@ -34,7 +49,7 @@
   (write-page :services gs.pages.services/page-hiccup)
   (write-page :consultation gs.pages.consultation/page-hiccup)
   (write-page :contact gs.pages.contact/page-hiccup)
-  (write-page :about gs.pages.about/page-hiccup)
+  #rtrace (write-page :about gs.pages.about/page-hiccup)
   (println "Site Built"))
 
 (comment
@@ -43,8 +58,6 @@
     ;hiccup/html
     ;hiccup/render-html*))
 
-#_
-(build-site!)
 
 (comment
   (build-site!)
