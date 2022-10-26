@@ -15,22 +15,30 @@
         [gs.meta]
         [com.rpl.specter]))
 
+
+(defstyled content-box :section
+  #_:w-98% #_:m-1% :p-0)
+
 (defstyled left-img :img
-  :mt-5 :mr-10 :float-left
+  :block
+  :mt-0.4em :mr-15px :float-left
   ([{:keys [src alt size]}]
-   [:<> {:width (px size) :height (px size)}]))
+   [:<>
+    {:width (px size)
+     :height (px size)
+     :src src}]))
 
 (defstyled right-img :img
-  :mt-5 :ml-10 :float-right
+  :mt-0.4em :ml-15px :float-right
   ([{:keys [src alt size]}]
    [:<> {:width (px size) :height (px size)}]))
 
 (defstyled img-rotate-left :img
-  :m-20
+  ;:m-20
   {:transform "rotate(-4deg)"})
 
 (defstyled img-rotate-right :img
-  :m-20
+  ;:m-20
   {:transform "rotate(4deg)"})
 
 ;todo: can i use this mor generically, not on just an img?
@@ -72,20 +80,29 @@
 
 ;----------------------------------------
 (defstyled nav-link :li
+  :text-left
+  [:a :tracking-wide :text-#000 :text-sm :font-normal
+   :py-12px]
+  [:a:hover :text-#d1c583 :no-underline]
   ([p]
-   [:a {:href (html-filename p)}
-    (page-name p)]))
+   [:<>
+    [:a {:href (html-filename p)}
+     (page-name p)]]))
 
-(defstyled nav-links-wrapper :ul.slimmenu
-  :text-center
+(defstyled nav-links-wrapper :ul #_.slimmenu
+  :text-center :mx-auto
+  :flex :justify-center :sm:justify-end :flex-wrap :space-x-8
+  :list-none :m-0 :mt-10px :p-0 :w-full :text-right :text-13px
   ([links]
    [:<> links]))
   ;:md:text-right])
 
 (defstyled nav-menu :nav
   ([page-keys]
-   [nav-links-wrapper
-    (map nav-link page-keys)]))
+   [:<>
+    [nav-links-wrapper
+     (for [page-key page-keys]
+       [nav-link page-key])]]))
 
 (comment
   (map nav-link page-keys))
@@ -105,20 +122,33 @@
 (defstyled social-icons :div
   :x :flex
   ([icon-folder-path]
-   (for [[img-filename link] social-data]
-     [social-icon (str icon-folder-path img-filename) link])))
+   [:<>
+    (for [[img-filename link] social-data]
+      [social-icon (str icon-folder-path img-filename) link])]))
 
 ;--------------------------------
 
-(defstyled container :div #_:div.container
-  :p-0 :my-0 :mx-auto :w-1200px
-  :sm:w-98% :sm:border-box)
+(defstyled container :div
+  :my-0 :mx-auto :xl:container :px-5)
 
 (defstyled inside :div #_:div.inside
   :w-96% :py-0 :px-2%)
 
-(defstyled group :div.group)
+(defstyled card-stack :div #_:div.group
+  :flex :flex-col :md:flex-row :sm:space-x-8 :justify-center :mx-auto)
 
+(defstyled card content-box
+  :border-2px :border-black
+  :lg:w-33% :mb-6
+  [:p :mt-0]
+  ([{:keys [img-path text img-alt-text]}]
+   [:<>
+    [:p
+     [left-img
+      {:alt img-alt-text
+       :size 125
+       :src (str "images/" img-path)}]
+     text]]))
 
 (defstyled masthead :header.noborder
   ([]
@@ -128,19 +158,23 @@
       [:div.logo
        [:div.brand [:a {:href (site/html-filename :home)} [:img {:alt (c/images :logo/alt) :height "53" :src (gs.site/img-path (c/images :logo/file)) :width "200"}]]]
        [:div.slogan c/slogan]]
-      (nav-menu page-keys)]
+      [nav-menu page-keys]]
      [:hr.noshow]]]))
 
 (defstyled footer-nav-link nav-link
   :mb-1
   ([page-key]
-   [:a {:href (html-filename page-key)}
-    (page-name page-key)]))
+   [:<>
+    [:a {:href (html-filename page-key)}
+     (page-name page-key)]]))
 
-(defstyled footer-menu :ul
-  :text-left
+(defstyled footer-menu :section.contentBox4a
+  [:ul :text-left]
   ([]
-   (map footer-nav-link page-keys)))
+   [:<>
+    [:h5 "Menu:"]
+    [:ul
+     (map footer-nav-link page-keys)]]))
 
 (comment
   (->>
@@ -159,7 +193,8 @@
   [:div :a :w-130px]
   [:div :flex :space-x-4 :-left]
   ([]
-   [social-icons "images/social-icons/small/"]))
+   [:<>
+    [social-icons "images/social-icons/small/"]]))
 
 (defstyled hours :p.hours)
 (defstyled phone :p.phone)
@@ -180,18 +215,19 @@
     [hours "By appointment only" [:br]]]))
 
 (defstyled certifications :section.contentBox4c
-  [:<>
-   [:h5 "Certifications / Affiliations"]
-   [:i.fa.fa-trophy.fa-3x.img-left.color3.icon-shadow] "B.S. Environmental Science"
-   [:br] "Certified Wetland Delineator"
-   [:br] "Commercial Applicator License"
-   [:br] [:br] "Member of Sierra Club"
-   [:i.fa.fa-leaf.fa-3x.img-left.color3.icon-shadow]
-   [:br] "Florida Native Plant Society"
-   [:br] "Orange Audubon Society"
-   [:br] [:br]
-   [:i.fa.fa-camera.fa-3x.img-left.color3.icon-shadow] "Photography by Amanda Martin. All rights reserved"
-   [:br] [:br]])
+  ([]
+   [:<>
+    [:h5 "Certifications / Affiliations"]
+    [:i.fa.fa-trophy.fa-3x.img-left.color3.icon-shadow] "B.S. Environmental Science"
+    [:br] "Certified Wetland Delineator"
+    [:br] "Commercial Applicator License"
+    [:br] [:br] "Member of Sierra Club"
+    [:i.fa.fa-leaf.fa-3x.img-left.color3.icon-shadow]
+    [:br] "Florida Native Plant Society"
+    [:br] "Orange Audubon Society"
+    [:br] [:br]
+    [:i.fa.fa-camera.fa-3x.img-left.color3.icon-shadow] "Photography by Amanda Martin. All rights reserved"
+    [:br] [:br]]))
 
 (def calendar-script
   [:script {:src "scripts/calendar02.js" :type "text/javascript"}])
@@ -199,16 +235,18 @@
 (defstyled contact-btn :p.center
   [:a {:color color/gold-yellow}]
   ([]
-   [:a.btn.btn-main
-    {:href (site/html-filename :contact)}
-    "Contact"]))
+   [:<>
+    [:a.btn.btn-main
+     {:href (site/html-filename :contact)}
+     "Contact"]]))
 
 (defstyled news :section.contentBox4d
-  [:<>
-   ;[:h5 {:id "calendar"} "News & Events:"]
-   [:p.center]
-   calendar-script
-   (contact-btn)])
+  ([]
+   [:<>
+    ;[:h5 {:id "calendar"} "News & Events:"]
+    [:p.center]
+    calendar-script
+    (contact-btn)]))
 
 ;&raquo;
 
@@ -218,10 +256,11 @@
 (defstyled fancy-divider :hr.fancy)
 
 (defstyled copyright :p.copyright
-  [:<>
-   "© " ;"&copy;"
-   get-date-script
-   "All Rights Reserved"])
+  ([]
+   [:<>
+    "© " ;"&copy;"
+    get-date-script
+    "All Rights Reserved"]))
 
 (defstyled hidden-hr :hr.noshow)
 
@@ -256,23 +295,26 @@
 (defstyled small-round-img :img.img-round.img-small
   :mx-auto :block)
 
+(defstyled footer-bottom :div.footerbottom
+  ([]
+   [:<>
+    [fancy-divider]
+    [:h1 "Grounded Solutions, Inc"]
+    [copyright]]))
+
 (defstyled footer :footer
   :clear-both
   ([]
    [:<>
     [container
      [inside
-      [:section.contentBox4a
-       [:h5 "Menu:"]
-       [footer-menu]]
+      [footer-menu]
       [contact]
       [certifications]
       [news]
       [hidden-hr]
-      [:div.footerbottom
-       [fancy-divider]
-       [:h1 "Grounded Solutions, Inc"]
-       [copyright]]]]]))
+      [footer-bottom]]]]))
+
 
 
 (defstyled scroll-to-top :div.scroll-to-top

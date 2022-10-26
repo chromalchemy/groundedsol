@@ -55,35 +55,40 @@
 
 (defstyled process-img-left left-img
   img-shadow
-  img-rotate-left)
+  img-rotate-left
+  :mt-2 :ml-0 :mr-8 :mb-4)
 
 (defstyled process-img-right right-img
   img-shadow
-  img-rotate-right)
+  img-rotate-right
+  :mt-1 :mr-0 :ml-8 :mb-4)
 
 ;todo: compose this left/right stuff better? more conditionally?
 (defstyled process-step :div
   :mb-12
+  [:p :mt-0]
   ([{:keys [title alt src text image-side] :as m}]
    [:<>
     ;{:style {:text-align "center"}}
     [step-title title]
     [calendar-link]
-    (case image-side
-      :left
-      [process-img-left
-       {:alt alt :src src}]
-      :right
-      [process-img-right
-       {:alt alt :src src}])
-    text
+    [:div
+     (case image-side
+       :left
+       [process-img-left
+        {:alt alt :src src}]
+       :right
+       [process-img-right
+        {:alt alt :src src}])
+     text]
     [fancy-divider]]))
 
 (defstyled process :div
   ([]
    [:<>
     [process-title "The Process"]
-    (map process-step content/consultion-steps)]))
+    (for [cs content/consultion-steps]
+      [process-step cs])]))
 
 (defstyled page-title :h1.center)
 

@@ -13,8 +13,6 @@
 
 (defstyled page-title :h1.center)
 
-
-
 (defstyled in-the-works :blockquote.rightside
   [:p :span :font-bold]
   ([]
@@ -23,7 +21,7 @@
      content/in-the-works-text]]))
 
 (defstyled about-me-article :div
-  :mt-10 :mb-20
+  :mt-10px :mb-20px
   ([]
    [:<>
      [left-img {:alt "About Amanda"
@@ -42,21 +40,8 @@
     [heading-line]
     [:p content/horticulturalist-description]]))
 
-(defstyled content-box :section
-  :w-98% :m-1% :p-0)
-
 (defstyled content-box-4 content-box
   :md:w-48%)
-
-(defstyled experience-item content-box
-  ([{:keys [img-path text img-alt-text]}]
-   [:<>
-    [:p
-     [left-img
-      {:alt img-alt-text
-       :size 125
-       :src (str "images/" img-path)}]
-     text]]))
 
 (defstyled role-title :h3
   ([title company-name]
@@ -65,27 +50,36 @@
     company-name]))
 
 (defstyled role-block :div
-  ([{:keys [role company experience-items]}]
+  ([{:keys [role company experiences]}]
    [:<>
     [role-title role company]
-    [group
-     (map experience-item experience-items)]]))
+    [card-stack
+     (map card experiences)]]))
 
 (defstyled resume :div
+  :mb-100px
   ([]
-   (map role-block content/ajm-resume-experience)))
+   [:<>
+    (map role-block content/ajm-resume-experience)]))
 
-(defstyled biography-title :h2)
+(defstyled biography-title :h2
+  :mb-0)
+  ;{:border-bottom
+  ; {:width (px 1)
+  ;  :style "solid"
+  ;  :color "#d1c583"}})
+   ;:height (em 0.2)})
 
 (def page-hiccup
   [:<>
    [container
     [inside
+     [fancy-divider]
      [page-title "Meet Amanda Martin"]
      [drop-cap-p content/about-me-intro-text]
      [biography-title "Getting Growing"]
      [heading-line]
      [about-me-article]
-     [what-is-horticulturist?]]]])
-     ;[fancy-divider]
-     ;[resume]]]]
+     [what-is-horticulturist?]
+     [fancy-divider]
+     [resume]]]])

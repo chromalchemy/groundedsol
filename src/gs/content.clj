@@ -55,7 +55,7 @@
 (def ajm-resume-experience
   [{:role "Biologist"
     :company "AJM Environmental Services"
-    :experience-items
+    :experiences
     [{:img-alt-text "About Amanda"
       :img-path "samples/grass.jpg"
       :text "My first company! I became a certified wetland delineator, able to identify hydric soils, wetland plant indicators and understand the laws affecting wetland boundary identification."}
@@ -65,48 +65,48 @@
       :text "My expertise in native plant material was sought out for consultation and maintenance for LEED certified green-roof systems. I was able to install selected material on three Central Florida roof-tops with great success."}]}
    {:role "Research Scientist"
     :company "Eurofins"
-    :experience-items
-    [{:img-path "images/samples/euro1.jpg"
+    :experiences
+    [{:img-path "samples/euro1.jpg"
       :text "I worked as a principle investigator for field trials on agricultural crops, As a research scientist I performed applications of registered and experimental compounds on food crops, then collected time sensitive samples, environmental data, and crop assessment/evaluation figures."}
-     {:img-path "images/samples/euro2.jpg"
+     {:img-path "samples/euro2.jpg"
       :text "In many instances, a larger crew of people assemble to assist with trial activities. Most trials performed were RAC trials and Efficacy trials. Magnitude of Residue (RAC) trials were comprised of an application then sampling for analysis of residues. Efficacy trials tested the effectiveness of newly formulated compounds against pest and weed populations."}
-     {:img-path "images/samples/euro3.jpg"
+     {:img-path "samples/euro3.jpg"
       :text "Other trials I performed included environmental fate studies for dissipation in sandy soils, bee toxicity studies around citrus tree blossoms and best practices for hand pollination in corn. I became a Fl registered beekeeper and a commercial pesticide applicator during this time."}]}
    {:role "Horticulturist"
     :company "Evolving Landscapes"
-    :experience-items
-    [{:img-path "images/samples/evolve1.jpg"
+    :experiences
+    [{:img-path "samples/evolve1.jpg"
       :text "While serving as a horticulturist with Evolving Landscapes, I provided consulting for design and installation of plants, selected for the Florida Landscape. We specialized in ecosystem identification and assisting the property owner in re-developing for a native landscape."}
-     {:img-path "images/samples/evolve2.jpg"
+     {:img-path "samples/evolve2.jpg"
       :text "Many of our clients were interested in attracting birds, butterflies and other pollinators while enjoying a low resource intensive landscape. Concept designs, plant selection, budget development, project timelines and client coordination were vital components of each job."}
-     {:img-path "images/samples/evolve3.jpg"
+     {:img-path "samples/evolve3.jpg"
       :text "Presentations on the topics of Native landscapes and Permaculture principles were provided to garden societies for the promotion of environmentally sustainable landscapes."}]}
    {:role "Research Assistant"
     :company "Florida Pesticide Research"
-    :experience-items
-    [{:img-path "images/samples/fpr1.jpg"
+    :experiences
+    [{:img-path "samples/fpr1.jpg"
       :text "FPR is an agricultural research company, operating for almost 30 years out of Oviedo, FL. FPR evaluates the effectiveness of cultural practices, organic and synthetic compounds on various crops, diseases and pests."}
-     {:img-path "images/samples/fpr2.jpg"
+     {:img-path "samples/fpr2.jpg"
       :text "Through the sampling of leaf tissues, root systems, whole fruit, soil and water they are able to provide analytic labs with the material they need for more accurate detection of residues. No trial is complete without detailed documentation."}
-     {:img-path "images/samples/fpr3.jpg"
+     {:img-path "samples/fpr3.jpg"
       :text "Through paper records and evaluations, statistical analysis of numbers, and database input per trial. It takes time and energy to search and research, but I thoroughly enjoyed figuring these things out."}]}
    {:role "Horticulturist"
     :company "Community Garden Organizer"
-    :experience-items
-    [{:img-path "images/samples/cg1.jpg"
+    :experiences
+    [{:img-path "samples/cg1.jpg"
       :text "I was given the opportunity to lead a community supported agriculture garden. The community garden had 12 paying members that gathered twice a week for two hours. On each Thursdays I would gather with the gardeners and collectively learn about and tend to the garden needs. Most gardens allow you to rent one plot for what you'd like to grow."}
-     {:img-path "images/samples/cg2.jpg"
+     {:img-path "samples/cg2.jpg"
       :text "This garden allowed everyone to work together to harvest from the entire garden. This helped ensure plenty of produce and greens were available for the taking each week. As each seasonal vegetable lived it's life, we would pull and replant the expired areas and trim back and harvest the producing areas."}
-     {:img-path "images/samples/cg3.jpg"
+     {:img-path "samples/cg3.jpg"
       :text "I had fun coordinating a raw chef to come in and share a few recipes strait from the garden to the plate in just a few hours. I was able to create a small cucumber trial organic fertilizer trial to see which blends worked best. A few of the gardeners enjoyed learning the process. Counting and weighing the cucumbers as they grew."}]}
    {:role "President"
     :company "Tarflower Native Plant Society"
-    :experience-items
-    [{:img-path "images/resume/tarflower-board-sq.jpg"
+    :experiences
+    [{:img-path "resume/tarflower-board-sq.jpg"
       :text "Helped host meetings and arrange for speakers to present to our local chapter"}
-     {:img-path "images/resume/tarflower-talk-sq.jpg"
+     {:img-path "resume/tarflower-talk-sq.jpg"
       :text "Facilitated meetings for the general public and coordinated speakers."}
-     {:img-path "images/resume/tarflower-sale-sq.jpg"
+     {:img-path "resume/tarflower-sale-sq.jpg"
       :text "Organized, arranged, and sold plants as a chapter fundraiser for Native plant community projects and educational grants."}]}])
 
 
@@ -280,7 +280,7 @@ company. We provide ecologically informed landscaping ideas and services to enha
             The worst type of raw vegan possible. They will only eat the freshest foliage on a particular genus,
             or species of plant. So, this is what we mean by habitat, grouping plants together that exist in concert
             with insects to form the base of the food web."
-      [:a {:href "images/samples/Monarch%20egg-0044%20resized.jpg" :target "_blank"} [:img.img-shadow {:alt "Monarch Larvae" :height "252" :src "images/samples/monarchegg.jpg" :width "373"}]])]
+      [:a {:href "samples/Monarch%20egg-0044%20resized.jpg" :target "_blank"} [:img.img-shadow {:alt "Monarch Larvae" :height "252" :src "samples/monarchegg.jpg" :width "373"}]])]
    ["How do I attract butterflies?"
     "Flowers that produce nectar and have a tubular shape to them can be planted.
  Larval host plants will bring them around to mate and lay eggs, which provides regular

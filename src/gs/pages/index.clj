@@ -18,7 +18,7 @@
 (comment
   (u/default-keymap (content/intros :consult)))
 
-(defstyled intro-block :section.contentBox3a
+(defstyled intro-block :section #_.contentBox3a
   ([{:keys [title subtitle body link-text link]}]
    [:<>
     [:h3 title]
@@ -28,15 +28,16 @@
     [:p [:a.btn.btn-main
          {:href (html-filename link)} link-text]]]))
 
-(defstyled intro-blocks :div.row1
+(defstyled intro-blocks :div
+  :mb-8 :px-4
   ([]
    [:<>
     [container
-     [inside
-      [group
-       (for [m (vals content/intros)]
-         [intro-block m])
-       [clear]]]]]))
+     ;[inside]
+     [card-stack
+      (for [m (vals content/intros)]
+        [intro-block m])]]]))
+      ;[clear]]]]))
 
 (defstyled welcome :div.photoblock
   ([]
@@ -91,7 +92,7 @@
 
 ;----------------
 
-(defstyled about-us :section.contentBox3a.wow.zoomIn
+(defstyled about-us :section.wow.zoomIn
   ([]
    [:<> {:data-wow-delay ".2s"}
     [alternate-header-2 "About Us"]
@@ -102,7 +103,7 @@
      "Orlando native Amanda Martin is no stranger to the seasonal changes of Central Florida and the beauty a planned landscape can bring to a home."]
     [:p "With expansive knowledge in horticulture, landscape design and agricultural practices, Amanda brings passion and creativity to each sustainable landscape project."]]))
 
-(defstyled discover :section.contentBox3b.wow.zoomIn
+(defstyled discover :section.wow.zoomIn
   ([]
    [:<> {:data-wow-delay ".6s"}
     [alternate-header-2 "Discover"]
@@ -175,7 +176,7 @@
 
 (def steps-strs content/steps)
 
-(defstyled get-started :section.contentBox3c
+(defstyled get-started :section
   ([]
    [:<>
     {:class "wow zoomIn"
@@ -216,20 +217,19 @@
    [:<>
     [container
      [inside
-      [middle-of-line-title "Review"]
+      [middle-of-line-title "Reviews"]
       [:div.reviews
        [:ul#ticker
         review-blocks]]]]]))
 
-(defstyled generic-row :div.row1
+(defstyled second-row card-stack #_.row1
+  :bg-#fff :px-8 :my-8
+  [:section :w-full :md:w-33%]
   ([]
    [:<>
-    [container
-     [inside
-      [about-us]
-      [discover]
-      [get-started]
-      [clear]]]]))
+    [about-us]
+    [discover]
+    [get-started]]))
 
 (defstyled pruning-notes-pdf-link :div
   :text-2xl :text-center
@@ -265,6 +265,6 @@
    [pruning-notes-pdf-link]
    [intro-blocks]
    [hot-plant-gallery]
-   [generic-row]
+   [second-row]
    [reviews]])
 
