@@ -49,9 +49,6 @@
        [:p [:a.btn.btn-main {:href "floridaplants.html"} "Read More"]]]
       [:div.clear]]]]])
 
-(def content-blocks
-  [raw-page])
-
-(common/write-page
-  :ecosystems
-  content-blocks)
+(def page-hiccup
+  [:<>
+   [raw-page]])

@@ -25,9 +25,6 @@
     [:p.center [:img {:alt "" :src "images/samples/mail.png"}]]
     [:p.center " "]]])
 
-(def content-blocks
-  [raw-page])
-
-(common/write-page
-  :email-confirmation
-  content-blocks)
+(def page-hiccup
+  [:<>
+   [raw-page]])

@@ -4,7 +4,8 @@
     [gs.content :as c]
     [gs.garden.page]
     [gs.site :as site :refer [pages html-filename]]
-    [garden.compiler :as gc])
+    [garden.compiler :as gc]
+    [nano-id.core :refer [nano-id]])
   (:use
     [gs.util]
     [gs.site]
@@ -13,12 +14,13 @@
 (def css-files
   ["https://fonts.googleapis.com/css?family=Open+Sans|Poiret+One|Oswald:300"
    "https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css"
-   "css/default.css"
+   ;"css/default.css"
    ;"css/groundedsol.css"
    "css/animate.css"
    "css/nivo-lightbox.css"
    "images/lightbox/default.css"])
    ;"https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css"])
+
 
 (def css-links
   (for [css-url css-files]
@@ -35,12 +37,17 @@
    [:meta {:name "viewport" :content "width=device-width, initial-scale=1"}]
    [:meta {:property "og:type" :content "website"}]
    [:meta {:content c/page-description :name "description"}]
-   [:LINK {:REL "SHORTCUT ICON" :HREF "icongs.ico" :type "image/x-icon"}]
-   [:style
-    (str (o/defined-styles) \n
-         (gc/compile-css gs.garden.page/rules))]
+   [:link {:REL "SHORTCUT ICON" :HREF "icongs.ico" :type "image/x-icon"}]
+   [:link
+    {:rel "stylesheet"
+     :href (str "compiled.css" "?" (nano-id))
+     :type "text/css"}]
+   ;[:link
+   ; {:rel "stylesheet"
+   ;  :href (str "css/default.css" "?" (nano-id))
+   ;  :type "text/css"}]
    [:meta {:content "width=device-width, initial-scale=1.0" :name "viewport"}]
-   ;[:link {:href "http://fonts.googleapis.com/css?family=Open+Sans|Poiret+One|Oswald:300" :rel "stylesheet" :type "text/css"}]
+   #_[:link {:href "http://fonts.googleapis.com/css?family=Open+Sans|Poiret+One|Oswald:300" :rel "stylesheet" :type "text/css"}]
    css-links])
 
 ;<script src='https://www.hCaptcha.com/1/api.js' async defer></script>
@@ -57,4 +64,5 @@
     [:script {:src "scripts/accordionscript.js" :type "text/javascript"}]
     [:script {:src "scripts/wow.min.js"}]
     [:script "new WOW().init();"]))
+    ;[:script "Live.heartbeat();"]))
     ;[:script "$('ul.slimmenu').slimmenu(\n{\n    resizeWidth: '1024',\n    collapserTitle: 'Main Menu',\n    animSpeed: '300',\n    easingEffect: null,\n    indentChildren: true,\n    childrenIndenter: '&nbsp;&nbsp;'\n});\n"]))
