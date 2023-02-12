@@ -49,20 +49,22 @@
   :ml-8 :mt-0 :mb-4 :float-right :w-40%)
 
 (defstyled image-gallery-block-caption :span
-  :text-xs :text-center)
+  :text-base :text-center common/fancy-font
+  :block :text-center)
 
 (defstyled final-design-image :a
    ;:transform "rotate(4deg)"}
   :w-full
   :md:w-50%
   :lg:w-40%
+  :hover:no-underline
+  :no-underline
   :rounded
   :float-right
   :ml-8
   :mb-4
   :pb-0
   [:img image-shadow :mb-2]
-  [:span :block :text-center :text-xl]
   ([]
    [:<>
     {:class ["wow" "zoomIn" "lightbox"]

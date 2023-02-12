@@ -1,8 +1,9 @@
 (ns gs.ornament-demo
   (:require [nextjournal.clerk :as clerk]))
 
-(clerk/serve! {:watch-paths ["notebooks"]
-               :browse? true})
+(comment
+  (clerk/serve! {:watch-paths ["notebooks"]
+                 :browse? true})
 
-(clerk/show! "notebooks/demo.clj")
-(clerk/show! "notebooks/template.clj")
+  (clerk/show! "notebooks/demo.clj")
+  (clerk/show! "notebooks/template.clj"))

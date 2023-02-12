@@ -2,6 +2,7 @@
   (:require
     [gs.content :as content]
     [garden.selectors :as gs]
+    [garden.compiler :as gc]
     [garden.core :as g :refer [css style]]
     ;[gs.components :as common]
     [gs.airtable :as at]
@@ -19,36 +20,89 @@
   (u/default-keymap (content/intros :consult)))
 
 (defstyled intro-block :section #_.contentBox3a
+  :md:w-33%
+  [:h3 :uppercase #_:small-caps]
+  [:p.this-body #_:md:min-h-8rem]
   ([{:keys [title subtitle body link-text link]}]
    [:<>
     [:h3 title]
     [heading-line]
     [:p.lead subtitle]
-    [:p body]
-    [:p [:a.btn.btn-main
-         {:href (html-filename link)} link-text]]]))
+    [:p.this-body body]
+    [:div
+     [:a.btn.btn-main
+      {:href (html-filename link)} link-text]]]))
 
-(defstyled intro-blocks :div
-  :mb-8 :px-4
+(defstyled intro-blocks container
+  :mb-8
+  ([]
+   [:<>
+    ;[inside]
+    [card-stack
+     {:style {:padding (pd 30)}}
+     (for [m (vals content/intros)]
+       [intro-block m])]]))
+     ;[clear]]]]))
+
+(css
+  [:body
+   {:background-image
+    (css-url
+      (img-path (jpeg "homephoto")))}])
+
+(defstyled photo-overlay :div
+  #_:div.photoblockInside
+  :w-90% :my-0 :mx-auto
+  :py-60px :px-5% :text-#ffffff
+  [:* :text-#ffffff :text-center]
+  [:.lead :text-base
+   :small-caps :tracking-wide
+   :px-4 :py-0 :m-0
+   #_:mt-20px #_:text-#ffffff
+   #_:border-#ffffff]
+  [:.btn-main
+   :text-md :small-caps :mt-20px :text-#ffffff :border-#ffffff
+   [:&:hover
+    :bg-#d1c583]]
+  {:border-radius (px 10)
+   :background-color "rgba(0, 0, 0, 0.2)"}
+  ([{:keys [title body]}]
+   [:<>
+    [:h1.big title]
+    [:p.lead body]
+    #_[:p [:a.btn.btn-main {:href (:link m)} (:link-text m)]]]))
+
+
+
+(defstyled welcome :div
+  :w-full
+  :max-w-2400px
+  :mx-auto
+  :py-100px
+  :px-0
+  :my-0
+  :mb-30px
+  :text-#ffffff
+  :text-center
+  :text-base
+  :bg-no-repeat
+  ;----- bg position
+  :bg-center
+  ;:bg-bottom
+  ;----- bg size
+  ;:bg-auto
+  :bg-cover
+  ;:bg-contain
+  {:background
+   {:color "#af9e41"
+    :image
+    (css-url
+      (img-path (jpeg "homephoto")))}}
   ([]
    [:<>
     [container
-     ;[inside]
-     [card-stack
-      (for [m (vals content/intros)]
-        [intro-block m])]]]))
-      ;[clear]]]]))
-
-(defstyled welcome :div.photoblock
-  ([]
-   (let [{:keys [title body]} content/welcome]
-     [:<>
-      [container
-       [inside
-        [:div.photoblockInside
-         [:h1.big title]
-         [:p.lead body]]]]])))
-        ;[:p [:a.btn.btn-main {:href (:link m)} (:link-text m)]]]]]]))
+     [inside
+      [photo-overlay content/welcome]]]]))
 
 
 ;.row2 .alternate1 {color: #fff};}
@@ -93,13 +147,12 @@
 ;----------------
 
 (defstyled about-us :section.wow.zoomIn
+  [:.first :mt-0 :pt-15px]
   ([]
    [:<> {:data-wow-delay ".2s"}
     [alternate-header-2 "About Us"]
-    [small-round-img
-     {::o/attrs
-      {:alt "Amanda" :src "images/samples/mandy.jpg"}}]
-    [:p
+    [:p.first
+     [small-round-img]
      "Orlando native Amanda Martin is no stranger to the seasonal changes of Central Florida and the beauty a planned landscape can bring to a home."]
     [:p "With expansive knowledge in horticulture, landscape design and agricultural practices, Amanda brings passion and creativity to each sustainable landscape project."]]))
 
@@ -239,7 +292,7 @@
   [:.description :text-lg :mt-2]
   ([]
    [:<>
-    [:span.new "New!"]
+    ;[:span.new "New!"]
     [:a
      {:href "/media/Pruning_Notes_for_Native_Plants_3.pdf"}
      "Pruning Notes Newsletter"]
@@ -247,24 +300,16 @@
     [:p.description "Includes Seasonal Planting Guide, & how to \"Prune like Fire\"!"]]))
 
 
+;; unused
 (comment
-  (defstyled mybox :div
-    {:border "1px solid black"})
-
-  (defstyled myelem :p
-    :text-red-500
-    [:&:before :&:after
-     :text-blue-500
-     {:content "'------------'"}]))
-
+  [pruning-notes-pdf-link])
 
 (def page-hiccup
   [:<>
-   ;[mybox [myelem "hello"]]
    [welcome]
-   [pruning-notes-pdf-link]
    [intro-blocks]
    [hot-plant-gallery]
-   [second-row]
+   [container
+    [second-row]]
    [reviews]])
 

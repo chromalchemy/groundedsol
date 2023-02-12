@@ -63,4 +63,5 @@
 ;(require 'goog.string)
 ;(s/transform [(s/walker string?)] goog.string.unescapeEntities my-hiccup-vector)
 
-
+(defn css-url [file]
+  (str "url(\"../" file "\")"))

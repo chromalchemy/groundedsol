@@ -120,7 +120,8 @@
    ["facebook-icon.png" "https://www.facebook.com/groundedsol"]])
 
 (defstyled social-icons :div
-  :x :flex
+  :x :flex :mb-4
+  {:margin-left "-15px"}
   ([icon-folder-path]
    [:<>
     (for [[img-filename link] social-data]
@@ -131,11 +132,17 @@
 (defstyled container :div
   :my-0 :mx-auto :xl:container :px-5)
 
-(defstyled inside :div #_:div.inside
+(defstyled mystyles :div
+  :border-solid
+  :border-color-#555555
+  :border-2px
+  :h-350px :w-100px)
+
+(defstyled inside :div
   :w-96% :py-0 :px-2%)
 
 (defstyled card-stack :div #_:div.group
-  :flex :flex-col :md:flex-row :sm:space-x-8 :justify-center :mx-auto)
+  :flex :flex-col :md:flex-row :gap-8 :justify-center :mx-auto)
 
 (defstyled card content-box
   :border-2px :border-black
@@ -292,8 +299,14 @@
     :margin-right (percent -50)}])
 
 
-(defstyled small-round-img :img.img-round.img-small
-  :mx-auto :block)
+(defstyled small-round-img :img
+  ;:border-#ffffff :border-5px :border-solid
+  :rounded-full #_:mx-auto #_:block
+  :max-w-150px :h-auto :float-left :mr-20px :mb-10px
+  ([]
+   [:<>
+    {:alt "Amanda" :src (img-path (jpeg "mandy") "samples")}]))
+
 
 (defstyled footer-bottom :div.footerbottom
   ([]

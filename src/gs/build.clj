@@ -59,7 +59,6 @@
   (println "Wrote compiled.css"))
 
 
-
 ;todo: generate require from page kw
 (defn build-site! []
   (refresh {:refresh-dirs ["src"]})
@@ -75,7 +74,6 @@
       (fn [[page-key page-hiccup]]
         (write-page page-key page-hiccup))))
   (println "Site Built"))
-
 
 (comment
   (build-site!)
