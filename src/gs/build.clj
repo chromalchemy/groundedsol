@@ -67,6 +67,7 @@
   (write-page-styles!)
   (->>
     {:home gs.pages.index/page-hiccup
+     :new gs.pages.new/page-hiccup
      :florida-plants gs.pages.fl-plants/page-hiccup
      :services gs.pages.services/page-hiccup
      :consultation gs.pages.consultation/page-hiccup

@@ -29,13 +29,17 @@
       :filename "about"}
    ;:design {:name (string/upper-case "Design")}
    :contact {}
-   :services {:filename "services"
-              :name "Services"}})
+   :services
+     {:filename "services"
+      :name "Services"}
+   :new
+     {:filename "new"
+      :name "What's New?"}})
    ;:florida-plants-411 "FL Plants 411"
    ;:pop-up-shop {:name "POP UP Shop"}})
 
 (def page-keys
-  [:home :consultation :services :florida-plants :about :contact])
+  [:home :consultation :services :florida-plants :about :new :contact])
 
 (defn page-name [page-key]
   (let [page (pages page-key)

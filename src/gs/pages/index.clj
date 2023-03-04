@@ -284,26 +284,6 @@
     [discover]
     [get-started]]))
 
-(defstyled pruning-notes-pdf-link :div
-  :text-2xl :text-center
-  [:a :mx-3]
-  [:.new :text-red-500 :font-bold]
-  [:.link-type :text-xl :text-gray-300]
-  [:.description :text-lg :mt-2]
-  ([]
-   [:<>
-    ;[:span.new "New!"]
-    [:a
-     {:href "/media/Pruning_Notes_for_Native_Plants_3.pdf"}
-     "Pruning Notes Newsletter"]
-    [:span.link-type "(pdf)"]
-    [:p.description "Includes Seasonal Planting Guide, & how to \"Prune like Fire\"!"]]))
-
-
-;; unused
-(comment
-  [pruning-notes-pdf-link])
-
 (def page-hiccup
   [:<>
    [welcome]
