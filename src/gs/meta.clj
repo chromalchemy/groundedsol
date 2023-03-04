@@ -40,29 +40,24 @@
    [:link {:REL "SHORTCUT ICON" :HREF "icongs.ico" :type "image/x-icon"}]
    [:link
     {:rel "stylesheet"
-     :href (str "compiled.css" "?" (nano-id))
+     :href (str "css/compiled.css" "?" (nano-id))
      :type "text/css"}]
-   ;[:link
-   ; {:rel "stylesheet"
-   ;  :href (str "css/default.css" "?" (nano-id))
-   ;  :type "text/css"}]
    [:meta {:content "width=device-width, initial-scale=1.0" :name "viewport"}]
    #_[:link {:href "http://fonts.googleapis.com/css?family=Open+Sans|Poiret+One|Oswald:300" :rel "stylesheet" :type "text/css"}]
    css-links])
 
-;<script src='https://www.hCaptcha.com/1/api.js' async defer></script>
 
 (def script-files
   (list
     ;[:script {:src "https://unpkg.com/htmx.org@1.4.1"}]
     ;[:script {:src "https://www.hCaptcha.com/1/api.js" :async "true" :defer "true"}]
+
     [:script {:src "scripts/live.js" :type "text/javascript"}]
     [:script {:src "//ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"}]
-    [:script {:src "scripts/main.js" :type "text/javascript"}]
     [:script {:src "scripts/jquery.slimmenu.js" :type "text/javascript"}]
     [:script {:src "scripts/nivo-lightbox.js" :type "text/javascript"}]
     [:script {:src "scripts/accordionscript.js" :type "text/javascript"}]
     [:script {:src "scripts/wow.min.js"}]
-    [:script "new WOW().init();"]))
-    ;[:script "Live.heartbeat();"]))
-    ;[:script "$('ul.slimmenu').slimmenu(\n{\n    resizeWidth: '1024',\n    collapserTitle: 'Main Menu',\n    animSpeed: '300',\n    easingEffect: null,\n    indentChildren: true,\n    childrenIndenter: '&nbsp;&nbsp;'\n});\n"]))
+    [:script {:src "https://www.google.com/recaptcha/api.js"}]
+    [:script {:src "scripts/main.js" :type "text/javascript"}]))
+

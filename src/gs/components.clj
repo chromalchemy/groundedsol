@@ -13,7 +13,8 @@
         [gs.site]
         [gs.garden.page]
         [gs.meta]
-        [com.rpl.specter]))
+        [com.rpl.specter]
+        :reload))
 
 
 (defstyled content-box :section
@@ -121,7 +122,10 @@
 
 (defstyled social-icons :div
   :x :flex :mb-4
-  {:margin-left "-15px"}
+  :justify-center
+  :w-75% :md:w-30% :mx-auto
+  :pl-15px
+  :md:pl-0
   ([icon-folder-path]
    [:<>
     (for [[img-filename link] social-data]
@@ -131,6 +135,11 @@
 
 (defstyled container :div
   :my-0 :mx-auto :xl:container :px-5)
+
+(hiccup/render
+  [container "hello"]
+  {:doctype? false})
+
 
 (defstyled mystyles :div
   :border-solid

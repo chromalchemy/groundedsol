@@ -7,7 +7,7 @@
     ;[gs.components :as common]
     [gs.airtable :as at]
     [lambdaisland.ornament :as o :refer [defstyled]]
-    [lambdaisland.hiccup :as hiccup :refer [html]]
+    [lambdaisland.hiccup :as hiccup]
     [clojure.string :as string]
     [cybermonday.core :as md])
   (:use

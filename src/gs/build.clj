@@ -17,7 +17,9 @@
     [gs.pages.about]
     [flow-storm.api :as fs-api]
     [garden.compiler :as gc]
-    [lambdaisland.hiccup :as hiccup]))
+    [lambdaisland.hiccup :as hiccup]
+    :reload))
+
 
 (repl/set-refresh-dirs "src")
 (comment
@@ -49,11 +51,11 @@
 (defn write-page-styles! []
   (->>
     [(slurp "resources/css/default.css")
-     (o/defined-styles)
-     (gc/compile-css gs.garden.page/rules)]
-    (interpose \n)
+     (o/defined-styles #_{:preflight? true})
+     (gc/compile-css gs.garden.page/rules)
+     (interpose \n)]
     (apply str)
-    (spit "build/compiled.css"))
+    (spit "build/css/compiled.css"))
   ;(->>
   ;  (spit "build/css/default.css"))
   (println "Wrote compiled.css"))
@@ -61,7 +63,7 @@
 
 ;todo: generate require from page kw
 (defn build-site! []
-  (refresh {:refresh-dirs ["src"]})
+  ;(refresh {:refresh-dirs ["src"]})
   (write-page-styles!)
   (->>
     {:home gs.pages.index/page-hiccup

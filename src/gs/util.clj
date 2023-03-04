@@ -40,8 +40,8 @@
 
 (def zero "0")
 
-(defn render-hiccup [h]
-  (hiccup/render-html* h))
+(defn html [h]
+  (hiccup/render h {:doctype? false}))
 
 
 (defn remove-first-semicolon [s]
