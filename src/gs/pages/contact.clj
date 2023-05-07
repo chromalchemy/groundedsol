@@ -18,9 +18,6 @@
     [gs.components]))
 
 
-(def page-title
-  [:h1.center ""])
-
 (defstyled facebook-widget :iframe
   ;:box-border
   :mb-8  #_:overflow-hidden :mx-auto :block
@@ -328,13 +325,10 @@
 
 (do
   (def page-hiccup
-    [:<>
-     [common/container
-      ;[common/inside]
-      #_page-title
-      [contact-intro]
-      [common/fancy-divider]
-      [bottom-half]]])
+    [common/container
+     [contact-intro]
+     [common/fancy-divider]
+     [bottom-half]])
 
 
   (html page-hiccup))

@@ -105,3 +105,6 @@
     (io/file)
     (dng-data)))
 
+
+(def mystring "hello")
+(str "world " mystring)

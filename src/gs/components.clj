@@ -17,6 +17,9 @@
         :reload))
 
 
+(defstyled page-title :h1
+  :text-#d1c583 :text-center)
+
 (defstyled content-box :section
   #_:w-98% #_:m-1% :p-0)
 
@@ -93,12 +96,14 @@
 (defstyled nav-links-wrapper :ul #_.slimmenu
   :text-center :mx-auto
   :flex :justify-center :sm:justify-end :flex-wrap :space-x-8
-  :list-none :m-0 :mt-10px :p-0 :w-full :text-right :text-13px
+  :list-none
+  :m-0 :p-0 :text-lg
   ([links]
    [:<> links]))
   ;:md:text-right])
 
 (defstyled nav-menu :nav
+  :block
   ([page-keys]
    [:<>
     [nav-links-wrapper
@@ -134,7 +139,12 @@
 ;--------------------------------
 
 (defstyled container :div
-  :my-0 :mx-auto :xl:container :px-5)
+  :mx-auto
+  :xl:container
+  :my-0
+  ;:box-border
+  :py-0 :pb-2 :px-5
+  :w-full)
 
 (hiccup/render
   [container "hello"]
@@ -166,16 +176,45 @@
        :src (str "images/" img-path)}]
      text]]))
 
-(defstyled masthead :header.noborder
+(defstyled hr-noshow :hr
+  :bg-transparent :border-0 :border-none :text-#fff :h-0
+  :clear-both :hidden)
+
+
+(defstyled logo-block :div
+  :w-60% :mx-auto
+  {:border "1px solid black"})
+
+(defstyled slogan :div
+  :text-#333
+  :text-xs
+  :tracking-wide
+  :uppercase
+  :text-center
+  :pl-0)
+
+(defstyled brand :div
+  :text-xl :text-#000 :text-left :m-0 :p-0
+  {:font-family "'Poiret One', Verdana, Helvetica, sans-serif"}
+  [:a :font-normal :no-underline :text-#000]
+  [:img :w-200px :h-53px]
   ([]
    [:<>
-    [container
-     [:div.inside
-      [:div.logo
-       [:div.brand [:a {:href (site/html-filename :home)} [:img {:alt (c/images :logo/alt) :height "53" :src (gs.site/img-path (c/images :logo/file)) :width "200"}]]]
-       [:div.slogan c/slogan]]
-      [nav-menu page-keys]]
-     [:hr.noshow]]]))
+    [:a {:href (site/html-filename :home)}
+     [:img
+      {:alt (c/images :logo/alt)
+       :src (gs.site/img-path (c/images :logo/file))}]]]))
+
+(defstyled masthead container
+  :my-0 :mx-auto  :border-b-0
+  :flex :flex-col
+  ([]
+   [:<>
+    [logo-block
+     [brand]
+     [slogan c/slogan]]
+    [nav-menu page-keys]]))
+    ;[hr-noshow]]))
 
 (defstyled footer-nav-link nav-link
   :mb-1
@@ -325,7 +364,7 @@
     [copyright]]))
 
 (defstyled footer :footer
-  :clear-both
+  :clear-both :flex-shrink-0
   ([]
    [:<>
     [container
@@ -343,17 +382,33 @@
    [:<>
     [:a {:href "#"}
      [:i.fa.fa-angle-double-up.fa-2x]]]))
+;
+;flex-grow
+;flex-shrink
+;flex-basis
+
+(defstyled main-elem :section
+  :flex :flex-grow :flex-shrink-0 :w-auto
+  [:.inner :w-full]
+  ([content-hiccup]
+   [:<>
+    [:div.inner
+     content-hiccup]]))
+
 
 (defstyled body-elem :body
+  :h-full :flex :flex-col
   ([content]
    [:<>
     [scroll-to-top]
     [masthead]
-    content
+    [main-elem content]
     [footer]
     script-files]))
 
-(defn html-el [page-key content]
-  [:html {:lang "en"}
-   (head-elem page-key)
-   [body-elem content]])
+(defstyled html-elem :html
+  :h-full
+  ([page-key content]
+   [:<> {:lang "en"}
+    (head-elem page-key)
+    [body-elem content]]))

@@ -4,6 +4,7 @@
     [hickory.core :as h]
     [cybermonday.core :as cm]
     [gs.content :as c]
+    [gs.components :as common]
     [gs.airtable :as at]
     [lambdaisland.ornament :as o :refer [defstyled]]
     [gs.util :as u]
@@ -11,7 +12,6 @@
     [com.rpl.specter :refer [select ALL FIRST setval transform NONE]])
   (:use [gs.components]))
 
-(defstyled page-title :h1.center)
 
 (defstyled in-the-works :blockquote.rightside
   [:p :span :font-bold]
@@ -71,15 +71,13 @@
    ;:height (em 0.2)})
 
 (def page-hiccup
-  [:<>
-   [container
-    [inside
-     [fancy-divider]
-     [page-title "Meet Amanda Martin"]
-     [drop-cap-p content/about-me-intro-text]
-     [biography-title "Getting Growing"]
-     [heading-line]
-     [about-me-article]
-     [what-is-horticulturist?]
-     [fancy-divider]
-     [resume]]]])
+  [common/container
+   [common/fancy-divider]
+   [common/page-title "Meet Amanda Martin"]
+   [drop-cap-p content/about-me-intro-text]
+   [biography-title "Getting Growing"]
+   [heading-line]
+   [about-me-article]
+   [what-is-horticulturist?]
+   [common/fancy-divider]
+   [resume]])

@@ -41,7 +41,8 @@
    [:link
     {:rel "stylesheet"
      :href (str "css/compiled.css" "?" (nano-id))
-     :type "text/css"}]
+     :type "text/css"
+     :title "default"}]
    [:meta {:content "width=device-width, initial-scale=1.0" :name "viewport"}]
    #_[:link {:href "http://fonts.googleapis.com/css?family=Open+Sans|Poiret+One|Oswald:300" :rel "stylesheet" :type "text/css"}]
    css-links])

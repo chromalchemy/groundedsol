@@ -32,14 +32,14 @@
    :services
      {:filename "services"
       :name "Services"}
-   :new
-     {:filename "new"
-      :name "What's New?"}})
+   :notes
+     {:filename "notes"
+      :name "Garden Notes"}})
    ;:florida-plants-411 "FL Plants 411"
    ;:pop-up-shop {:name "POP UP Shop"}})
 
 (def page-keys
-  [:home :consultation :services :florida-plants :about :new :contact])
+  [:home :consultation :services :florida-plants :about :notes :contact])
 
 (defn page-name [page-key]
   (let [page (pages page-key)
@@ -56,7 +56,7 @@
       (str ".html"))))
 
 (comment
-  (html-filename :consultation))
+  (html-filename :notes))
 
 (def image-root
   (str "images/"))

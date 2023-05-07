@@ -39,7 +39,7 @@
    [:<>
     ;[inside]
     [card-stack
-     {:style {:padding (pd 30)}}
+     ;{:style {:padding (pd 30)}}
      (for [m (vals content/intros)]
        [intro-block m])]]))
      ;[clear]]]]))
@@ -137,12 +137,11 @@
   :bg-#d1c583 :text-#fff :py-40px :px-0 :text-center :w-full
   ([]
    [:<>
-    [inside
-     [hot-plants content/hot-plant-gallery]
-     [:p
-      [:a.btn.btn-color
-       {:href "floridaplants.html"}
-       "View More"]]]]))
+    [hot-plants content/hot-plant-gallery]
+    [:p
+     [:a.btn.btn-color
+      {:href "floridaplants.html"}
+      "View More"]]]))
 
 ;----------------
 

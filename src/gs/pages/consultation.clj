@@ -8,12 +8,12 @@
     [garden.selectors]
     [lambdaisland.ornament :refer [defstyled]]
     [gs.airtable :as at]
+    [gs.components :as common]
     [gs.util :as u]
     [lambdaisland.hiccup :as hiccup]
     [com.rpl.specter :refer [select ALL FIRST setval transform NONE]])
   (:use
-    [gs.util]
-    [gs.components]))
+    [gs.util]))
 
 (defstyled process-title :h2)
 
@@ -90,12 +90,9 @@
     (for [cs content/consultion-steps]
       [process-step cs])]))
 
-(defstyled page-title :h1.center)
-
 
 (def page-hiccup
-  [container
-   [inside
-    [page-title "Consultation & Design"]
-    [fancy-divider]
-    [process]]])
+  [common/container
+   [common/page-title "Consultation & Design"]
+   [common/fancy-divider]
+   [process]])

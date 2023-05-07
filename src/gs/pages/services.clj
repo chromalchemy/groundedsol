@@ -314,12 +314,13 @@
   " pages."
   " ")
 
-(def examples
-  [example-block
-   [video-title "Tour a full native landscape by Grounded Solutions"
-    [video-embed]]
-   [:p "Please Like and Follow as we grow"]
-   [social-icons]])
+(defstyled examples example-block
+  ([]
+   [:<>
+    [video-title "Tour a full native landscape by Grounded Solutions"
+     [video-embed]]
+    [:p "Please Like and Follow as we grow"]
+    [social-icons]]))
 
 ;font: 34px 'Oswald', Verdana, Helvetica, sans-serif;
 ;    color: #333;
@@ -383,18 +384,20 @@
 
 (defstyled rate-notes :span)
 
-(def rates-list
-  (for [c consult-levels]
-    (let [{:keys [notes price title]
-           time-est :time} c]
-      [rate-item-block
-       [rate-header
-        [rate-title title]
-        [rate-price price]]
-       [:div
-        {:style {:padding-left "15px"}}
-        [rate-time time-est]
-        [rate-notes notes]]])))
+(defstyled rates-list :div
+  ([]
+   [:<>
+    (for [c consult-levels]
+      (let [{:keys [notes price title]
+             time-est :time} c]
+        [rate-item-block
+         [rate-header
+          [rate-title title]
+          [rate-price price]]
+         [:div
+          {:style {:padding-left "15px"}}
+          [rate-time time-est]
+          [rate-notes notes]]]))]))
 
 ;--------------------------------
 
@@ -410,12 +413,13 @@
   (pred-k :border "-" gold-yellow))
   ;(hsl-k :border 160 100 40))
 
-(def rates
-  [:<>
-   [:h1.center "Services & Rates"]
-   [common/fancy-divider]
-   (common/spacer 20)
-   rates-list])
+(defstyled rates :div
+  ([]
+   [:<>
+    [common/page-title "Services & Rates"]
+    [common/fancy-divider]
+    [common/spacer 20]
+    [rates-list]]))
 
 
 (def faq
@@ -428,28 +432,24 @@
         [:p]]])
    [:hr.noshow]])
 
-(def faq-block
-  [:<>
-    ;[:h4 "FREQUENTLY ASKED QUESTIONS"]
-    [:ul.list2
-     [:li "Below are a few frequently asked questions that
+(defstyled faq-block :div
+  ([]
+   [:<>
+     ;[:h4 "FREQUENTLY ASKED QUESTIONS"]
+     [:ul.list2
+      [:li "Below are a few frequently asked questions that
   typically come up during the consultation. Since the
   consult is based on an hourly fee, I thought I would
   address a few of these now so that your time is best
   spent on the consultation."]]
-    faq])
-
-(def page-title
-  [:h1.center "Consultation & Design"])
+     faq]))
 
 (def page-hiccup
   [:<>
-   [:div.container
-    [:div.inside
-     rates
-     examples]]
+   [common/container
+     [rates]
+     [examples]]
    [common/fancy-divider]
-   [:div.container
-    [:div.inside
-     [:h1.center "Frequently Asked Questions"]
-     faq-block]]])
+   [common/container
+    [common/page-title "Frequently Asked Questions"]
+    [faq-block]]])

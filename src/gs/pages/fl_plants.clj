@@ -96,9 +96,6 @@
 
 ;(def images)
 
-(def page-title
-  [:h1.center "What’s Hot in Florida Plants"])
-
 (def gallery
   [:fieldset
    [:legend "Florida Faves"]
@@ -128,16 +125,18 @@
     [:p "Please follow Grounded Solutions Inc on Facebook, Instagram and Youtube for individual plant stories, growing organically each season."]
     (common/social-icons "images/social-icons/")]])
 
-(def page-hiccup
-  [:div.container
-   [:div.inside
-    [:h1.center "What’s Hot in Florida Plants"]
-    (common/fancy-divider)
-    [:h2.alternate1 "Flora & Fauna"]
-    gallery-intro
-    gallery]])
+(defstyled mytitle common/middle-of-line-title
+  :text-red-500)
 
-  ;(comment)
+(def page-hiccup
+  [common/container
+   [common/page-title "What’s Hot in Florida Plants"]
+   [common/fancy-divider]
+   [mytitle "Flora & Fauna"]
+   gallery-intro
+   gallery])
+
+    ;(comment)
 
     ; [:p "Shown above are a few examples of versatility you can find when choosing native plants.
     ;Grounded Solutions strives to over you the best quality plant material we possibly can.
