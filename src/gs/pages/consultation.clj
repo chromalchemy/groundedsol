@@ -4,14 +4,14 @@
     [gs.content :as content]
     [hickory.core :as h]
     [cybermonday.core :as cm]
-    [gs.content :as c]
     [garden.selectors]
     [lambdaisland.ornament :refer [defstyled]]
     [gs.airtable :as at]
     [gs.components :as common]
     [gs.util :as u]
     [lambdaisland.hiccup :as hiccup]
-    [com.rpl.specter :refer [select ALL FIRST setval transform NONE]])
+    [com.rpl.specter :refer [select ALL FIRST setval transform NONE]]
+    [gs.components :as c])
   (:use
     [gs.util]))
 
@@ -53,14 +53,14 @@
   ([s]
    [:<> [:span s]]))
 
-(defstyled process-img-left left-img
-  img-shadow
-  img-rotate-left
+(defstyled process-img-left c/left-img
+  c/img-shadow
+  c/img-rotate-left
   :mt-2 :ml-0 :mr-8 :mb-4)
 
-(defstyled process-img-right right-img
-  img-shadow
-  img-rotate-right
+(defstyled process-img-right c/right-img
+  c/img-shadow
+  c/img-rotate-right
   :mt-1 :mr-0 :ml-8 :mb-4)
 
 ;todo: compose this left/right stuff better? more conditionally?
@@ -81,7 +81,7 @@
        [process-img-right
         {:alt alt :src src}])
      text]
-    [fancy-divider]]))
+    [c/fancy-divider]]))
 
 (defstyled process :div
   ([]

@@ -3,7 +3,7 @@
     [clojure.string :as string]
     [hickory.core :as h]
     [cybermonday.core :as cm]
-    [gs.content :as c]
+    [gs.content :as content]
     [garden.selectors :as gs]
     [garden.core :refer [css]]
     [lambdaisland.ornament :refer [defstyled]]
@@ -200,8 +200,6 @@
       :name "comments"
       :rows "7"}]]))
 
-(defstyled border :div
-  :border-black :border-2 :border-solid)
 
 (do
 

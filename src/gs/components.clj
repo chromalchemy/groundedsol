@@ -8,7 +8,8 @@
     [garden.compiler :as gc]
     [garden.selectors]
     [gs.color :as color]
-    [lambdaisland.hiccup :as hiccup])
+    [lambdaisland.hiccup :as hiccup]
+    [gs.garden.styles :as styles])
   (:use [gs.util]
         [gs.site]
         [gs.garden.page]
@@ -16,6 +17,23 @@
         [com.rpl.specter]
         :reload))
 
+(defn border [color]
+  (let [color-str
+        (cond
+          (string? color) color
+          (keyword? color) (name color))]
+    [(pred-k :border "-" color-str ) :border-1 :border-solid]))
+(comment
+  (border :green-500)
+  (border "green-500"))
+
+;starting Portfolio demo (need cljs compiler..)
+(comment
+  (do
+    (defstyled mycomponent :h1)
+
+    (defscene name
+      (mycomponent))))
 
 (defstyled page-title :h1
   :text-#d1c583 :text-center)
@@ -84,29 +102,50 @@
 
 ;----------------------------------------
 (defstyled nav-link :li
-  :text-left
-  [:a :tracking-wide :text-#000 :text-sm :font-normal
-   :py-12px]
-  [:a:hover :text-#d1c583 :no-underline]
-  ([p]
-   [:<>
-    [:a {:href (html-filename p)}
-     (page-name p)]]))
+  :text-left :block
+  #_(styles/border "green")
+  ;[:border-red-500 :border-1 :border-solid]
+  ;;(border :green-500)
+  [:a :block :tracking-wide :text-#000 :text-sm :font-normal
+   :py-1 :md:py-2 :px-3 #_(styles/border "red")
 
-(defstyled nav-links-wrapper :ul #_.slimmenu
-  :text-center :mx-auto
-  :flex :justify-center :sm:justify-end :flex-wrap :space-x-8
-  :list-none
-  :m-0 :p-0 :text-lg
-  ([links]
-   [:<> links]))
-  ;:md:text-right])
+   [:&:hover :text-#d1c583 :no-underline]]
+
+   ;[:&:first-child]]
+  ;[:& border]
+  ;(styles/border "red")
+
+  ([page-key]
+   [:<>
+    [:a {:href (html-filename page-key)}
+     (page-name page-key)]]))
+
+
+;nav {
+;     width: 58%;
+;     margin-right: 2%;
+;     padding: 5px 0 0 0;
+;     list-style: none;
+;     text-align: right;
+;     height: 48px;
+;     color: #000;
+;     box-sizing: border-box;
+;     text-transform: uppercase;
+;     float: right});
+
+
 
 (defstyled nav-menu :nav
-  :block
+  :block :min-h-0 #_:w-50%
+  ;:h-4.5em
+  [:ul
+   :flex :flex-grow :justify-center :sm:justify-end :flex-wrap :space-x-1 :md:space-x-0
+   :list-none
+   :m-0 :p-0
+   #_(styles/border "blue")]
   ([page-keys]
    [:<>
-    [nav-links-wrapper
+    [:ul
      (for [page-key page-keys]
        [nav-link page-key])]]))
 
@@ -142,20 +181,13 @@
   :mx-auto
   :xl:container
   :my-0
-  ;:box-border
+  :box-border
   :py-0 :pb-2 :px-5
   :w-full)
 
 (hiccup/render
   [container "hello"]
   {:doctype? false})
-
-
-(defstyled mystyles :div
-  :border-solid
-  :border-color-#555555
-  :border-2px
-  :h-350px :w-100px)
 
 (defstyled inside :div
   :w-96% :py-0 :px-2%)
@@ -182,39 +214,53 @@
 
 
 (defstyled logo-block :div
-  :w-60% :mx-auto
-  {:border "1px solid black"})
+  #_(styles/border "pink")
+  :text-center :md:text-left :md:w-40%)
 
 (defstyled slogan :div
+  {:font-family "'Poiret One', Verdana, Helvetica, sans-serif"}
   :text-#333
-  :text-xs
+  ;:text-#000
   :tracking-wide
   :uppercase
-  :text-center
-  :pl-0)
+  ;:pl-0
+  :text-sm
+  ;:md:text-md
+  ;:text-left
+  :font-normal)
 
-(defstyled brand :div
-  :text-xl :text-#000 :text-left :m-0 :p-0
-  {:font-family "'Poiret One', Verdana, Helvetica, sans-serif"}
-  [:a :font-normal :no-underline :text-#000]
-  [:img :w-200px :h-53px]
+(defstyled brand-logo :a
+  :block  :m-0 :p-0 :no-underline
+  [:img #_:w-200px]
   ([]
    [:<>
-    [:a {:href (site/html-filename :home)}
-     [:img
-      {:alt (c/images :logo/alt)
-       :src (gs.site/img-path (c/images :logo/file))}]]]))
+    {:href (site/html-filename :home)}
+    [:img
+     {:alt (c/images :logo/alt)
+      :src (gs.site/img-path (c/images :logo/file))}]]))
 
 (defstyled masthead container
-  :my-0 :mx-auto  :border-b-0
-  :flex :flex-col
+  :pt-2
+  :border-b-0 :md:flex :justify-between #_:flex-col
+  ;(styles/border "green")
+  ;:min-h-100px
+  ;[:.test (styles/border "green") :flex :p-2 :w-full]
+  ;[:.child (styles/border "red") :w-8]
   ([]
    [:<>
     [logo-block
-     [brand]
+     [brand-logo]
      [slogan c/slogan]]
-    [nav-menu page-keys]]))
+    [nav-menu page-keys]
+    #_
+    [:div.test
+     [:div.child]
+     [:div.child]
+     [:div.child]]]))
     ;[hr-noshow]]))
+
+
+
 
 (defstyled footer-nav-link nav-link
   :mb-1
@@ -353,7 +399,8 @@
   :max-w-150px :h-auto :float-left :mr-20px :mb-10px
   ([]
    [:<>
-    {:alt "Amanda" :src (img-path (jpeg "mandy") "samples")}]))
+    {:alt "Amanda"
+     :src (img-path (jpeg "mandy") "samples")}]))
 
 
 (defstyled footer-bottom :div.footerbottom
@@ -396,11 +443,16 @@
      content-hiccup]]))
 
 
+
+(defstyled test-comp container
+  :bg-green-500 :h-200px (styles/border "red"))
+
 (defstyled body-elem :body
   :h-full :flex :flex-col
   ([content]
    [:<>
     [scroll-to-top]
+    ;[test-comp]
     [masthead]
     [main-elem content]
     [footer]

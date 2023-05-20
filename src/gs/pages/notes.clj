@@ -19,25 +19,35 @@
 
 ;toolbar=0&
 
-
 (defstyled pdf-embed :embed
   :w-full :h-1200px  :md:h-2200px :md:w-850px :block :mx-auto
-  ([]
-   [:<> {:src "/media/Pruning_Notes_for_Native_Plants_3.pdf#navpanes=0&scrollbar=0" :type "application/pdf"}]))
+  ([filename]
+   [:<> {:src (str "/media/" filename ".pdf" "#navpanes=0&scrollbar=0") :type "application/pdf"}]))
 
-(defstyled pruning-notes-pdf-link :div
+
+(defstyled pdf-link :div
   :text-2xl :text-center
   [:a :mb-4 :inline-block]
   [:.link-type :text-lg :text-gray-300 :ml-4]
   [:.description :text-lg :mt-2]
-  ([]
+  ([filename link-text]
    [:<>
     [:a
-     {:href "/media/Pruning_Notes_for_Native_Plants_3.pdf"}
-     "Pruning Notes Newsletter"
-     [:span.link-type "(pdf)"]]
-    [pdf-embed]]))
-     ;[:p.description "Includes Seasonal Planting Guide, & how to \"Prune like Fire\"!"]]]))
+     {:href
+      (str "/media/" filename ".pdf")}
+     link-text
+     [:span.link-type "(pdf)"]]]))
+
+
+
+(defstyled pdf-block :div
+  ([filename link-text]
+   [:<>
+    [pdf-link filename link-text]
+    [pdf-embed filename]]))
+
+
+;[:p.description "Includes Seasonal Planting Guide, & how to \"Prune like Fire\"!"]]]))
 
 (defstyled container common/container)
 
@@ -45,4 +55,8 @@
   [common/container
    [common/page-title "Garden Notes"]
    [common/fancy-divider]
-   [pruning-notes-pdf-link]])
+   [pdf-block "Plant your Landscape" "Plant your Landscape"]
+   [common/fancy-divider]
+   [pdf-block "Pruning_Notes_for_Native_Plants_3" "Pruning Notes Newsletter"]
+   (common/spacer 20)])
+

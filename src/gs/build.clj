@@ -83,6 +83,6 @@
 
 (comment
   (build-site!)
-  (bench
-    (build-site!)
-    :calls 1))
+  #_(bench
+      (build-site!)
+      :calls 1))
