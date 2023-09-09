@@ -1,14 +1,14 @@
-{:paths ["src" "notebooks"]
+{:paths ["src" "notebooks" "resources" "target/resources"]
  :deps
    {better-cond/better-cond {:mvn/version "2.1.5"}
-    airtable-clj/airtable-clj {:mvn/version "0.1.1-SNAPSHOT"}
+    ;; airtable-clj/airtable-clj {:mvn/version "0.1.1-SNAPSHOT"}
     markdown-clj/markdown-clj {:mvn/version "1.11.4"}
     com.kiranshila/cybermonday {:mvn/version "0.6.213"}
-    org.clojure/clojure {:mvn/version "1.11.1"}
     lambdaisland/deep-diff2 {:mvn/version "2.10.211"}
-    instaparse/instaparse {:mvn/version "1.4.12"}
+    ;; instaparse/instaparse {:mvn/version "1.4.12"}
     com.lambdaisland/hiccup {:mvn/version "0.0.33"}
-    com.lambdaisland/ornament
+    com.lambdaisland/ornament {:mvn/version "1.10.94"}
+    ;; com.lambdaisland/ornament
     ;{:mvn/version "0.4.34"}
     ;bump girouette first take
     ;{:git/url "https://github.com/lambdaisland/ornament" :sha "c0d98b962f4a521f06c063d7fa8654bc7d859139"}
@@ -19,7 +19,6 @@
     ;lastest master
     ;{:git/url "https://github.com/lambdaisland/ornament" :sha "81c3377ab2e03fc583b5128e058beb9a030698c6"}
 
-    camel-snake-kebab/camel-snake-kebab {:mvn/version "0.4.3"}
     hickory/hickory {:mvn/version "0.7.1"}
     org.clojars.abhinav/luna {:mvn/version "0.2.1"}
     com.nextjournal/beholder {:mvn/version "1.0.2"}
@@ -42,7 +41,16 @@
     com.github.jpmonettas/flow-storm-dbg {:mvn/version "3.7.2"}
     nano-id/nano-id {:mvn/version "1.0.0"}
     io.joshmiller/exif-processor {:mvn/version "0.3.0"}
-    no.cjohansen/portfolio {:mvn/version "2023.07.15"}}
+    no.cjohansen/portfolio {:mvn/version "2023.07.15"}
+
+    ;; biff deps
+    com.biffweb/biff                    {:git/url "https://github.com/jacobobryant/biff", :sha "6428c7f", :tag "v0.7.11"}
+    camel-snake-kebab/camel-snake-kebab {:mvn/version "0.4.3"}
+    metosin/muuntaja                    {:mvn/version "0.6.8"}
+    ring/ring-defaults                  {:mvn/version "0.3.4"}
+    org.clojure/clojure                 {:mvn/version "1.11.1"}
+    org.slf4j/slf4j-simple              {:mvn/version "2.0.0-alpha5"}}
+ 
  :aliases
    {:dev
     {:classpath-overrides
