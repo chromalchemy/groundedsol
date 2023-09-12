@@ -21,7 +21,7 @@
         "Sign out"])
       "."]
      [:.h-6]
-     [:div "nothing yet"]
+     [:div "thanks for joining"]
      )))
 
 
