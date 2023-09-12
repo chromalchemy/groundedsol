@@ -5,7 +5,7 @@
             [gs.groundedsol.home :as home]
             [gs.groundedsol.middleware :as mid]
             [gs.groundedsol.ui :as ui]
-            [gs.groundedsol.worker :as worker]
+            #_[gs.groundedsol.worker :as worker]
             [gs.groundedsol.schema :as schema]
             [clojure.test :as test]
             [clojure.tools.logging :as log]
@@ -19,7 +19,7 @@
    (biff/authentication-plugin {})
    home/plugin
    schema/plugin
-   worker/plugin])
+   #_worker/plugin])
 
 (def routes [["" {:middleware [mid/wrap-site-defaults]}
               (keep :routes plugins)]
