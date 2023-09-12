@@ -27,6 +27,7 @@
 
 
 
+
 (def plugin
   {:routes ["/app" {:middleware [mid/wrap-signed-in]}
             ["" {:get app}]]})
