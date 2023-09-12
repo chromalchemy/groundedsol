@@ -19,8 +19,7 @@
    "css/animate.css"
    "css/nivo-lightbox.css"
    "images/lightbox/default.css"])
-   ;"https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css"])
-
+   
 
 (def css-links
   (for [css-url css-files]
