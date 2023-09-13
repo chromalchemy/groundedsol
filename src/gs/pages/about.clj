@@ -25,7 +25,7 @@
   ([]
    [:<>
      [left-img {:alt "About Amanda"
-                :src "images/samples/amanda2.jpg"
+                :src "img/samples/amanda2.jpg"
                 :size 300}]
      [in-the-works]
      (for [text content/about-me-text]

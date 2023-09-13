@@ -99,9 +99,9 @@
                     (assoc x :lr/keywords lr-kws)))))))))))
         ;tags (map #(.getTags %) exif-directories)]
   (->
-    ;"resources/images/What's hot photo drop/cropped/random-xmp-example.xmp"
-    ;"resources/images/What's hot photo drop/cropped/DSC_0008.xmp"
-    "resources/images/What's hot photo drop/cropped/DSC_0008.dng"
+    ;"resources/img/What's hot photo drop/cropped/random-xmp-example.xmp"
+    ;"resources/img/What's hot photo drop/cropped/DSC_0008.xmp"
+    "resources/img/What's hot photo drop/cropped/DSC_0008.dng"
     (io/file)
     (dng-data)))
 

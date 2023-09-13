@@ -7,7 +7,7 @@
   [{:title "Step one: Making the most out of your consultation"
     :image-side :left
     :alt "Florida Front Yard with Grass"
-    :src "images/samples/yard.jpg"
+    :src "img/samples/yard.jpg"
     :text
     [:<>
      [:p
@@ -17,7 +17,7 @@
    {:title "Step two: The Concept Design, Hand rendered or Full Digital"
     :image-side :right
     :alt "Digital Layout Design for Yard"
-    :src "images/samples/yard2.jpg"
+    :src "img/samples/yard2.jpg"
     :text
     [:<>
      [:p "By the second hour, we are on our way, working together to produce a hand drawn design or detailing a viable plan to move forward. There are two types of design, a small impact design and a digital design."]
@@ -29,7 +29,7 @@
    {:title "Step three: Implementing your design And Phased installation"
     :image-side :left
     :alt "Florida's sandy dry soils"
-    :src "images/samples/yard3.jpg"
+    :src "img/samples/yard3.jpg"
     :text
     [:<>
      [:p "With your design in hand, you are connected to established installation, irrigation and lighting contractors for a full yard installation. If you choose to have a professional do the digging, that is. Small orders of plant material can be delivered and staged for the DIY crowd wanting to get their hands dirty and keep costs low."]
@@ -39,7 +39,7 @@
    {:title "Step four: The Growing Stage And Plant Material Management"
     :image-side :right
     :alt "Florida Native Plants"
-    :src "images/samples/yard4.jpg"
+    :src "img/samples/yard4.jpg"
     :text
     [:<>
      [:p "Just like a new haircut, this stage is the one to get used to. Many native plants thrive in our hot, sunny, sandy landscapes. Quite a few thrive in hot, shady, wet areas. Some are adapted for areas in-between. Selecting the right plant for the right place will allow for each plant to grow to maturity with less attention as it grows."]

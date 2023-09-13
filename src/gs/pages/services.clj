@@ -39,10 +39,10 @@
    [:<>
     {:class ["wow" "zoomIn" "lightbox"]
      :data-lightbox-gallery "catalog2"
-     :href "images/hand-drawn-designs/hand-sketch.jpg"
+     :href "img/hand-drawn-designs/hand-sketch.jpg"
      :data-wow-delay ".6s"}
     [:img
-     {:src "images/hand-drawn-designs/hand-sketch.jpg"
+     {:src "img/hand-drawn-designs/hand-sketch.jpg"
       :alt "Hand Drawn Design"}]]))
 
 (defstyled image-gallery-block :div
@@ -69,10 +69,10 @@
    [:<>
     {:class ["wow" "zoomIn" "lightbox"]
      :data-lightbox-gallery "catalog1"
-     :href "images/final-designs/design-1-vert.png"
+     :href "img/final-designs/design-1-vert.png"
      :data-wow-delay "0.9s"}
     [:img
-     {:src "images/final-designs/design-1-vert.png"
+     {:src "img/final-designs/design-1-vert.png"
       :alt "Digital Final Design"}]
     [image-gallery-block-caption "Click for more..."]]))
 
@@ -103,7 +103,7 @@
    [:<>
     {:class ["lightbox"]
      :data-lightbox-gallery "catalog1"
-     :href (str "images/final-designs/" filename)}]))
+     :href (str "img/final-designs/" filename)}]))
 
 (defstyled hand-drawn-design-gallery-img :a
   :hidden
@@ -111,7 +111,7 @@
    [:<>
     {:class ["lightbox"]
      :data-lightbox-gallery "catalog2"
-     :href (str "images/hand-drawn-designs/" filename)}]))
+     :href (str "img/hand-drawn-designs/" filename)}]))
 
 (defstyled design-stages :div
   :flex :flex-col :md:flex-row :clear-both)
@@ -286,7 +286,7 @@
   :w-300px :mx-auto
   ([]
    [:<>
-    (common/social-icons "images/social-icons/")]))
+    (common/social-icons "img/social-icons/")]))
 
 
 (defstyled video-title :h2

@@ -13,7 +13,7 @@
     [gs.meta])
   (:use [gs.util]))
 
-;images/samples/1b.jpg
+;img/samples/1b.jpg
 
 (def old-image-names
   (let [removed 3
@@ -26,7 +26,7 @@
       numbers)))
 
 (defn gallery-image-path [s]
-  (str "images/gallery/" s))
+  (str "img/gallery/" s))
 
 (def old-image-local-paths
   (conj
@@ -112,7 +112,7 @@
    [:section.contentBox3a
     [:p
      [:img.img-left.img-curved
-      {:alt "" :src "images/samples/green125.jpg"}]
+      {:alt "" :src "img/samples/green125.jpg"}]
      "Our native Florida plants are as versatile as they are colorful. Grounded Solutions specializes in ecosystem identification and assisting the property owner in re-developing for a native landscape. Many of our clients are interested in attracting birds, butterflies and other pollinators. "]
     [:p "With Grounded Solutions, you get the whole story. The proper Florida native name, its origin and how to best take care of your new plants in the landscape."]]
 
@@ -123,7 +123,7 @@
    [:section.contentBox3c
     [:p "There are plenty of native plants to discover and we hope to see more planted. This gallery showcases some of our favorites that may be right for you too. Soon we will be open for business in our pop-up plant shop. We want to help spread the seeds of diversity in the landscape."]
     [:p "Please follow Grounded Solutions Inc on Facebook, Instagram and Youtube for individual plant stories, growing organically each season."]
-    (common/social-icons "images/social-icons/")]])
+    (common/social-icons "img/social-icons/")]])
 
 (defstyled mytitle common/middle-of-line-title
   :text-red-500)

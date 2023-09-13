@@ -12,6 +12,6 @@
    [common/fancy-divider]
    [:p "Your form has been successfully submitted and we should be receiving it shortly." [:br] "We make every
    attempt to answer within one business day." [:br] "Please note that we keep your email address confidential."]
-   [:p [:img {:alt "" :src "images/samples/mail.png"}]]
+   [:p [:img {:alt "" :src "img/samples/mail.png"}]]
    [:p " "]])
 

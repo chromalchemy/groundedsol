@@ -18,7 +18,7 @@
    ;"css/groundedsol.css"
    "css/animate.css"
    "css/nivo-lightbox.css"
-   "images/lightbox/default.css"])
+   "img/lightbox/default.css"])
    
 
 (def css-links

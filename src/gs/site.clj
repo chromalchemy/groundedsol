@@ -59,7 +59,7 @@
   (html-filename :notes))
 
 (def image-root
-  (str "images/"))
+  (str "img/"))
 
 (defn img-path
   ([filename]

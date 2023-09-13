@@ -205,7 +205,7 @@
      [left-img
       {:alt img-alt-text
        :size 125
-       :src (str "images/" img-path)}]
+       :src (str "img/" img-path)}]
      text]]))
 
 (defstyled hr-noshow :hr
@@ -287,7 +287,7 @@
 ;  [:p.socialmedia
 ;   (list
 ;     [:a {:href "https://www.facebook.com/groundedsol/" :target "_blank"}
-;      [:img {:alt "Facebook" :height "32" :src "images/icons/fb.png" :title "Facebook" :width "32"}]])])
+;      [:img {:alt "Facebook" :height "32" :src "img/icons/fb.png" :title "Facebook" :width "32"}]])])
 
 
 (defstyled footer-social-icons :div
@@ -295,7 +295,7 @@
   [:div :flex :space-x-4 :-left]
   ([]
    [:<>
-    [social-icons "images/social-icons/small/"]]))
+    [social-icons "img/social-icons/small/"]]))
 
 (defstyled hours :p.hours)
 (defstyled phone :p.phone)

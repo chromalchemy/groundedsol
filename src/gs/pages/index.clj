@@ -161,7 +161,7 @@
     [alternate-header-2 "Discover"]
     [:div.callbox
      [:h6 "Why Buy Natives"]
-     [:img {:alt "" :height "111" :src "images/samples/GS%20Icon.png" :width "114"}]
+     [:img {:alt "" :height "111" :src "img/samples/GS%20Icon.png" :width "114"}]
      (let [p-style
            {:style {:padding-left "15px"
                     :padding-right "15px"
@@ -256,7 +256,7 @@
 (def review-blocks
   (for [{:keys [name img review]} content/reviews]
     (let [customer-name name
-          img-path (str "images/reviews/" img)]
+          img-path (str "img/reviews/" img)]
       [:li
        [content-section
         [review-img customer-name img-path]

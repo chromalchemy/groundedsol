@@ -91,7 +91,7 @@
 
 (def flower-img-data
   {:alt "Flower"
-   :src "images/samples/flowercontact.png"})
+   :src "img/samples/flowercontact.png"})
 
 (defstyled flower :img
    :w-150px :sm:w-150px :mx-auto :object-scale-down :self-start :hidden :md:block
@@ -296,7 +296,7 @@
      [:p "Your form has been successfully submitted and we should be receiving it shortly." [:br] "We make
            every
            attempt to answer within one business day." [:br] "Please note that we keep your email address confidential."]
-     [:img {:alt "" :src "images/samples/mail.png"}]]]))
+     [:img {:alt "" :src "img/samples/mail.png"}]]]))
 
 (defstyled bottom-half :div
   ;:flex :flex-col :md:flex-row
@@ -317,7 +317,7 @@
     [sucess-block]
     [social-block
      [mobile-divider]
-     [common/social-icons "images/social-icons/"]
+     [common/social-icons "img/social-icons/"]
      [facebook-widget]]]))
 
 
