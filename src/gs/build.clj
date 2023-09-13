@@ -28,6 +28,7 @@
 (comment
   (fs-api/local-connect))
 
+#_
 (do
   (defn write-page [page-key page-hiccup]
     (let [file-path (str gs.site/build-path (gs.site/html-filename page-key))]
@@ -68,6 +69,7 @@
 (defn build-site! []
   ;(refresh {:refresh-dirs ["src"]})
   (write-page-css!)
+  #_
   (->>
     {:home gs.pages.index/page-hiccup
      :notes gs.pages.notes/page-hiccup

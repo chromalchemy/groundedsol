@@ -5,27 +5,28 @@
             #_[gs.groundedsol.settings :as settings]
             #_[rum.core :as rum]
             [xtdb.api :as xt]
+            [gs.pages.index]
             #_[ring.adapter.jetty9 :as jetty]
             #_[cheshire.core :as cheshire]))
 
+
+(defn sign-in-form [email]
+  [:div "Signed in as " email ". "
+   (biff/form
+     {:action "/auth/signout"
+      :class "inline"}
+     [:button.text-blue-500.hover:text-blue-800 {:type "submit"}
+      "Sign out"])
+   "."]
+  [:.h-6]
+  [:div "thanks for joining"])
 
 (defn app [{:keys [session biff/db] :as ctx}]
   (let [{:user/keys [email]} (xt/entity db (:uid session))]
     (ui/page
      {}
-     [:div "Signed in as " email ". "
-      (biff/form
-       {:action "/auth/signout"
-        :class "inline"}
-       [:button.text-blue-500.hover:text-blue-800 {:type "submit"}
-        "Sign out"])
-      "."]
-     [:.h-6]
-     [:div "thanks for joining"]
+     gs.pages.index/page-hiccup
      )))
-
-
-
 
 
 (def plugin

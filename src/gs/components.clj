@@ -455,12 +455,12 @@
     ;[test-comp]
     [masthead]
     [main-elem content]
-    [footer]
-    script-files]))
+    [footer]]))
 
 (defstyled html-elem :html
   :h-full
   ([page-key content]
    [:<> {:lang "en"}
-    (head-elem page-key)
+    [:head 
+     (head-stuff [] false)]
     [body-elem content]]))
