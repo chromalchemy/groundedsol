@@ -53,21 +53,21 @@
       (gs.components/html-elem page-key)
       (#(hiccup/render % {:doctype? true})))))
 
-(defn write-page-styles! []
+(defn write-page-css! []
   (->>
     [(slurp "resources/css/default.css")
      (o/defined-styles #_{:preflight? true})
      (gc/compile-css gs.garden.page/rules)
      (interpose \n)]
     (apply str)
-    (spit "build/css/compiled.css"))
-  (println "Wrote compiled.css"))
+    (spit "build/css/main.css"))
+  (println "Wrote Compiled CSS to main.css"))
 
 
 ;todo: generate require from page kw
 (defn build-site! []
   ;(refresh {:refresh-dirs ["src"]})
-  (write-page-styles!)
+  (write-page-css!)
   (->>
     {:home gs.pages.index/page-hiccup
      :notes gs.pages.notes/page-hiccup

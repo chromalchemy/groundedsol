@@ -1,47 +1,29 @@
 (ns gs.groundedsol.ui
   (:require [cheshire.core :as cheshire]
             [clojure.java.io :as io]
+            [gs.meta]
             [gs.groundedsol.settings :as settings]
             [com.biffweb :as biff]
             [ring.middleware.anti-forgery :as csrf]
             [rum.core :as rum]))
 
-(defn css-path []
-  (if-some [f (io/file (io/resource "public/css/main.css"))]
-    (str "/css/main.css?t=" (.lastModified f))
-    "/css/main.css"))
-
-(defn js-path []
-  (if-some [f (io/file (io/resource "public/js/main.js"))]
-    (str "/js/main.js?t=" (.lastModified f))
-    "/js/main.js"))
 
 (defn base [{:keys [::recaptcha] :as ctx} & body]
   (apply
    biff/base-html
    (-> ctx
-       (merge #:base{:title settings/app-name
-                     :lang "en-US"
-                    ;;  :icon "/img/glider.png"
-                     :description "Ecological Landscape Design & Consulting"
-                     :image "/img/logo.png"})
-       (update :base/head (fn [head]
-                            (concat [[:link {:rel "stylesheet" :href (css-path)}]
-                                     [:script {:src (js-path)}]
-                                     [:script {:src "https://unpkg.com/htmx.org@1.9.0"}]
-                                     [:script {:src "https://unpkg.com/htmx.org/dist/ext/ws.js"}]
-                                     [:script {:src "https://unpkg.com/hyperscript.org@0.9.8"}]
-                                     [:link {:href "/apple-touch-icon.png", :sizes "180x180", :rel "apple-touch-icon"}]
-                                     [:link {:href "/favicon-32x32.png", :sizes "32x32", :type "image/png", :rel "icon"}]
-                                     [:link {:href "/favicon-16x16.png", :sizes "16x16", :type "image/png", :rel "icon"}]
-                                     [:link {:href "/site.webmanifest", :rel "manifest"}]
-                                     [:link {:color "#5bbad5", :href "/safari-pinned-tab.svg", :rel "mask-icon"}]
-                                     [:meta {:content "#da532c", :name "msapplication-TileColor"}]
-                                     [:meta {:content "#0d9488", :name "theme-color"}]
-                                     (when recaptcha
-                                       [:script {:src "https://www.google.com/recaptcha/api.js"
-                                                 :async "async" :defer "defer"}])]
-                                    head))))
+     (merge
+       #:base{:title settings/app-name
+              #_ (let [custom-page-title (:title (pages page-key))]
+                   (if custom-page-title
+                     custom-page-title
+                     (-> pages :home :title)))
+              :lang "en-US"
+              #_#_:icon "/img/glider.png"
+              :description "Ecological Landscape Design & Consulting"
+              :image "/img/logo.png"})
+     (update :base/head
+       #(gs.meta/head-stuff % recaptcha)))
    body))
 
 (defn page [ctx & body]

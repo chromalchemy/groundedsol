@@ -1,63 +1,108 @@
 (ns gs.meta
   (:require
-    [lambdaisland.ornament :as o :refer [defstyled]]
-    [gs.content :as c]
-    [gs.garden.page]
-    [gs.site :as site :refer [pages html-filename]]
-    [garden.compiler :as gc]
-    [nano-id.core :refer [nano-id]])
+    [clojure.java.io :as io]
+    [clojure.string :as str])
   (:use
     [gs.util]
-    [gs.site]
-    [gs.garden.page]))
+    ))
 
-(def css-files
+;; ------------------ js
+
+(def js-path  "/js/")
+
+(defn main-js-path []
+  (if-some [f (io/file (io/resource "public/js/main.js"))]
+    (str "main.js?t=" (.lastModified f))
+    "main.js"))
+
+(def script-strs
+  ["https://unpkg.com/htmx.org@1.9.0"
+   "https://unpkg.com/htmx.org/dist/ext/ws.js"
+   "https://unpkg.com/hyperscript.org@0.9.8"
+   "https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"
+   "jquery.slimmenu.js"
+   "nivo-lightbox.js"
+   "wow.min.js"
+   "accordionscript.js"
+   (main-js-path)
+   "old_main.js"
+   "live.js"])
+
+(def recaptcha-script-link
+  [:script {:src "https://www.google.com/recaptcha/api.js"
+            :async "async" :defer "defer"}])
+
+(defn js-script-links [recaptcha]
+  (let [links 
+        (for [script-str script-strs]
+          (let [script-url 
+                (cond 
+                  (str/includes? script-str "http") script-str
+                  :else (str js-path script-str))]
+            (cond
+              (str/includes? script-str "live.js")
+              [:script {:src script-url 
+                        :type "text/javascript"
+                        :title "default"}]
+              :else 
+              [:script {:src script-url :type "text/javascript"}]
+              )))]
+    (if-not recaptcha links
+      (conj links recaptcha-script-link))))
+
+
+;; ----------- css
+
+(defn main-css-path []
+  (if-some [f (io/file (io/resource "public/css/main.css"))]
+    (str "/css/main.css?t=" (.lastModified f))
+    "/css/main.css"))
+
+(def css-urls
   ["https://fonts.googleapis.com/css?family=Open+Sans|Poiret+One|Oswald:300"
    "https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css"
-   ;"css/default.css"
-   ;"css/groundedsol.css"
-   "css/animate.css"
-   "css/nivo-lightbox.css"
-   "img/lightbox/default.css"])
-   
-
+   "/css/animate.css"
+   "/css/nivo-lightbox.css"
+   "/img/lightbox/default.css"
+   (main-css-path)])
+              
 (def css-links
-  (for [css-url css-files]
-    [:link {:href css-url :rel "stylesheet" :type "text/css" :media "screen"}]))
+  (for [css-url css-urls]
+    [:link {:href css-url 
+            :rel "stylesheet" 
+            :type "text/css" 
+            :media "screen"
+            }]))
 
-(defn head-elem [page-key]
-  [:head
-   [:title
-    (let [custom-page-title (:title (pages page-key))]
-      (if custom-page-title
-        custom-page-title
-        (-> pages :home :title)))]
-   [:meta {:charset "utf-8"}]
+;;;-------------------
+
+(def icon-meta
+  [[:link {:href "/apple-touch-icon.png", :sizes "180x180", :rel "apple-touch-icon"}]
+   [:link {:href "/favicon-32x32.png", :sizes "32x32", :type "image/png", :rel "icon"}]
+   [:link {:href "/favicon-16x16.png", :sizes "16x16", :type "image/png", :rel "icon"}]
+   [:link {:color "#5bbad5", :href "/safari-pinned-tab.svg", :rel "mask-icon"}]
+   [:meta {:content "#da532c", :name "msapplication-TileColor"}]
+   [:meta {:content "#0d9488", :name "theme-color"}]
+   ;; old stuff
+   #_[:link {:REL "SHORTCUT ICON" :HREF "icongs.ico" :type "image/x-icon"}]])
+
+(def old-meta 
+  [[:meta {:charset "utf-8"}]
    [:meta {:name "viewport" :content "width=device-width, initial-scale=1"}]
    [:meta {:property "og:type" :content "website"}]
-   [:meta {:content c/page-description :name "description"}]
-   [:link {:REL "SHORTCUT ICON" :HREF "icongs.ico" :type "image/x-icon"}]
-   [:link
-    {:rel "stylesheet"
-     :href (str "css/compiled.css" "?" (nano-id))
-     :type "text/css"
-     :title "default"}]
-   [:meta {:content "width=device-width, initial-scale=1.0" :name "viewport"}]
-   #_[:link {:href "http://fonts.googleapis.com/css?family=Open+Sans|Poiret+One|Oswald:300" :rel "stylesheet" :type "text/css"}]
-   css-links])
+   #_[:meta {:content c/page-description :name "description"}]
+   [:meta {:content "width=device-width, initial-scale=1.0" :name "viewport"}]])
 
 
-(def script-files
-  (list
-    ;[:script {:src "https://unpkg.com/htmx.org@1.4.1"}]
-    ;[:script {:src "https://www.hCaptcha.com/1/api.js" :async "true" :defer "true"}]
+(defn head-stuff  [head recaptcha]
+  (concat
+    [[:link {:href "/site.webmanifest", :rel "manifest"}]]
+    icon-meta
+    (js-script-links recaptcha)
+    css-links
+    head))
 
-    [:script {:src "js/live.js" :type "text/javascript"}]
-    [:script {:src "https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"}]
-    [:script {:src "js/jquery.slimmenu.js" :type "text/javascript"}]
-    [:script {:src "js/nivo-lightbox.js" :type "text/javascript"}]
-    [:script {:src "js/accordionscript.js" :type "text/javascript"}]
-    [:script {:src "js/wow.min.js" :type "text/javascript"}]
-    [:script {:src "https://www.google.com/recaptcha/api.js"}]
-    [:script {:src "js/main.js" :type "text/javascript"}]))
+(comment
+  (head-stuff [] true))
+
 
