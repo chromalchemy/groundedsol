@@ -331,7 +331,7 @@
     [:br] [:br]]))
 
 (def calendar-script
-  [:script {:src "scripts/calendar02.js" :type "text/javascript"}])
+  [:script {:src "js/calendar02.js" :type "text/javascript"}])
 
 (defstyled contact-btn :p.center
   [:a {:color color/gold-yellow}]

@@ -222,7 +222,7 @@
     ([]
      [:<>
       {:id "contact-form"
-       :action "scripts/send_form_email.php"
+       :action "send_form_email.php"
        :method "POST"}
        ;:name "contactform"}
       [field-row

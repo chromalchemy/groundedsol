@@ -52,12 +52,12 @@
     ;[:script {:src "https://unpkg.com/htmx.org@1.4.1"}]
     ;[:script {:src "https://www.hCaptcha.com/1/api.js" :async "true" :defer "true"}]
 
-    [:script {:src "scripts/live.js" :type "text/javascript"}]
-    [:script {:src "//ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"}]
-    [:script {:src "scripts/jquery.slimmenu.js" :type "text/javascript"}]
-    [:script {:src "scripts/nivo-lightbox.js" :type "text/javascript"}]
-    [:script {:src "scripts/accordionscript.js" :type "text/javascript"}]
-    [:script {:src "scripts/wow.min.js"}]
+    [:script {:src "js/live.js" :type "text/javascript"}]
+    [:script {:src "https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"}]
+    [:script {:src "js/jquery.slimmenu.js" :type "text/javascript"}]
+    [:script {:src "js/nivo-lightbox.js" :type "text/javascript"}]
+    [:script {:src "js/accordionscript.js" :type "text/javascript"}]
+    [:script {:src "js/wow.min.js" :type "text/javascript"}]
     [:script {:src "https://www.google.com/recaptcha/api.js"}]
-    [:script {:src "scripts/main.js" :type "text/javascript"}]))
+    [:script {:src "js/main.js" :type "text/javascript"}]))
 

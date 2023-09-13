@@ -1,24 +1,56 @@
-// When plain htmx isn't quite enough, you can stick some custom JS here.
+
+var onSubmit = function(response) {
+    document.getElementById("contact-form").submit();
+};
 
 
-console.log("hello");
+function contactFormSuccess() {
+    console.log("form success");
+    $("#contact-success").toggle();
+    $("#contact-block").toggle();
+};
+
+function contactFormError() {
+    console.log("form error");
+    $("#contact-error-warning").show();
+};
 
 //LIGHTBOX
 $(document).ready(function(){
     $('.lightbox').nivoLightbox();
+
+    $('.scroll-to-top').hide();
+      //Check to see if the window is top if not then display button
+      $(window).scroll(function () {
+      if ($(this).scrollTop() > 300) {
+        $('.scroll-to-top').fadeIn();
+      } else {
+        $('.scroll-to-top').fadeOut();
+      }
 });
 
+//submit contact form (after recaptcha)
+function onSubmit(token) {
+     document.getElementById("contact-form").submit();
+   }
+
+new WOW().init();
+
+//Live.heartbeat();
+
+//$('ul.slimmenu').slimmenu(
+//    {
+//        resizeWidth: '1024',
+//        collapserTitle: 'Main Menu',
+//        animSpeed: '300',
+//        easingEffect: null,
+//        indentChildren: true,
+//        childrenIndenter: '&nbsp;&nbsp;'
+//    }
+//);
+
+
 //SCROLL TO TOP
-$(document).ready(function () {
-  $('.scroll-to-top').hide();
-  //Check to see if the window is top if not then display button
-  $(window).scroll(function () {
-  if ($(this).scrollTop() > 300) {
-    $('.scroll-to-top').fadeIn();
-  } else {
-    $('.scroll-to-top').fadeOut();
-  }
-});
 $('.scroll-to-top').click(function () {
   $('html, body').animate({ scrollTop: 0 }, 800);
   return false;
@@ -59,7 +91,7 @@ $('.scroll-to-top').click(function () {
 })(jQuery);
 $(function() {
     $('#ticker').list_ticker({
-        speed: 12000,
+        speed: 8000,
         effect: 'fade'
     })
 });
