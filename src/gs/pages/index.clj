@@ -9,7 +9,9 @@
     [lambdaisland.ornament :as o :refer [defstyled]]
     [lambdaisland.hiccup :as hiccup]
     [clojure.string :as string]
-    [cybermonday.core :as md])
+    [cybermonday.core :as md]
+            
+   [gs.groundedsol.ui :as ui])
   (:use
     [gs.components]
     [com.rpl.specter]
@@ -283,12 +285,15 @@
     [discover]
     [get-started]]))
 
-(def page-hiccup
-  [:<>
-   [welcome]
-   [intro-blocks]
-   [hot-plant-gallery]
-   [container
-    [second-row]]
-   [reviews]])
+(defn home-page [ctx]
+  (ui/base
+    (assoc ctx ::ui/recaptcha false)
+    [welcome]
+    [intro-blocks]
+    [hot-plant-gallery]
+    [container
+     [second-row]]
+    [reviews]
+    ))
+
 

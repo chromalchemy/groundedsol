@@ -5,7 +5,6 @@
             #_[gs.groundedsol.settings :as settings]
             #_[rum.core :as rum]
             [xtdb.api :as xt]
-            [gs.pages.index]
             #_[ring.adapter.jetty9 :as jetty]
             #_[cheshire.core :as cheshire]))
 
@@ -24,9 +23,8 @@
 (defn app [{:keys [session biff/db] :as ctx}]
   (let [{:user/keys [email]} (xt/entity db (:uid session))]
     (ui/page
-     {}
-     gs.pages.index/page-hiccup
-     )))
+      {}
+      [:h1 "APP"])))
 
 
 (def plugin

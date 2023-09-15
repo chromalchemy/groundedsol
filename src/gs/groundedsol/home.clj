@@ -4,7 +4,8 @@
             [gs.groundedsol.middleware :as mid]
             [gs.groundedsol.ui :as ui]
             [gs.groundedsol.settings :as settings]
-            [rum.core :as rum]
+            [gs.pages.index]
+            [lambdaisland.hiccup :as hiccup]
             [xtdb.api :as xt]))
 
 (def email-disabled-notice
@@ -179,7 +180,7 @@
      :id "signin"
      :hidden {:email (:email params)
               :on-error "/signin"}}
-    (biff/recaptcha-callback "submitSignin" "signin")
+    (biff/recaptcha-callback "submitSignin" "signin")*e
     [:button.link.g-recaptcha
      (merge (when site-key
               {:data-sitekey site-key
@@ -189,7 +190,7 @@
 
 (def plugin
   {:routes [["" {:middleware [mid/wrap-redirect-signed-in]}
-             ["/"                  {:get home-page}]]
+             ["/"                  {:get gs.pages.index/home-page}]]
             ["/link-sent"          {:get link-sent}]
             ["/verify-link"        {:get verify-email-page}]
             ["/signin"             {:get signin-page}]
