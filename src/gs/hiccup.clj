@@ -5,7 +5,7 @@
             [ring.middleware.anti-forgery :as anti-forgery]
             [lambdaisland.hiccup :as hiccup]
             ;; move rum stuff over from here
-            [com.biffweb :as biff]
+            #_[com.biffweb :as biff]
             
           ))
 
@@ -42,7 +42,6 @@
 
 (defn base-html
   "Wraps contents in an :html and :body element with various metadata set.
-  
     font-families:  A collection of families to request from Google fonts (see g-fonts).
     head:           Additional Rum elements to include inside the head."
   [{:base/keys [title
@@ -97,6 +96,14 @@
     contents]])
 
 (defn form
+  "Returns a [:form ...] element.
+  
+    hidden:  A map from names to values, which will be converted to
+             [:input {:type \"hidden\" ...}] fields.
+    opts:    Options for the :form element (with hidden removed).
+  
+    Sets :method to \"post\" by default, and includes a CSRF token (via
+    ring.middleware.anti-forgery/*anti-forgery-token*)."
   [{:keys [hidden] :as opts} & body]
   [:form (-> (merge {:method "post"} opts)
            (dissoc :hidden)

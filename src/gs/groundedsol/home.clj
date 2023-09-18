@@ -5,6 +5,7 @@
             [gs.groundedsol.ui :as ui]
             [gs.groundedsol.settings :as settings]
             [gs.pages.index]
+            [gs.hiccup :as bhiccup]
             [lambdaisland.hiccup :as hiccup]
             [xtdb.api :as xt]))
 
@@ -14,7 +15,7 @@
    "link to the console. See config.edn."])
 
 (defn signup-form [{:keys [recaptcha/site-key params]}]
-  (biff/form
+  (bhiccup/form
     {:id "signup"
      :action "/auth/send-link"
      :hidden {:on-error "/"}
@@ -87,7 +88,7 @@
    ctx
    [:h2.text-2xl.font-bold (str "Sign up for " settings/app-name)]
    [:div.h-3]
-   (biff/form
+   (bhiccup/form
     {:action "/auth/verify-link"
      :hidden {:token (:token params)}}
     [:div [:label {:for "email"}
@@ -110,7 +111,7 @@
 (defn signin-page [{:keys [recaptcha/site-key params] :as ctx}]
   (ui/page
    (assoc ctx ::ui/recaptcha true)
-   (biff/form
+   (bhiccup/form
     {:action "/auth/send-code"
      :id "signin"
      :hidden {:on-error "/signin"}}
@@ -151,7 +152,7 @@
 (defn enter-code-page [{:keys [recaptcha/site-key params] :as ctx}]
   (ui/page
    (assoc ctx ::ui/recaptcha true)
-   (biff/form
+   (bhiccup/form
     {:action "/auth/verify-code"
      :id "code-form"
      :hidden {:email (:email params)}}
@@ -175,7 +176,7 @@
         "invalid-code" "Invalid code."
         "There was an error.")])
    [:div.h-3]
-   (biff/form
+   (bhiccup/form
     {:action "/auth/send-code"
      :id "signin"
      :hidden {:email (:email params)

@@ -6,7 +6,7 @@
             [com.biffweb :as biff]
             [ring.middleware.anti-forgery :as csrf]
             [lambdaisland.hiccup :as hiccup]
-            [gs.hiccup :refer [base-html]]
+            [gs.hiccup :refer [base-html] :as bhiccup]
     ))
 
 
@@ -52,7 +52,7 @@
         (if (= status 404)
           "Page not found."
           "Something went wrong.")])
-     (hiccup/render  {:doctype? false}))
+     (bhiccup/render-static-markup))
    
    })
 

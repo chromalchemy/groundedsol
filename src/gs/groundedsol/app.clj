@@ -4,13 +4,14 @@
             [gs.groundedsol.ui :as ui]
             #_[gs.groundedsol.settings :as settings]
             [xtdb.api :as xt]
+            [gs.hiccup :as bhiccup]
             #_[ring.adapter.jetty9 :as jetty]
             #_[cheshire.core :as cheshire]))
 
 
 (defn sign-in-form [email]
   [:div "Signed in as " email ". "
-   (biff/form
+   (bhiccup/form
      {:action "/auth/signout"
       :class "inline"}
      [:button.text-blue-500.hover:text-blue-800 {:type "submit"}
