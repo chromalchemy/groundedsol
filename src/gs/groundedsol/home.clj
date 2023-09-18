@@ -9,7 +9,7 @@
             [xtdb.api :as xt]))
 
 (def email-disabled-notice
-  [:.text-sm.mt-3.bg-blue-100.rounded.p-2
+  [:div.text-sm.mt-3.bg-blue-100.rounded.p-2
    "Until you add API keys for Postmark and reCAPTCHA, we'll print your sign-up "
    "link to the console. See config.edn."])
 
@@ -31,7 +31,7 @@
                w-full
                focus:border-teal-600
                focus:ring-teal-600]}]
-    [:.h-3]
+    [:div.h-3]
     [:button
      (merge (when site-key
               {:data-sitekey site-key
@@ -48,8 +48,8 @@
      "Join the waitlist"]
     (when-some [error (:error params)]
       [:<>
-       [:.h-1]
-       [:.text-sm.text-red-600
+       [:div.h-1]
+       [:div.text-sm.text-red-600
         (case error
           "recaptcha" (str "You failed the recaptcha test. Try again, "
                         "and make sure you aren't blocking scripts from Google.")
@@ -61,20 +61,20 @@
 (defn home-page [ctx]
   (ui/base
     (assoc ctx ::ui/recaptcha true)
-    [:.bg-orange-50.flex.flex-col.flex-grow.items-center.p-3
-     [:.h-12.grow]
+    [:div.bg-orange-50.flex.flex-col.flex-grow.items-center.p-3
+     [:div.h-12.grow]
      [:img.w-40 {:src "/img/eel.svg"}]
-     [:.h-6]
-     [:.text-2xl.sm:text-3xl.font-semibold.sm:text-center.w-full
+     [:div.h-6]
+     [:div.text-2xl.sm:text-3xl.font-semibold.sm:text-center.w-full
       "The world's finest discussion platform"]
-     [:.h-2]
-     [:.sm:text-lg.sm:text-center.w-full
+     [:div.h-2]
+     [:div.sm:text-lg.sm:text-center.w-full
       "Communities, channels, messages, even RSS—eelchat has it all. Coming soon."]
-     [:.h-6]
+     [:div.h-6]
      (signup-form ctx)
-     [:.h-12 {:class "grow-[2]"}]
-     [:.text-sm biff/recaptcha-disclosure]
-     [:.h-6]]))
+     [:div.h-12 {:class "grow-[2]"}]
+     [:div.text-sm biff/recaptcha-disclosure]
+     [:div.h-6]]))
 
 (defn link-sent [{:keys [params] :as ctx}]
   (ui/page
@@ -86,23 +86,23 @@
   (ui/page
    ctx
    [:h2.text-2xl.font-bold (str "Sign up for " settings/app-name)]
-   [:.h-3]
+   [:div.h-3]
    (biff/form
     {:action "/auth/verify-link"
      :hidden {:token (:token params)}}
     [:div [:label {:for "email"}
            "It looks like you opened this link on a different device or browser than the one "
            "you signed up on. For verification, please enter the email you signed up with:"]]
-    [:.h-3]
-    [:.flex
+    [:div.h-3]
+    [:div.flex
      [:input#email {:name "email" :type "email"
                     :placeholder "Enter your email address"}]
-     [:.w-3]
+     [:div.w-3]
      [:button.btn {:type "submit"}
       "Sign in"]])
    (when-some [error (:error params)]
-     [:.h-1]
-     [:.text-sm.text-red-600
+     [:div.h-1]
+     [:div.text-sm.text-red-600
       (case error
         "incorrect-email" "Incorrect email address. Try again."
         "There was an error.")])))
@@ -116,13 +116,13 @@
      :hidden {:on-error "/signin"}}
     (biff/recaptcha-callback "submitSignin" "signin")
     [:h2.text-2xl.font-bold "Sign in to " settings/app-name]
-    [:.h-3]
-    [:.flex
+    [:div.h-3]
+    [:div.flex
      [:input#email {:name "email"
                     :type "email"
                     :autocomplete "email"
                     :placeholder "Enter your email address"}]
-     [:.w-3]
+     [:div.w-3]
      [:button.btn.g-recaptcha
       (merge (when site-key
                {:data-sitekey site-key
@@ -131,8 +131,8 @@
       "Sign in"]]
     (when-some [error (:error params)]
       [:<>
-       [:.h-1]
-       [:.text-sm.text-red-600
+       [:div.h-1]
+       [:div.text-sm.text-red-600
         (case error
           "recaptcha" (str "You failed the recaptcha test. Try again, "
                            "and make sure you aren't blocking scripts from Google.")
@@ -142,9 +142,9 @@
           "invalid-link" "Invalid or expired link. Sign in to get a new link."
           "not-signed-in" "You must be signed in to view that page."
           "There was an error.")]])
-    [:.h-1]
-    [:.text-sm "Don't have an account yet? " [:a.link {:href "/"} "Sign up"] "."]
-    [:.h-3]
+    [:div.h-1]
+    [:div.text-sm "Don't have an account yet? " [:a.link {:href "/"} "Sign up"] "."]
+    [:div.h-3]
     biff/recaptcha-disclosure
     email-disabled-notice)))
 
@@ -158,10 +158,10 @@
     (biff/recaptcha-callback "submitCode" "code-form")
     [:div [:label {:for "code"} "Enter the 6-digit code that we sent to "
            [:span.font-bold (:email params)]]]
-    [:.h-1]
-    [:.flex
+    [:div.h-1]
+    [:div.flex
      [:input#code {:name "code" :type "text"}]
-     [:.w-3]
+     [:div.w-3]
      [:button.btn.g-recaptcha
       (merge (when site-key
                {:data-sitekey site-key
@@ -169,12 +169,12 @@
              {:type "submit"})
       "Sign in"]])
    (when-some [error (:error params)]
-     [:.h-1]
-     [:.text-sm.text-red-600
+     [:div.h-1]
+     [:div.text-sm.text-red-600
       (case error
         "invalid-code" "Invalid code."
         "There was an error.")])
-   [:.h-3]
+   [:div.h-3]
    (biff/form
     {:action "/auth/send-code"
      :id "signin"

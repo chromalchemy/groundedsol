@@ -11,6 +11,7 @@
             [clojure.tools.logging :as log]
             [clojure.tools.namespace.repl :as tn-repl]
             [malli.core :as malc]
+            [gs.hiccup :refer [export-hiccup]]
             [malli.registry :as malr]
             [nrepl.cmdline :as nrepl-cmd]))
 
@@ -32,7 +33,7 @@
 (def static-pages (apply biff/safe-merge (map :static plugins)))
 
 (defn generate-assets! [ctx]
-  (biff/export-rum static-pages "target/resources/public")
+  (export-hiccup static-pages "target/resources/public")
   (biff/delete-old-files {:dir "target/resources/public"
                           :exts [".html"]}))
 

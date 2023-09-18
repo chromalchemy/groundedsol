@@ -2,14 +2,15 @@
   (:require [camel-snake-kebab.core :as csk]
             [camel-snake-kebab.extras :as cske]
             [clj-http.client :as http]
+            [gs.hiccup :refer [render-static-markup]]
             [gs.groundedsol.settings :as settings]
             [clojure.tools.logging :as log]
-            [rum.core :as rum]))
+            ))
 
 (defn signin-link [{:keys [to url user-exists]}]
   {:to to
    :subject "Join the list"
-   :html-body (rum/render-static-markup
+   :html-body (render-static-markup
                [:html
                 [:body
                  [:p "We received a request to join " settings/app-name
@@ -32,7 +33,7 @@
    :subject (if user-exists
               (str "Sign in to " settings/app-name)
               (str "Sign up for " settings/app-name))
-   :html-body (rum/render-static-markup
+   :html-body (render-static-markup
                [:html
                 [:body
                  [:p "We received a request to sign in to " settings/app-name

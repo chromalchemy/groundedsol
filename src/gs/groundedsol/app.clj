@@ -3,7 +3,6 @@
             [gs.groundedsol.middleware :as mid]
             [gs.groundedsol.ui :as ui]
             #_[gs.groundedsol.settings :as settings]
-            #_[rum.core :as rum]
             [xtdb.api :as xt]
             #_[ring.adapter.jetty9 :as jetty]
             #_[cheshire.core :as cheshire]))
@@ -17,7 +16,7 @@
      [:button.text-blue-500.hover:text-blue-800 {:type "submit"}
       "Sign out"])
    "."]
-  [:.h-6]
+  [:div.h-6]
   [:div "thanks for joining"])
 
 (defn app [{:keys [session biff/db] :as ctx}]
