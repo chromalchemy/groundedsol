@@ -120,11 +120,10 @@
        (:gallery-name content/hot-plant-gallery)
      :data-wow-delay delay
      :href
-       (gs.site/img-path
-         (str "//" img-folder "//" img-file))
+       (gs.site/img-path img-file img-folder)
      :title title}
     [:img {:alt title
-           :src (gs.site/img-path (str "//" img-folder "//" thumb-file))}]]))
+           :src (gs.site/img-path thumb-file img-folder)}]]))
 
 (defstyled hot-plants :div
   [:div :text-center]

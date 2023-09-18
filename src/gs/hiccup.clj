@@ -4,6 +4,8 @@
             [com.biffweb.impl.util :as util]
             [ring.middleware.anti-forgery :as anti-forgery]
             [lambdaisland.hiccup :as hiccup]
+            [lambdaisland.ornament :refer [defstyled]]
+            [gs.components :as components]
             ;; move rum stuff over from here
             #_[com.biffweb :as biff]
             
@@ -38,6 +40,30 @@
                   (for [f families]
                     (str "&family=" f)))
           :rel "stylesheet"}])
+
+(defstyled main-elem :section
+  :flex :flex-grow :flex-shrink-0 :w-auto
+  [:.inner :w-full]
+  ([content]
+   [:<>
+    [:div.inner
+     content]]))
+
+(defstyled body-elem :body
+  :h-full :flex :flex-col
+  ;; biff ex body styles
+  ;; {:position "absolute"
+  ;;  :width "100%"
+  ;;  :min-height "100%"
+  ;;  :display "flex"
+  ;;  :flex-direction "column"}
+  ([content]
+   [:<>
+    [components/scroll-to-top]
+    [components/masthead]
+    [main-elem content]
+    [components/footer]]))
+
 
 
 (defn base-html
@@ -87,13 +113,7 @@
                :rel "preconnect"}]
        (g-fonts font-families)])
     (into [:<>] head)]
-   [:body
-    {:style {:position "absolute"
-             :width "100%"
-             :min-height "100%"
-             :display "flex"
-             :flex-direction "column"}}
-    contents]])
+   [body-elem contents]])
 
 (defn form
   "Returns a [:form ...] element.
