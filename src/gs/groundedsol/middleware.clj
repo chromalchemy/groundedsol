@@ -2,7 +2,8 @@
   (:require [com.biffweb :as biff]
             [muuntaja.middleware :as muuntaja]
             [ring.middleware.anti-forgery :as csrf]
-            [ring.middleware.defaults :as rd]))
+            [ring.middleware.defaults :as rd]
+            [lambdaisland.hiccup :as hiccup]))
 
 (defn wrap-redirect-signed-in [handler]
   (fn [{:keys [session] :as ctx}]
@@ -31,9 +32,24 @@
       (def response* response)
       response)))
 
+(comment
+  (hiccup/render [:div [:span]])
+  )
+
+(defn wrap-render-hiccup [handler]
+  "If handler returns a vector, pass it to hiccup/render, and return a 200 response."
+  (fn [ctx]
+    (let [response (handler ctx)]
+      (if (vector? response)
+        {:status 200
+         :headers {"content-type" "text/html"}
+         :body (hiccup/render response)}
+        response))))
+
+
 (defn wrap-site-defaults [handler]
   (-> handler
-      biff/wrap-render-rum
+      wrap-render-hiccup
       biff/wrap-anti-forgery-websockets
       csrf/wrap-anti-forgery
       biff/wrap-session
