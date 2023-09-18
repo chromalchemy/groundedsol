@@ -3,7 +3,8 @@
             [clojure.string :as str]
             [com.biffweb.impl.util :as util]
             [ring.middleware.anti-forgery :as anti-forgery]
-            [lambdaisland.hiccup :as hiccup]))
+            [lambdaisland.hiccup :as hiccup]
+            #_[rum.core :as rum]))
 
 ;; clone of com.biffweb.impl.rum
 
@@ -17,16 +18,23 @@
 (defn render [body]
   {:status 200
    :headers {"content-type" "text/html; charset=utf-8"}
-   :body (str "<!DOCTYPE html>\n" (render-static-markup body))})
+   :body (hiccup/render body)})
 
 (defn unsafe [html]
-  {:dangerouslySetInnerHTML {:__html html}})
+  [::hiccup/unsafe-html html])
 
-(def emdash [:span (unsafe "&mdash;")])
+(def emdash1 [:span [::hiccup/unsafe-html "&mdash;"]])
 
-(def endash [:span (unsafe "&#8211;")])
+(def endash [:span [::hiccup/unsafe-html "&#8211;"]])
 
-(def nbsp [:span (unsafe "&nbsp;")])
+(def nbsp [:span [::hiccup/unsafe-html "&nbsp;"]])
+
+;; comparing unsafe html renderings
+(comment
+  [(rum/render-static-markup endash)
+   (render-static-markup
+     [:span
+      [::hiccup/unsafe-html "&#8211;"]])])
 
 (defn g-fonts
   [families]
@@ -104,4 +112,4 @@
           :let [full-path (cond-> (str dir path)
                             (str/ends-with? path "/") (str "index.html"))]]
     (io/make-parents full-path)
-    (spit full-path (str "<!DOCTYPE html>\n" (render-static-markup hicc)))))
+    (spit full-path (hiccup/render hicc))))
