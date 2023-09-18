@@ -4,6 +4,9 @@
             [com.biffweb.impl.util :as util]
             [ring.middleware.anti-forgery :as anti-forgery]
             [lambdaisland.hiccup :as hiccup]
+            ;; move rum stuff over from here
+            [com.biffweb :as biff]
+            
           ))
 
 ;; clone of com.biffweb.impl.rum
@@ -36,7 +39,12 @@
                     (str "&family=" f)))
           :rel "stylesheet"}])
 
+
 (defn base-html
+  "Wraps contents in an :html and :body element with various metadata set.
+  
+    font-families:  A collection of families to request from Google fonts (see g-fonts).
+    head:           Additional Rum elements to include inside the head."
   [{:base/keys [title
                 description
                 lang
@@ -45,7 +53,8 @@
                 url
                 canonical
                 font-families
-                head]}
+                head]
+    :as opts}
    & contents]
   [:html
    {:lang lang

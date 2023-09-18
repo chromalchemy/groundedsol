@@ -6,12 +6,13 @@
             [com.biffweb :as biff]
             [ring.middleware.anti-forgery :as csrf]
             [lambdaisland.hiccup :as hiccup]
+            [gs.hiccup :refer [base-html]]
     ))
 
 
 (defn base [{:keys [::recaptcha] :as ctx} & body]
   (apply
-   biff/base-html
+   base-html
    (-> ctx
      (merge
        #:base{:title settings/app-name
