@@ -111,6 +111,16 @@
   ([]
    [:<>
     [:p
+     "To schedule a consultation, please email me at "
+     [:a {:href "mailto:groundedsolution@gmail.com"}
+      "groundedsolution@gmail.com"]
+     ", or call "
+     [:a {:href "tel:352-219-5381"}
+      "(352) 219-5381"]
+     ", I will contact you shortly to help create your beautiful "
+     [:em "Florida"]
+     " garden."]
+    #_[:p
      "To schedule a consultation, please leave your name and information. "
      "We will contact you as soon as we can to help create your beautiful" [:em " Florida "] "garden."]
     [flower]]))
@@ -299,6 +309,9 @@
            attempt to answer within one business day." [:br] "Please note that we keep your email address confidential."]
      [:img {:alt "" :src "img/samples/mail.png"}]]]))
 
+
+
+
 (defstyled bottom-half :div
   ;:flex :flex-col :md:flex-row
   ;[:.flower :md:hidden]
@@ -312,10 +325,10 @@
     ; "toggle success"]
     [contact-block
      [contact-text]
-     [error-block]
-     [contact-form]
+     #_[error-block]
+     #_[contact-form]
      [bottomflower]]
-    [sucess-block]
+    #_[sucess-block]
     [social-block
      [mobile-divider]
      [common/social-icons "img/social-icons/"]
