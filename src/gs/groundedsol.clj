@@ -13,7 +13,8 @@
             [malli.core :as malc]
             [gs.hiccup :refer [export-hiccup]]
             [malli.registry :as malr]
-            [nrepl.cmdline :as nrepl-cmd]))
+            [nrepl.cmdline :as nrepl-cmd]
+            [gs.build]))
 
 (def plugins
   [app/plugin
@@ -33,11 +34,13 @@
 (def static-pages (apply biff/safe-merge (map :static plugins)))
 
 (defn generate-assets! [ctx]
+  (gs.build/write-page-css!)
   (export-hiccup static-pages "target/resources/public")
   (biff/delete-old-files {:dir "target/resources/public"
                           :exts [".html"]}))
 
 (defn on-save [ctx]
+  (println "saving files")
   (biff/add-libs)
   (biff/eval-files! ctx)
   (generate-assets! ctx)
