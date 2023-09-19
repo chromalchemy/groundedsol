@@ -9,7 +9,6 @@
             [gs.hiccup :refer [base-html] :as bhiccup]
     ))
 
-
 (defn base [{:keys [::recaptcha] :as ctx} & body]
   (apply
    base-html
@@ -25,7 +24,8 @@
               :description "Ecological Landscape Design & Consulting"
               :image "/img/logo400.png"})
      (update :base/head
-       #(gs.meta/head-stuff % recaptcha)))
+       (fn [head]
+         (gs.meta/head-stuff ctx head recaptcha))))
    body))
 
 (defn page [ctx & body]

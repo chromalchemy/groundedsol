@@ -3,7 +3,9 @@
             [muuntaja.middleware :as muuntaja]
             [ring.middleware.anti-forgery :as csrf]
             [ring.middleware.defaults :as rd]
-            [lambdaisland.hiccup :as hiccup]))
+            [lambdaisland.hiccup :as hiccup]
+            [ring.util.response :as resp]
+            [ring.middleware.head :as head]))
 
 (defn wrap-redirect-signed-in [handler]
   (fn [{:keys [session] :as ctx}]
@@ -46,6 +48,23 @@
          :body (hiccup/render response)}
         response))))
 
+(defn checksum [s]
+  (let [crc (new java.util.zip.CRC32)]
+    (.update crc (.getBytes s))
+    (Long/toHexString (.getValue crc))))
+
+;; for live.js
+(defn wrap-etag [handler]
+  (fn [ctx]
+    (let [response (handler ctx)]
+      (resp/update-header
+        response
+        "ETag"
+        (fn [etag]
+          (or etag
+            (when (string? (:body response))
+              (checksum (:body response)))))))))
+
 
 (defn wrap-site-defaults [handler]
   (-> handler
@@ -69,8 +88,11 @@
 
 (defn wrap-base-defaults [handler]
   (-> handler
-      biff/wrap-https-scheme
-      biff/wrap-resource
-      biff/wrap-internal-error
-      biff/wrap-ssl
-      biff/wrap-log-requests))
+    biff/wrap-https-scheme
+    biff/wrap-resource
+    biff/wrap-internal-error
+    biff/wrap-ssl
+    biff/wrap-log-requests
+    wrap-etag
+    head/wrap-head
+    ))

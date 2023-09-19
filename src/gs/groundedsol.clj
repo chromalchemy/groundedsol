@@ -28,8 +28,9 @@
              ["" {:middleware [mid/wrap-api-defaults]}
               (keep :api-routes plugins)]])
 
-(def handler (-> (biff/reitit-handler {:routes routes})
-                 mid/wrap-base-defaults))
+(def handler 
+  (-> (biff/reitit-handler {:routes routes})
+    mid/wrap-base-defaults))
 
 (def static-pages (apply biff/safe-merge (map :static plugins)))
 

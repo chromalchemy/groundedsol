@@ -26,7 +26,7 @@
    "accordionscript.js"
    (main-js-path)
    "old_main.js"
-   "live.js"])
+   #_"live.js"])
 
 (def recaptcha-script-link
   [:script {:src "https://www.google.com/recaptcha/api.js"
@@ -94,11 +94,16 @@
    [:meta {:content "width=device-width, initial-scale=1.0" :name "viewport"}]])
 
 
-(defn head-stuff  [head recaptcha]
+(defn include-livejs? [opts]
+  (:gs.groundedsol/include-livejs opts))
+
+(defn head-stuff  [ctx head recaptcha]
   (concat
     [[:link {:href "/site.webmanifest", :rel "manifest"}]]
     icon-meta
     (js-script-links recaptcha)
+    (when (include-livejs? ctx)
+      [[:script {:src "/js/live.js" :title "default"}]])
     css-links
     head))
 
