@@ -18,6 +18,7 @@
     [flow-storm.api :as fs-api]
     [garden.compiler :as gc]
     [lambdaisland.hiccup :as hiccup]
+   [gs.groundedsol.ui :as ui]
     :reload))
 
 
@@ -66,13 +67,9 @@
 
 
 ;todo: generate require from page kw
-(defn build-site! []
-  ;(refresh {:refresh-dirs ["src"]})
-  (write-page-css!)
-  #_
+(def pages
   (->>
-    {:home gs.pages.index/page-hiccup
-     :notes gs.pages.notes/page-hiccup
+    {:notes gs.pages.notes/page-hiccup
      :florida-plants gs.pages.fl-plants/page-hiccup
      :services gs.pages.services/page-hiccup
      :consultation gs.pages.consultation/page-hiccup
@@ -80,8 +77,13 @@
      :about gs.pages.about/page-hiccup}
     (mapv
       (fn [[page-key page-hiccup]]
-        (write-page page-key page-hiccup))))
-  (println "Site Built"))
+        [(str "/" (gs.site/html-filename page-key))
+         {:get 
+          (fn [ctx]
+            (ui/page
+              (assoc ctx ::ui/recaptcha false)
+              page-hiccup))}]
+        ))))
 
 (comment
   (build-site!)

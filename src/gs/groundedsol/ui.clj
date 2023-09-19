@@ -31,15 +31,11 @@
 (defn page [ctx & body]
   (base
    ctx
-   [:div.flex.flex-col.flex-grow
-    [:div.flex-grow]
-    [:div.p-3.mx-auto.max-w-screen-sm.w-full
-     (when (bound? #'csrf/*anti-forgery-token*)
-       {:hx-headers (cheshire/generate-string
-                      {:x-csrf-token csrf/*anti-forgery-token*})})
-     body]
-    [:div.flex-grow]
-    [:div.flex-grow]]))
+   [:div
+    (when (bound? #'csrf/*anti-forgery-token*)
+      {:hx-headers (cheshire/generate-string
+                     {:x-csrf-token csrf/*anti-forgery-token*})})
+    body]))
 
 (defn on-error [{:keys [status ex] :as ctx}]
   {:status status

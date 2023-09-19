@@ -12,7 +12,8 @@
     [gs.airtable :as at]
     [lambdaisland.hiccup :as hiccup]
     [com.rpl.specter :refer [select ALL FIRST setval transform NONE]]
-    [gs.color :as color])
+    [gs.color :as color]
+   [gs.groundedsol.ui :as ui])
   (:use
     [gs.util]
     [gs.components]))
@@ -331,4 +332,7 @@
 
   (html page-hiccup))
 
-
+(defn page [ctx]
+  (ui/page
+    (assoc ctx ::ui/recaptcha false)
+    page-hiccup))

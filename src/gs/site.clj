@@ -11,7 +11,7 @@
 
 (def pages
   {:home
-     {:filename "index"
+     {:filename "/"
       :title "Grounded Solutions Landscape Consultation and Design Company"}
    :florida-plants
      {:filename "floridaplants"
@@ -47,13 +47,16 @@
     (if specified-name specified-name
       (string/capitalize (name page-key)))))
 
+(comment
+  (page-name :consultation)
+  )
+
 (defn html-filename [page-key]
   (let [page (pages page-key)
         specified-name (:filename page)]
     (-> (if specified-name
           specified-name
-          (name page-key))
-      (str ".html"))))
+          (name page-key)))))
 
 (comment
   (html-filename :notes))

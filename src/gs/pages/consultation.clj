@@ -11,7 +11,9 @@
     [gs.util :as u]
     [lambdaisland.hiccup :as hiccup]
     [com.rpl.specter :refer [select ALL FIRST setval transform NONE]]
-    [gs.components :as c])
+    [gs.components :as c]
+   [gs.groundedsol.ui :as ui]
+            )
   (:use
     [gs.util]))
 
@@ -90,9 +92,14 @@
     (for [cs content/consultion-steps]
       [process-step cs])]))
 
-
 (def page-hiccup
   [common/container
    [common/page-title "Consultation & Design"]
    [common/fancy-divider]
    [process]])
+
+(defn page
+  [{:keys [recaptcha/site-key params] :as ctx}]
+  (ui/page
+    (assoc ctx ::ui/recaptcha true)
+    page-hiccup))

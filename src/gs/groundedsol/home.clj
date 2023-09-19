@@ -3,9 +3,17 @@
             [com.biffweb :as biff]
             [gs.groundedsol.middleware :as mid]
             [gs.groundedsol.ui :as ui]
+            [gs.site]
             [gs.groundedsol.settings :as settings]
             [gs.pages.index]
+            [gs.pages.fl-plants]
+            [gs.pages.consultation]
+            [gs.pages.services]
+            [gs.pages.contact]
+            [gs.pages.about]
+            [gs.pages.notes]
             [gs.hiccup :as bhiccup]
+            [gs.build :as build]
             [lambdaisland.hiccup :as hiccup]
             [xtdb.api :as xt]))
 
@@ -59,8 +67,8 @@
                           "If the problem persists, try another address.")
           "There was an error.")]])))
 
-(defn home-page [ctx]
-  (ui/base
+(defn signup-page [ctx]
+  (ui/page
     (assoc ctx ::ui/recaptcha true)
     [:div.bg-orange-50.flex.flex-col.flex-grow.items-center.p-3
      [:div.h-12.grow]
@@ -189,10 +197,33 @@
             {:type "submit"})
      "Send another code"])))
 
+(concat [1 2] [3 4])
+
 (def plugin
-  {:routes [["" {:middleware [mid/wrap-redirect-signed-in]}
-             ["/"                  {:get gs.pages.index/home-page}]]
-            ["/link-sent"          {:get link-sent}]
-            ["/verify-link"        {:get verify-email-page}]
-            ["/signin"             {:get signin-page}]
-            ["/verify-code"        {:get enter-code-page}]]})
+  {:routes
+   (vec
+     (concat
+       [["" {:middleware [mid/wrap-redirect-signed-in]}
+         ["/"                  {:get gs.pages.index/home-page}]]
+        ["/link-sent"          {:get link-sent}]
+        ["/verify-link"        {:get verify-email-page}]
+        ["/signin"             {:get signin-page}]
+        ["/signup"             {:get signup-page}]
+        ["/verify-code"        {:get enter-code-page}]
+        #_["/consultationanddesign"        {:get gs.pages.consultation/page}]
+        ]
+       (->>
+         {:notes gs.pages.notes/page-hiccup
+          :florida-plants gs.pages.fl-plants/page-hiccup
+          :services gs.pages.services/page-hiccup
+          :consultation gs.pages.consultation/page-hiccup
+          :contact gs.pages.contact/page-hiccup
+          :about gs.pages.about/page-hiccup}
+         (mapv
+           (fn [[page-key page-hiccup]]
+             [(str "/" (gs.site/html-filename page-key))
+              {:get
+               (fn [{:keys [recaptcha/site-key params] :as ctx}]
+                 (ui/page
+                   (assoc ctx ::ui/recaptcha false)
+                   page-hiccup))}])))))})
