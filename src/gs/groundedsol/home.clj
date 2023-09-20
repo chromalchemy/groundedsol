@@ -189,7 +189,7 @@
      :id "signin"
      :hidden {:email (:email params)
               :on-error "/signin"}}
-    (biff/recaptcha-callback "submitSignin" "signin")*e
+    (biff/recaptcha-callback "submitSignin" "signin")
     [:button.link.g-recaptcha
      (merge (when site-key
               {:data-sitekey site-key
@@ -199,31 +199,36 @@
 
 (concat [1 2] [3 4])
 
-(def plugin
-  {:routes
-   (vec
-     (concat
-       [["" {:middleware [mid/wrap-redirect-signed-in]}
-         ["/"                  {:get gs.pages.index/home-page}]]
-        ["/link-sent"          {:get link-sent}]
-        ["/verify-link"        {:get verify-email-page}]
-        ["/signin"             {:get signin-page}]
-        ["/signup"             {:get signup-page}]
-        ["/verify-code"        {:get enter-code-page}]
-        #_["/consultationanddesign"        {:get gs.pages.consultation/page}]
-        ]
-       (->>
-         {:notes gs.pages.notes/page-hiccup
-          :florida-plants gs.pages.fl-plants/page-hiccup
-          :services gs.pages.services/page-hiccup
-          :consultation gs.pages.consultation/page-hiccup
-          :contact gs.pages.contact/page-hiccup
-          :about gs.pages.about/page-hiccup}
-         (mapv
-           (fn [[page-key page-hiccup]]
-             [(str "/" (gs.site/html-filename page-key))
-              {:get
-               (fn [{:keys [recaptcha/site-key params] :as ctx}]
-                 (ui/page
-                   (assoc ctx ::ui/recaptcha false)
-                   page-hiccup))}])))))})
+(do
+  (def plugin
+    {:routes
+     (vec
+       (concat
+         [["" {:middleware [mid/wrap-redirect-signed-in]}
+           ["/"                  {:get gs.pages.index/home-page}]]
+          ["/link-sent"          {:get link-sent}]
+          ["/verify-link"        {:get verify-email-page}]
+          ["/signin"             {:get signin-page}]
+          ["/signup"             {:get signup-page}]
+          ["/verify-code"        {:get enter-code-page}]
+          #_["/consultationanddesign"        {:get gs.pages.consultation/page}]
+          ]
+         (->>
+           {:notes gs.pages.notes/page-hiccup
+            :florida-plants gs.pages.fl-plants/page-hiccup
+            :services gs.pages.services/page-hiccup
+            :consultation gs.pages.consultation/page-hiccup
+            :contact gs.pages.contact/page-hiccup
+            :about gs.pages.about/page-hiccup}
+           (mapv
+             (fn [[page-key page-hiccup]]
+               (let [rout-base-str (str "/" (gs.site/html-filename page-key))
+                     route-fn
+                     (fn [{:keys [recaptcha/site-key params] :as ctx}]
+                       (ui/page
+                         (assoc ctx ::ui/recaptcha false)
+                         page-hiccup))]
+                 [[(str rout-base-str ".html") {:get route-fn}]
+                  [rout-base-str {:get route-fn}]])))
+           (apply concat))))})
+           plugin)
