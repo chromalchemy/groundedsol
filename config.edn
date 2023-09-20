@@ -27,6 +27,8 @@
         :biff.middleware/cookie-secret "COOKIE_SECRET"
         :biff/jwt-secret "JWT_SECRET"}
  :dev {:merge [:prod]
+       :biff.beholder/paths ["src" "resources" "target"]
+       :biff.beholder/exts [".clj" ".css"]
        :biff.beholder/enabled true
        :gs.groundedsol/include-livejs true
        :biff/host "0.0.0.0"
