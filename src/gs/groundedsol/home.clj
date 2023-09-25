@@ -231,4 +231,5 @@
                  [[(str rout-base-str ".html") {:get route-fn}]
                   [rout-base-str {:get route-fn}]])))
            (apply concat))))})
-           plugin)
+  plugin)
+

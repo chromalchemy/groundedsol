@@ -12,7 +12,8 @@
     [lambdaisland.hiccup :as hiccup]
     [com.rpl.specter :refer [select ALL FIRST setval transform NONE]]
     [clojure.string :as string]
-    [gs.color :as color])
+    [gs.color :as color]
+   [gs.groundedsol.ui :as ui])
   (:use
     [gs.color]
     [gs.util]))
@@ -453,3 +454,10 @@
    [common/container
     [common/page-title "Frequently Asked Questions"]
     [faq-block]]])
+
+(defn page [ctx]
+  (ui/page
+    (assoc ctx ::ui/recaptcha false)
+    page-hiccup))
+
+
