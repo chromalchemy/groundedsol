@@ -217,8 +217,10 @@
   #_(styles/border "pink")
   :text-center :md:text-left :md:w-40%)
 
+
+
 (defstyled slogan :div
-  {:font-family "'Poiret One', Verdana, Helvetica, sans-serif"}
+  fancy-font
   :text-#333
   ;:text-#000
   :tracking-wide
@@ -381,10 +383,10 @@
        :color "#fff"}
     :content "' '"
     :height (em 0.2)}]
+  fancy-font
   {:font
    {:size (px 38)
-    :variant "normal"
-    :family "'Poiret One', Verdana, Helvetica, sans-serif"}}
+    :variant "normal"}}
   [:&:before
    {:right (em 0.4)
     :margin-left (percent -50)}]
