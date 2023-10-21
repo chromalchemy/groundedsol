@@ -11,7 +11,8 @@
     [clojure.string :as string]
     [cybermonday.core :as md]
             
-   [gs.groundedsol.ui :as ui])
+   [gs.groundedsol.ui :as ui]
+   [gs.components :as common])
   (:use
     [gs.components]
     [com.rpl.specter]
@@ -55,28 +56,36 @@
 (defstyled photo-overlay :div
   #_:div.photoblockInside
   :w-90% :my-0 :mx-auto
-  :py-60px :px-5% :text-#ffffff
+  :py-60px :px-4 :text-#ffffff
   [:* :text-#ffffff :text-center]
-  [:.lead :text-base
-   :small-caps :tracking-wide
-   :px-4 :py-0 :m-0
+  [:.lead :text-3xl
+   :tracking-wide
+   common/fancy-font
+   :block
+   :titling-caps
+   :py-0 :m-0
    #_:mt-20px #_:text-#ffffff
-   #_:border-#ffffff]
+   #_:border-#ffffff
+   :uppercase
+   #_
+   {:font-variant-caps "all-small-caps"}]
   [:.btn-main
    :text-md :small-caps :mt-20px :text-#ffffff :border-#ffffff
    [:&:hover
     :bg-#d1c583]]
+  [:.subtitle ]
   {:border-radius (px 10)
-   :background-color "rgba(0, 0, 0, 0.2)"}
-  ([{:keys [title body]}]
+   :background-color "rgba(0, 0, 0, 0.3)"}
+  ([{:keys [title body subtitle]}]
    [:<>
-    [:h1.big title]
-    [:p.lead body]
+    #_[:h1.big title]
+    [:span.lead body]
+    [:span.subtitle subtitle]
     #_[:p [:a.btn.btn-main {:href (:link m)} (:link-text m)]]]))
 
 
 
-(defstyled welcome :div
+(defstyled welcome container
   :w-full
   :max-w-2400px
   :mx-auto
@@ -102,9 +111,9 @@
       (img-path (jpeg "homephoto")))}}
   ([]
    [:<>
-    [container
-     [inside
-      [photo-overlay content/welcome]]]]))
+    [inside
+     [photo-overlay content/welcome]]
+    ]))
 
 
 ;.row2 .alternate1 {color: #fff};}

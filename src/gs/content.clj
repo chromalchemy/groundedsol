@@ -175,8 +175,8 @@
 
 (def welcome
   {:title "Welcome"
-   :body "Grounded Solutions is a Florida native focused landscape consultation and design
-company. We provide ecologically informed landscaping ideas and services to enhance the natural habitat of developing Florida."
+   :body "Florida native landscape consultation and design"
+   :subtitle "Ecologically informed landscaping ideas and services that enhance the natural Florida habitat."
    :link "about.html"
    :link-text "Learn More"})
 
