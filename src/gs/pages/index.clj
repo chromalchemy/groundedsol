@@ -64,6 +64,7 @@
    :block
    :titling-caps
    :py-0 :m-0
+   :mb-2
    #_:mt-20px #_:text-#ffffff
    #_:border-#ffffff
    :uppercase

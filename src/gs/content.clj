@@ -176,7 +176,7 @@
 (def welcome
   {:title "Welcome"
    :body "Florida native landscape consultation and design"
-   :subtitle "Ecologically informed landscaping ideas and services that enhance the natural Florida habitat."
+   :subtitle "Ecological landscaping ideas and services that enhance the natural Florida habitat."
    :link "about.html"
    :link-text "Learn More"})
 
