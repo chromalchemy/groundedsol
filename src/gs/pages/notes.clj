@@ -55,7 +55,7 @@
   [common/container
    [common/page-title "Garden Notes"]
    [common/fancy-divider]
-   [pdf-block "Plant your Landscape" "Plant your Landscape"]
+   [pdf-block "Convert your Landscape" "Convert your Landscape"]
    [common/fancy-divider]
    [pdf-block "Pruning_Notes_for_Native_Plants_3" "Pruning Notes Newsletter"]
    (common/spacer 20)])
