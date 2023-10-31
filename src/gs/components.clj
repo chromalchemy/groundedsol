@@ -17,6 +17,25 @@
         [com.rpl.specter]
         :reload))
 
+(defstyled pdf-embed :embed
+  :w-full :h-1200px  :md:h-2200px :md:w-850px :block :mx-auto
+  ([filename]
+   [:<> {:src (str "/media/" filename ".pdf" "#navpanes=0&scrollbar=0")
+         :type "application/pdf"}]))
+
+(defstyled pdf-link :div
+  :text-2xl :text-center
+  [:a :mb-4 :inline-block]
+  [:.link-type :text-lg :text-gray-300 :ml-4]
+  [:.description :text-lg :mt-2]
+  ([filename link-text]
+   [:<>
+    [:a
+     {:href
+      (str "/media/" filename ".pdf")}
+     link-text
+     [:span.link-type "(pdf)"]]]))
+
 (defn border [color]
   (let [color-str
         (cond
@@ -107,7 +126,7 @@
   ;[:border-red-500 :border-1 :border-solid]
   ;;(border :green-500)
   [:a :block :tracking-wide :text-#000 :text-sm :font-normal
-   :py-1 :md:py-2 :px-3 #_(styles/border "red")
+   :py-1 :md:py-2 :px-2 #_(styles/border "red")
 
    [:&:hover :text-#d1c583 :no-underline]]
 
@@ -136,10 +155,12 @@
 
 
 (defstyled nav-menu :nav
-  :block :min-h-0 #_:w-50%
+  :block  #_:w-50%
+  :w-full
+  :mb-2 :min-h-3rem
   ;:h-4.5em
   [:ul
-   :flex :flex-grow :justify-center :sm:justify-end :flex-wrap :space-x-1 :md:space-x-0
+   :flex :flex-grow :justify-center #_:sm:justify-end :flex-wrap :space-x-1 :md:space-x-0
    :list-none
    :m-0 :p-0
    #_(styles/border "blue")]
@@ -185,12 +206,15 @@
   :py-0 :pb-2 :px-5
   :w-full)
 
-(hiccup/render
-  [container "hello"]
-  {:doctype? false})
+(comment
+  (hiccup/render
+    [container "hello"]
+    {:doctype? false})
+  )
 
 (defstyled inside :div
   :w-96% :py-0 :px-2%)
+
 
 (defstyled card-stack :div #_:div.group
   :flex :flex-col :md:flex-row :gap-8 :justify-center :mx-auto)

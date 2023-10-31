@@ -19,32 +19,14 @@
 
 ;toolbar=0&
 
-(defstyled pdf-embed :embed
-  :w-full :h-1200px  :md:h-2200px :md:w-850px :block :mx-auto
-  ([filename]
-   [:<> {:src (str "/media/" filename ".pdf" "#navpanes=0&scrollbar=0") :type "application/pdf"}]))
-
-
-(defstyled pdf-link :div
-  :text-2xl :text-center
-  [:a :mb-4 :inline-block]
-  [:.link-type :text-lg :text-gray-300 :ml-4]
-  [:.description :text-lg :mt-2]
-  ([filename link-text]
-   [:<>
-    [:a
-     {:href
-      (str "/media/" filename ".pdf")}
-     link-text
-     [:span.link-type "(pdf)"]]]))
 
 
 
 (defstyled pdf-block :div
   ([filename link-text]
    [:<>
-    [pdf-link filename link-text]
-    [pdf-embed filename]]))
+    [common/pdf-link filename link-text]
+    [common/pdf-embed filename]]))
 
 
 ;[:p.description "Includes Seasonal Planting Guide, & how to \"Prune like Fire\"!"]]]))
