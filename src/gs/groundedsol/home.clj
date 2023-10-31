@@ -123,35 +123,45 @@
    :headers {"content-type" "text/plain"}
    :body "foo response"})
 
-(do
-  (def plugin
-    {:routes
-     (vec
-       (concat
-         [["/foo" {:det foo}]
-          ["/send-email"          {:post send-email-handler}]
-          ["" {:middleware [mid/wrap-redirect-signed-in]}
-           ["/"                  {:get gs.pages.index/home-page}]]
-          ["/contact-confirmed"  {:get confirmation-page}]
-          #_["/contact"             {:get contact-page}]
-          ]
-         (->>
-           {:notes gs.pages.notes/page-hiccup
-            :florida-plants gs.pages.fl-plants/page-hiccup
-            :services gs.pages.services/page-hiccup
-            :consultation gs.pages.consultation/page-hiccup
-            :contact gs.pages.contact/page-hiccup
-            :about gs.pages.about/page-hiccup}
-           (mapv
-             (fn [[page-key page-hiccup]]
-               (let [rout-base-str (str "/" (gs.site/html-filename page-key))
-                     route-fn
-                     (fn [{:keys [recaptcha/site-key params] :as ctx}]
-                       (ui/page
-                         (assoc ctx ::ui/recaptcha false)
-                         page-hiccup))]
-                 [[(str rout-base-str ".html") {:get route-fn}]
-                  [rout-base-str {:get route-fn}]])))
-           (apply concat))))})
-  plugin)
+
+
+
+(defn make-route [[page-key page-hiccup]]
+  (let [route-base-str (str "/" (gs.site/html-filename page-key))
+        route-fn
+        (fn [{:keys [recaptcha/site-key params] :as ctx}]
+          (ui/page
+            (assoc ctx ::ui/recaptcha false)
+            page-hiccup))]
+    [[(str route-base-str ".html") {:get route-fn}]
+     [route-base-str {:get route-fn}]]))
+
+(def original-page-routes
+  (->>
+    {:notes gs.pages.notes/page-hiccup
+     :florida-plants gs.pages.fl-plants/page-hiccup
+     :services gs.pages.services/page-hiccup
+     :consultation gs.pages.consultation/page-hiccup
+     :contact gs.pages.contact/page-hiccup
+     :about gs.pages.about/page-hiccup}
+    (mapv make-route)
+    (apply concat)))
+
+(def new-routes
+  [["/foo" {:det foo}]
+   ["/send-email"          {:post send-email-handler}]
+   ["" {:middleware [mid/wrap-redirect-signed-in]}
+    ["/"                  {:get gs.pages.index/home-page}]]
+   ["/contact-confirmed"  {:get confirmation-page}]
+   #_["/contact"             {:get contact-page}]])
+
+(def all-routes
+  (->> (concat
+         new-routes
+         original-page-routes)
+    vec
+    ))
+
+(def plugin
+  {:routes all-routes})
 
