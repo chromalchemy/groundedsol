@@ -4,15 +4,13 @@
     [garden.selectors :as gs]
     [garden.compiler :as gc]
     [garden.core :as g :refer [css style]]
-    ;[gs.components :as common]
     [gs.airtable :as at]
     [lambdaisland.ornament :as o :refer [defstyled]]
     [lambdaisland.hiccup :as hiccup]
     [clojure.string :as string]
     [cybermonday.core :as md]
             
-   [gs.groundedsol.ui :as ui]
-   [gs.components :as common])
+   [gs.groundedsol.ui :as ui])
   (:use
     [gs.components]
     [com.rpl.specter]
@@ -35,6 +33,21 @@
     [:div
      [:a.btn.btn-main
       {:href (html-filename link)} link-text]]]))
+
+(defstyled engagements container
+  :mb-8 :px-4
+  [:.title :uppercase :mr-2 :inline-block #_:small-caps]
+  [:p.this-body #_:md:min-h-8rem]
+  ([]
+   [:<>
+    [inside
+     [:h3 "Talks"]
+     [heading-line]
+     [:div
+      [:span.title "Backyard Biodiversity Day -"]
+      [:span "Mead Gardens"]
+      [pdf-link "Convert your Landscape" "Convert your Landscape"]]]
+    ]))
 
 (defstyled intro-blocks container
   :mb-8
@@ -60,7 +73,7 @@
   [:* :text-#ffffff :text-center]
   [:.lead :text-3xl
    :tracking-wide
-   common/fancy-font
+   fancy-font
    :block
    :titling-caps
    :py-0 :m-0
@@ -299,6 +312,7 @@
     (assoc ctx ::ui/recaptcha false)
     [welcome]
     [intro-blocks]
+    #_[engagements]
     [hot-plant-gallery]
     [container
      [second-row]]
