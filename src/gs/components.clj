@@ -377,16 +377,22 @@
 
 ;&raquo;
 
-(def get-date-script
-  [:script {:type "text/javascript"} "document.write(new Date().getFullYear());"])
 
 (defstyled fancy-divider :hr.fancy)
+
+(defstyled year :span
+  :mr-2
+  ([]
+   [:<>
+    [:script {:type "text/javascript"} 
+     "document.write(new Date().getFullYear());"]]))
+
 
 (defstyled copyright :p.copyright
   ([]
    [:<>
-    "© " ;"&copy;"
-    get-date-script
+    "© "
+    [year]
     "All Rights Reserved"]))
 
 (defstyled hidden-hr :hr.noshow)
