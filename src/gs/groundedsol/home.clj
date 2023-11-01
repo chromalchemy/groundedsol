@@ -126,15 +126,22 @@
 
 
 
-(defn make-route [[page-key page-hiccup]]
-  (let [route-base-str (str "/" (gs.site/html-filename page-key))
-        route-fn
-        (fn [{:keys [recaptcha/site-key params] :as ctx}]
-          (ui/page
-            (assoc ctx ::ui/recaptcha false)
-            page-hiccup))]
-    [[(str route-base-str ".html") {:get route-fn}]
-     [route-base-str {:get route-fn}]]))
+(defn add-html-route [[path-str m]]
+  [[(str path-str ".html") m]
+   [path-str m]])
+
+(defn route-fn [page-hiccup]
+  (fn 
+    [{:keys [recaptcha/site-key params] :as ctx}]
+    (ui/page
+      (assoc ctx ::ui/recaptcha false)
+      page-hiccup)))
+
+(defn make-routes [[page-key page-hiccup]]
+  (let [route-base-str 
+        (str "/" (gs.site/html-filename page-key))]
+    (add-html-route 
+      [route-base-str {:get (route-fn page-hiccup)}])))
 
 (def original-page-routes
   (->>
@@ -144,7 +151,7 @@
      :consultation gs.pages.consultation/page-hiccup
     #_#_  :contact gs.pages.contact/page-hiccup
      :about gs.pages.about/page-hiccup}
-    (mapv make-route)
+    (mapv make-routes)
     (apply concat)))
 
 (def new-routes
