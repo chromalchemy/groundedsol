@@ -125,7 +125,6 @@
 
 
 
-
 (defn add-html-route [[path-str m]]
   [[(str path-str ".html") m]
    [path-str m]])
@@ -149,7 +148,7 @@
      :florida-plants gs.pages.fl-plants/page-hiccup
      :services gs.pages.services/page-hiccup
      :consultation gs.pages.consultation/page-hiccup
-    #_#_  :contact gs.pages.contact/page-hiccup
+    :contact gs.pages.contact/page-hiccup
      :about gs.pages.about/page-hiccup}
     (mapv make-routes)
     (apply concat)))
@@ -160,7 +159,7 @@
    ["" {:middleware [mid/wrap-redirect-signed-in]}
     ["/"                  {:get gs.pages.index/home-page}]]
    ["/contact-confirmed"  {:get confirmation-page}]
-   ["/contact"             {:get contact-page}]])
+   #_["/contact"             {:get contact-page}]])
 
 (def all-routes
   (vec  

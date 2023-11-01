@@ -108,15 +108,16 @@
   :text-lg :clear-both
   :items-center :flex :gap-8 :flex-col :sm:flex-row :tracking-wide
   [:p :text-xl :leading-relaxed :text-lg :leading-normal]
+  [:a.contact :text-#008550 :font-black :uppercase]
   ([]
    [:<>
     [:p
      "To schedule a consultation, please email me at "
-     [:a {:href "mailto:groundedsolution@gmail.com"}
+     [:a.contact {:href "mailto:groundedsolution@gmail.com"}
       "groundedsolution@gmail.com"]
      ", or call "
-     [:a {:href "tel:352-219-5381"}
-      "(352) 219-5381"]
+     [:a.contact {:href "tel:352-219-5381"}
+      "352-219-5381"]
      ", I will contact you shortly to help create your beautiful "
      [:em "Florida"]
      " garden."]
