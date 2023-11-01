@@ -1,4 +1,4 @@
-(ns gs.ornament-demo
+(ns ornament-demo
   (:require [nextjournal.clerk :as clerk]))
 
 (comment
