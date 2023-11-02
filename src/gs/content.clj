@@ -3,6 +3,11 @@
     [clojure.string :as string]))
 
 
+(def email-address "groundedsolution@gmail.com")
+
+(def phone-number "352-219-5381")
+(def phone-number-formatted "(352) 219-5381")
+
 (def consultion-steps
   [{:title "Step one: Making the most out of your consultation"
     :image-side :left

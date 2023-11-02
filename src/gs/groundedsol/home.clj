@@ -8,6 +8,7 @@
             [gs.pages.index]
             [gs.pages.fl-plants]
             [gs.pages.consultation]
+            [lambdaisland.ornament :as o :refer [defstyled]]
             [gs.pages.services]
             [gs.pages.contact]
             [gs.pages.about]
@@ -62,31 +63,54 @@
       :else
       {:success true :email email :user-id @user-id})))
 
-(defn send-email-handler [{:keys [biff.auth/single-opt-in
-                                 biff.auth/new-user-tx
-                                 biff/db
-                                 params]
-                          :as ctx}]
-  (let [{:keys [success error email user-id]} (auth/send-link! ctx)]
+(defn send-email-handler
+  [{:keys [biff.auth/single-opt-in
+           biff.auth/new-user-tx
+           biff/db
+           params]
+    :as ctx}]
+  (let [{:keys [success error email user-id]}
+        (auth/send-link! ctx)]
     (when (and success single-opt-in (not user-id))
       (bxt/submit-tx (assoc ctx :biff.xtdb/retry false) (new-user-tx ctx email)))
     {:status 303
-     :headers {"location" (if success
-                            (str "/link-sent?email=" (:email params))
-                            (str (:on-error params "/") "?error=" error))}}))
+     :headers {"location"
+               (if success
+                 (str "/link-sent?email=" (:email params))
+                 (str (:on-error params "/") "?error=" error))}}))
+
+(defstyled email-input :input 
+  :w-300px :mr-2)
+(defstyled email-submit-btn :button)
+(defstyled email-error-message :div)
+
+(defn recaptcha-error-text [error]
+  (case error
+    "recaptcha"
+    (str "You failed the recaptcha test. Try again, "
+      "and make sure you aren't blocking scripts from Google.")
+  
+    "invalid-email"
+    "Invalid email. Try again with a different address."
+  
+    "send-failed"
+    (str "We weren't able to send an email to that address. "
+      "If the problem persists, try another address.")
+  
+    "There was an error."))
 
 (defn contact-form [{:keys [recaptcha/site-key params]}]
   (bhiccup/form
     {:id "contact-form"
      :action "/send-email"
      :hidden {:on-error "/"}}
-    (biff/recaptcha-callback "submitContact" "contact-form")
-    [:input#email
+    #_(biff/recaptcha-callback "submitContact" "contact-form")
+    [email-input
      {:name "email"
       :type "email"
       :autocomplete "email"`
       :placeholder "Enter your email address"}]
-    [:button
+    [email-submit-btn
      (merge (when site-key
               {:data-sitekey site-key
                :data-callback "submitSignup"})
@@ -95,20 +119,18 @@
      "Contact"]
     (when-some [error (:error params)]
       [:<>
-       [:div
-        (case error
-          "recaptcha" (str "You failed the recaptcha test. Try again, "
-                        "and make sure you aren't blocking scripts from Google.")
-          "invalid-email" "Invalid email. Try again with a different address."
-          "send-failed" (str "We weren't able to send an email to that address. "
-                          "If the problem persists, try another address.")
-          "There was an error.")]])))
+       [email-error-message (recaptcha-error-text error)
+        ]])))
+
+(defstyled contact-form-container :div 
+  :w-75% :border-solid :border-2px :border-green-600 :mx-auto :my-4 :p-4
+  )
 
 (defn contact-page [ctx]
   (ui/page
     (assoc ctx ::ui/recaptcha false)
-    [:div.
-     #_(contact-form ctx)
+    [contact-form-container
+     (contact-form ctx)
      #_[:div biff/recaptcha-disclosure]
      ]))
 
@@ -122,7 +144,6 @@
   {:status 200
    :headers {"content-type" "text/plain"}
    :body "foo response"})
-
 
 
 (defn add-html-route [[path-str m]]
@@ -142,16 +163,6 @@
     (add-html-route 
       [route-base-str {:get (route-fn page-hiccup)}])))
 
-(def original-page-routes
-  (->>
-    {:notes gs.pages.notes/page-hiccup
-     :florida-plants gs.pages.fl-plants/page-hiccup
-     :services gs.pages.services/page-hiccup
-     :consultation gs.pages.consultation/page-hiccup
-    :contact gs.pages.contact/page-hiccup
-     :about gs.pages.about/page-hiccup}
-    (mapv make-routes)
-    (apply concat)))
 
 (def new-routes
   [["/foo" {:det foo}]
@@ -159,7 +170,19 @@
    ["" {:middleware [mid/wrap-redirect-signed-in]}
     ["/"                  {:get gs.pages.index/home-page}]]
    ["/contact-confirmed"  {:get confirmation-page}]
-   #_["/contact"             {:get contact-page}]])
+   ["/contact"             {:get contact-page}]])
+
+(def original-page-routes
+  (->>
+    {:notes gs.pages.notes/page-hiccup
+     :florida-plants gs.pages.fl-plants/page-hiccup
+     :services gs.pages.services/page-hiccup
+     :consultation gs.pages.consultation/page-hiccup
+   #_#_ :contact gs.pages.contact/page-hiccup
+     :about gs.pages.about/page-hiccup}
+    (mapv make-routes)
+    (apply concat)))
+
 
 (def all-routes
   (vec  

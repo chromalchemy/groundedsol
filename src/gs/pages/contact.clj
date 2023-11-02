@@ -3,7 +3,7 @@
     [clojure.string :as string]
     [hickory.core :as h]
     [cybermonday.core :as cm]
-    [gs.content :as content]
+    [gs.content :as c]
     [garden.selectors :as gs]
     [garden.core :refer [css]]
     [lambdaisland.ornament :refer [defstyled]]
@@ -108,16 +108,13 @@
   :text-lg :clear-both
   :items-center :flex :gap-8 :flex-col :sm:flex-row :tracking-wide
   [:p :text-xl :leading-relaxed :text-lg :leading-normal]
-  [:a.contact :text-#008550 :font-black :uppercase]
   ([]
    [:<>
     [:p
      "To schedule a consultation, please email me at "
-     [:a.contact {:href "mailto:groundedsolution@gmail.com"}
-      "groundedsolution@gmail.com"]
+     [email-link]
      ", or call "
-     [:a.contact {:href "tel:352-219-5381"}
-      "352-219-5381"]
+     [telephone-link]
      ", I will contact you shortly to help create your beautiful "
      [:em "Florida"]
      " garden."]

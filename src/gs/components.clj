@@ -9,7 +9,8 @@
     [garden.selectors]
     [gs.color :as color]
     [lambdaisland.hiccup :as hiccup]
-    [gs.garden.styles :as styles])
+    [gs.garden.styles :as styles]
+    )
   (:use [gs.util]
         [gs.site]
         [gs.garden.page]
@@ -185,6 +186,7 @@
    ["youtube-icon.png" "https://www.youtube.com/channel/UCNqZxB-qW4lf4xey7xiT0Lg"]
    ["facebook-icon.png" "https://www.facebook.com/groundedsol"]])
 
+
 (defstyled social-icons :div
   :x :flex :mb-4
   :justify-center
@@ -299,7 +301,7 @@
   [:ul :text-left]
   ([]
    [:<>
-    [:h5 "Menu:"]
+    [footer-header "Menu:"]
     [:ul
      (map footer-nav-link page-keys)]]))
 
@@ -318,33 +320,43 @@
 
 (defstyled footer-social-icons :div
   [:div :a :w-130px]
-  [:div :flex :space-x-4 :-left]
+  [:div :flex :space-x-4 :justify-left]
   ([]
    [:<>
     [social-icons "img/social-icons/small/"]]))
 
 (defstyled hours :p.hours)
-(defstyled phone :p.phone)
 (defstyled home :p.home)
-(defstyled email :p.email)
+
+(defstyled email-link :a.email
+  ([]
+   [:<> {:href (str "mailto:" c/email-address)}
+    c/email-address]))
+
+(defstyled phone-link :a.phone
+  ([]
+    [:<>
+     {:href (str "tel:" c/phone-number)}
+     c/phone-number-formatted]))
+
+(defstyled footer-header :h5)
 
 (defstyled contact :section.contentBox4b
+  [:.phone :block]
+  [:.email :block]
   ([]
    [:<>
-    [:h5 "Contact:"]
+    [footer-header "Contact:"]
     [footer-social-icons]
     [home "1821 Amherst Ave." [:br] "Orlando, FL 32804"]
-    [email
-     [:a {:href "mailto:groundedsolution@gmail.com"}
-      "groundedsolution@gmail.com"]
-     [:br]]
-    [phone "352-219-5381"]
-    [hours "By appointment only" [:br]]]))
+    [email-link]
+    [phone-link]
+    [hours "By appointment only" ]]))
 
 (defstyled certifications :section.contentBox4c
   ([]
    [:<>
-    [:h5 "Certifications / Affiliations"]
+    [footer-header "Certifications / Affiliations"]
     [:i.fa.fa-trophy.fa-3x.img-left.color3.icon-shadow] "B.S. Environmental Science"
     [:br] "Certified Wetland Delineator"
     [:br] "Commercial Applicator License"
