@@ -3,7 +3,7 @@
     [clojure.string :as string]))
 
 
-(def email-address "groundedsolution@gmail.com")
+(def email-address "amanda@groundedsol.com" #_"groundedsolution@gmail.com")
 
 (def phone-number "352-219-5381")
 (def phone-number-formatted "(352) 219-5381")

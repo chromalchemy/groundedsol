@@ -37,8 +37,11 @@
   [common/container
    [common/page-title "Garden Notes"]
    [common/fancy-divider]
-   [pdf-block "Convert your Landscape" "Convert your Landscape"]
+   [pdf-block 
+    "Pruning_Notes_for_Native_Plants_3" 
+    "Prune Like Fire!"]
    [common/fancy-divider]
-   [pdf-block "Pruning_Notes_for_Native_Plants_3" "Pruning Notes Newsletter"]
+   [pdf-block "Convert your Landscape" 
+    "Convert your Landscape"]
    (common/spacer 20)])
 
