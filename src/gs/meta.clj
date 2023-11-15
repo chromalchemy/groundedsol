@@ -24,9 +24,7 @@
    "nivo-lightbox.js"
    "wow.min.js"
    "accordionscript.js"
-   (main-js-path)
-   "old_main.js"
-   #_"live.js"])
+   (main-js-path)])
 
 (def recaptcha-script-link
   [:script {:src "https://www.google.com/recaptcha/api.js"
