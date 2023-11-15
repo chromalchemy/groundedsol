@@ -114,7 +114,7 @@
      "To schedule a consultation, please email me at "
      [email-link]
      ", or call "
-     [telephone-link]
+     [phone-link]
      ", I will contact you shortly to help create your beautiful "
      [:em "Florida"]
      " garden."]

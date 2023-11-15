@@ -297,11 +297,14 @@
     [:a {:href (html-filename page-key)}
      (page-name page-key)]]))
 
+(defstyled footer-header :h5)
+
+
 (defstyled footer-menu :section.contentBox4a
   [:ul :text-left]
   ([]
    [:<>
-    [footer-header "Menu:"]
+    [footer-header "Menu"]
     [:ul
      (map footer-nav-link page-keys)]]))
 
@@ -319,13 +322,26 @@
 
 
 (defstyled footer-social-icons :div
-  [:div :a :w-130px]
-  [:div :flex :space-x-4 :justify-left]
+  [:div :w-full :flex :space-x-4 :justify-start :mt-3 :mb-1]
   ([]
    [:<>
     [social-icons "img/social-icons/small/"]]))
 
-(defstyled hours :p.hours)
+(defstyled contact-btn :p.center
+  [:a {:color color/gold-yellow}]
+  ([button-text]
+   [:<>
+    [:a.btn.btn-main
+     {:href (site/html-filename :contact)}
+     button-text]]))
+
+(defstyled hours :p.hours
+  ([]
+    [:<>
+     "By Appointment Only"
+     [:br]
+     [contact-btn "Make Appointment"]]))
+    
 (defstyled home :p.home)
 
 (defstyled email-link :a.email
@@ -339,19 +355,18 @@
      {:href (str "tel:" c/phone-number)}
      c/phone-number-formatted]))
 
-(defstyled footer-header :h5)
 
 (defstyled contact :section.contentBox4b
-  [:.phone :block]
-  [:.email :block]
+  [:a :block :mb-2 :hover:text-green-700 :tracking-wider :no-underline :hover:underline :font-bold]
+  [:p :mb-2 :mt-0]
   ([]
    [:<>
-    [footer-header "Contact:"]
+    [footer-header "Contact"]
     [footer-social-icons]
-    [home "1821 Amherst Ave." [:br] "Orlando, FL 32804"]
     [email-link]
     [phone-link]
-    [hours "By appointment only" ]]))
+    [home "1821 Amherst Ave." [:br] "Orlando, FL 32804"]
+    [hours]]))
 
 (defstyled certifications :section.contentBox4c
   ([]
@@ -371,13 +386,7 @@
 (def calendar-script
   [:script {:src "js/calendar02.js" :type "text/javascript"}])
 
-(defstyled contact-btn :p.center
-  [:a {:color color/gold-yellow}]
-  ([]
-   [:<>
-    [:a.btn.btn-main
-     {:href (site/html-filename :contact)}
-     "Contact"]]))
+
 
 (defstyled news :section.contentBox4d
   ([]
@@ -385,7 +394,7 @@
     ;[:h5 {:id "calendar"} "News & Events:"]
     [:p.center]
     calendar-script
-    (contact-btn)]))
+    [contact-btn "Contact"]]))
 
 ;&raquo;
 
