@@ -36,14 +36,21 @@
 
 (defstyled engagements container
   :mb-8 :px-4
+  [:.cont :flex :gap-4 :flex-wrap :items-baseline :justify-center]
   [:.title :uppercase :mr-2 :inline-block #_:small-caps]
   [:p.this-body #_:md:min-h-8rem]
+  [:a.garden-notes :block :text-center :no-underline :hover:underline]
   ([]
    [:<>
-    [inside
-     [:h3 "Talks"]
-     [heading-line]
-     [:div
+    [:div.cont
+     #_[:h3 "Talks"]
+     [pdf-link "Pruning_Notes_for_Native_Plants_3"
+               "Prune Like Fire 🔥"]
+     [:a.garden-notes 
+      {:href "/notes" }
+      "Click here for more Garden Notes"]
+     #_[heading-line]
+     #_[:div
       [:span.title "Backyard Biodiversity Day -"]
       [:span "Mead Gardens"]
       [pdf-link "Convert your Landscape" "Convert your Landscape"]]]
@@ -96,7 +103,6 @@
     [:span.lead body]
     [:span.subtitle subtitle]
     #_[:p [:a.btn.btn-main {:href (:link m)} (:link-text m)]]]))
-
 
 
 (defstyled welcome container
@@ -311,8 +317,9 @@
   (ui/base
     (assoc ctx ::ui/recaptcha false)
     [welcome]
+    [engagements]
+    
     [intro-blocks]
-    #_[engagements]
     [hot-plant-gallery]
     [container
      [second-row]]
