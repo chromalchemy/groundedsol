@@ -10,13 +10,14 @@
             [gs.pages.consultation]
             [lambdaisland.ornament :as o :refer [defstyled]]
             [gs.pages.services]
-            [gs.pages.contact]
+            [gs.pages.contact :as contact]
             [gs.pages.about]
             [gs.pages.notes]
             [gs.hiccup :as bhiccup]
             [com.biffweb.impl.util :as butil]
             [com.biffweb.impl.auth :as auth]
             [com.biffweb.impl.xtdb :as bxt]
+            [gs.components :as common]
             [gs.build :as build]
             [lambdaisland.hiccup :as hiccup]
             [xtdb.api :as xt]
@@ -44,9 +45,10 @@
 
 
 (defstyled email-input :input 
-  :w-300px :mr-2)
+  :w-300px :mr-2 :text-lg :px-2 :py-1)
 
-(defstyled email-submit-btn :button)
+(defstyled email-submit-btn :button
+  :text-lg :p-1 :bg-green-500 :text-white :rounded :border-0 :px-3 :rounded)
 
 (defstyled email-error-message :div
   ([error-text]
@@ -79,19 +81,20 @@
        (= email-address "")
        [:p "Please add email address."]
        (nil? email-address)
-       [:p "Please leave your email address and we'll get in touch."])
+       [:p "Please enter your email address and we'll get in touch."])
      
      
-     [email-input
-      {:name "email"
-       :type "email"
-       :autocomplete "email"
-       :placeholder "Email"}]
-     
-     [:button
-      {:type "submit"
-       :class '[g-recaptcha]}
-      "Contact"]]))
+     [:div.inputs
+      [email-input
+       {:name "email"
+        :type "email"
+        :autocomplete "email"
+        :placeholder "email"}]
+      
+      [email-submit-btn
+       {:type "submit"
+        #_#_:class '[g-recaptcha]}
+       "Contact"]]]))
 
 (defstyled thanks-for-sending :div    
   ([]
@@ -120,17 +123,45 @@
   )
 
 (defstyled contact-form-container :div 
-  :w-75% #_:border-solid #_:border-2px #_:border-green-600 :mx-auto :my-4 :p-4
+  ;;  #_:border-solid #_:border-2px #_:border-green-600  :my-4 :p-4
   :text-center
+  :text-lg
+  [:.inputs :w-75% :mx-auto]
   )
 
 (defn contact-page [ctx]
   (ui/page
     (assoc ctx ::ui/recaptcha false)
-    [contact-form-container
-     (contact-form ctx)
-     #_[:div biff/recaptcha-disclosure]
-     ]))
+    [common/container
+     [contact/contact-intro]
+     [common/fancy-divider]
+     [:<> 
+      [contact/contact-block
+       [contact/contact-text
+        [:<>
+         [:h2 "Schedule a Consultation"]
+         [contact-form-container
+          (contact-form ctx)]
+         [:p
+          "You can send any questions directly to"
+          [common/email-link]
+          ", or call me at "
+          [common/phone-link]]
+         #_[:p
+            "To schedule a consultation, please leave your name and information. "
+            "We will contact you as soon as we can to help create your beautiful" [:em " Florida "] "garden."]
+         [:p "I will contact you shortly to help create your beautiful "
+          [:em "Florida"]
+          " garden."]
+         [contact/flower]]]
+       
+       
+       [contact/bottomflower]]
+      [contact/social-block
+       [contact/mobile-divider]
+       [common/social-icons "img/social-icons/"]
+       [contact/facebook-widget]]]]
+    ))
 
 (defn confirmation-page [{:keys [params] :as ctx}]
   (ui/page

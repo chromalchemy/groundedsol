@@ -27,7 +27,7 @@
 (defstyled pdf-link :div
   :text-2xl :text-center
   [:a :mb-4 :inline-block]
-  [:.link-type :text-lg :text-gray-300 :ml-4]
+  [:.link-type :text-lg :text-gray-300 :ml-4 :no-underline]
   [:.description :text-lg :mt-2]
   ([filename link-text]
    [:<>

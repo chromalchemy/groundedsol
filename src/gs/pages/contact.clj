@@ -106,22 +106,8 @@
   :md:max-w-800px
   :mx-auto
   :text-lg :clear-both
-  :items-center :flex :gap-8 :flex-col :sm:flex-row :tracking-wide
-  [:p :text-xl :leading-relaxed :text-lg :leading-normal]
-  ([]
-   [:<>
-    [:p
-     "To schedule a consultation, please email me at "
-     [email-link]
-     ", or call "
-     [phone-link]
-     ", I will contact you shortly to help create your beautiful "
-     [:em "Florida"]
-     " garden."]
-    #_[:p
-     "To schedule a consultation, please leave your name and information. "
-     "We will contact you as soon as we can to help create your beautiful" [:em " Florida "] "garden."]
-    [flower]]))
+  :items-center :flex :flex-col :tracking-wide
+  [:p :text-xl :leading-relaxed :text-lg :leading-normal :mb-1 :text-center])
 
 (comment
 
@@ -323,6 +309,9 @@
     ; "toggle success"]
     [contact-block
      [contact-text]
+     [:p "I will contact you shortly to help create your beautiful "
+      [:em "Florida"]
+      " garden."]
      #_[error-block]
      #_[contact-form]
      [bottomflower]]
