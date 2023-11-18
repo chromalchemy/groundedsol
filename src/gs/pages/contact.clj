@@ -1,5 +1,6 @@
 (ns gs.pages.contact
   (:require
+   [com.biffweb :as biff :refer [pprint]]
     [clojure.string :as string]
     [hickory.core :as h]
     [cybermonday.core :as cm]
@@ -13,7 +14,9 @@
     [lambdaisland.hiccup :as hiccup]
     [com.rpl.specter :refer [select ALL FIRST setval transform NONE]]
     [gs.color :as color]
-   [gs.groundedsol.ui :as ui])
+   [gs.groundedsol.ui :as ui]
+   [clj-http.client :as http]
+   [clojure.tools.logging :as log])
   (:use
     [gs.util]
     [gs.components]))
@@ -195,45 +198,40 @@
       :name "comments"
       :rows "7"}]]))
 
+(defstyled field-row :div
+  :flex :gap-3 :mb-4 :flex-wrap :sm:flex-nowrap
+  :justify-center #_:md:justify-start)
 
-(do
-
-  (defstyled field-row :div
-    :flex :gap-3 :mb-4 :flex-wrap :sm:flex-nowrap
-    :justify-center #_:md:justify-start)
-
-  (defstyled contact-form :form ;.contact-form
-    :block
-    :mt-6 :p-8 :pb-8 :pt-0 :mt-8
-    :mb-1
-    [placeholder #_:font-bold :italic :text-green-500 :tracking-wider]
+(defstyled old-contact-form :form ;.contact-form
+  :block
+  :mt-6 :p-8 :pb-8 :pt-0 :mt-8
+  :mb-1
+  [placeholder #_:font-bold :italic :text-green-500 :tracking-wider]
     ;:w-full
-    :rounded-2xl
+  :rounded-2xl
     ;:border-black :border-solid :border-4
-    :md:max-w-800px
-    :mx-auto
+  :md:max-w-800px
+  :mx-auto
     ;{:background {:color "#fcfbf9"}}
      ;[:div #_:w-50%]]
-    ([]
-     [:<>
-      {:id "contact-form"
-       :action "send_form_email.php"
-       :method "POST"}
+  ([]
+   [:<>
+    {:id "contact-form"
+     :action "send_form_email.php"
+     :method "POST"}
        ;:name "contactform"}
-      [field-row
-       (for [x [{:field-name :first-name}
-                {:field-name :last-name}]]
-         [contact-input-block x])]
-      [field-row
-       (for [x [{:field-name :email}
-                {:field-name :telephone
-                 :required? false}]]
-         [contact-input-block x])]
-      [comments-input]
+    [field-row
+     (for [x [{:field-name :first-name}
+              {:field-name :last-name}]]
+       [contact-input-block x])]
+    [field-row
+     (for [x [{:field-name :email}
+              {:field-name :telephone
+               :required? false}]]
+       [contact-input-block x])]
+    [comments-input]
       ;[captcha-button]
-      [submit-btn]]))
-
-  (html [contact-form]))
+    [submit-btn]]))
 
 
 
@@ -250,7 +248,7 @@
     [contact-title "Thank you for visiting Grounded Solutions"]
     [:p "We are here to help you get started with a sustainable landscape!"]]))
 
-(defstyled social-block :div #_common/flex-stack
+(defstyled social-block :div #_flex-stack
   ;:md:w-33%
   :mx-auto
   :mb-10)
@@ -277,7 +275,7 @@
     [:br]
     "Please check that the required fields are included. Thank you."]))
 
-(defstyled sucess-block container
+(defstyled success-block container
   :hidden
   :text-center
   [:p :center]
@@ -293,8 +291,132 @@
            attempt to answer within one business day." [:br] "Please note that we keep your email address confidential."]
      [:img {:alt "" :src "img/samples/mail.png"}]]]))
 
+;; ___________________________________ .
 
 
+(defn send-email-api-call! [postmark-api-key email-params]
+  (http/post "https://api.postmarkapp.com/email"
+    {:headers {"X-Postmark-Server-Token" postmark-api-key}
+     :as :json
+     :content-type :json
+     :form-params email-params
+     :throw-exceptions false}))
+
+
+(defn email-success? [{:keys [status] :as result}]
+  (< status 400))
+
+(defn send-email-w-error-logging! [postmark-api-key email-params]
+  (let [result (send-email-api-call! postmark-api-key email-params)
+        success? (email-success? result)]
+    (when-not success?
+      (log/error (:body result)))
+    success?))
+
+
+(defn send-contact-emails! [{:keys [biff/secret postmark/from form-params]
+                             :as ctx}]
+  (let
+    [gsol-email-address from
+     contact-email-address (get form-params "email")
+     postmark-api-key (secret :postmark/api-key)
+     send-email-from-gsol
+     (fn [email-params]
+       (send-email-w-error-logging! postmark-api-key
+         (merge
+           {:From gsol-email-address}
+           email-params)))]
+    
+    (println "ran (send-contact-emails!)")
+
+    (send-email-from-gsol
+      {:To gsol-email-address
+       :Subject "New Contact Inquery from Groundesol website"
+       :TextBody (str "You recieved an inquery from " contact-email-address)})
+
+    (send-email-from-gsol
+      {:To contact-email-address
+       :Subject "Thanks for contacting Grounded Solutions"
+       :TextBody "We will contact you shortly to discuss your beautiful Florida Native landscape.🌻 \n https://groundedsol.com\n352-219-5381"})))
+
+
+;; ___________________________________ .
+
+(defstyled email-input :input
+  :w-300px :mr-2 :text-lg :px-2 :py-1)
+
+(defstyled email-submit-btn :button
+  :text-lg :p-1 :bg-green-500 :text-white :rounded :border-0 :px-3 :rounded)
+
+
+(defstyled thanks-for-sending :div
+  ([]
+   [:<>
+    "Thanks for your interest. We will reach out to you shortly."]))
+
+
+
+(defn valid-email-str? [s]
+  (and
+    (some? s)
+    (string? s)
+    (string/includes? s "@")
+    (= "")
+    (<= (count s) 100)
+    ))
+
+
+(defstyled contact-form :div
+  ;;  #_:border-solid #_:border-2px #_:border-green-600  :my-4 :p-4
+  :text-center
+  :text-lg
+  [:.inputs :w-75% :mx-auto]
+  ([{:keys [form-params] :as ctx}]
+   (let [email-address (get form-params "email")
+         pr 
+         (do 
+           (println "ran contact form")
+           (println "email form params")
+           (pprint form-params))
+         request
+         (when (valid-email-str? email-address)
+           (send-contact-emails! ctx))]
+     [:<>
+      (cond
+        (or
+          (= email-address "")
+          (nil? email-address))
+        [:form
+         {:hx-post "/send-contact"
+          :hx-disabled-elt "this"
+          :hx-swap "outerHTML"}
+
+         (cond
+           (nil? email-address)
+           [:p "Please enter your email address and we'll get in touch."]
+           (= email-address "")
+           [:p "Please add email address."])
+
+         [:div.inputs
+          [email-input
+           {:name "email"
+            :type "email"
+            :autocomplete "email"
+            :placeholder "email"}]
+
+          [email-submit-btn
+           {:type "submit"
+            #_#_:class '[g-recaptcha]}
+           "Contact"]]]
+        :else
+        [thanks-for-sending])])))
+
+
+(defn send-contact-emails-handler [ctx]
+  (contact-form ctx))
+
+
+;; ___________________________________ .
 
 (defstyled bottom-half :div
   ;:flex :flex-col :md:flex-row
@@ -315,24 +437,45 @@
      #_[error-block]
      #_[contact-form]
      [bottomflower]]
-    #_[sucess-block]
+    #_[success-block]
     [social-block
      [mobile-divider]
-     [common/social-icons "img/social-icons/"]
+     [social-icons "img/social-icons/"]
      [facebook-widget]]]))
 
+(def page-hiccup
+  [:<>]
+  )
 
-(do
-  (def page-hiccup
-    [common/container
-     [contact-intro]
-     [common/fancy-divider]
-     [bottom-half]])
-
-
-  (html page-hiccup))
 
 (defn page [ctx]
   (ui/page
     (assoc ctx ::ui/recaptcha false)
-    page-hiccup))
+    [container
+     [contact-intro]
+     [fancy-divider]
+     [:<>
+      [contact-block
+       [contact-text
+        [:<>
+         [:h2 "Schedule a Consultation"]
+         [contact-form ctx]
+         [:p
+          "You can send any questions directly to"
+          [email-link]
+          ", or call me at "
+          [phone-link]]
+         #_[:p
+            "To schedule a consultation, please leave your name and information. "
+            "We will contact you as soon as we can to help create your beautiful" [:em " Florida "] "garden."]
+         [:p "I will contact you shortly to help create your beautiful "
+          [:em "Florida"]
+          " garden."]
+         [flower]]]
+    
+       [bottomflower]]
+      [social-block
+       [mobile-divider]
+       [social-icons "img/social-icons/"]
+       [facebook-widget]]]]
+    ))

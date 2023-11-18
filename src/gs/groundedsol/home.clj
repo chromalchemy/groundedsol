@@ -1,6 +1,6 @@
 (ns gs.groundedsol.home
   (:require [clj-http.client :as http]
-            [com.biffweb :as biff :refer [pprint] ]
+            [com.biffweb :as biff :refer [pprint]]
             [gs.groundedsol.middleware :as mid]
             [gs.groundedsol.ui :as ui]
             [gs.site]
@@ -24,8 +24,8 @@
             [camel-snake-kebab.core :as csk]
             [camel-snake-kebab.extras :as cske]
             [clj-http.client :as http]
-            [clojure.tools.logging :as log]
-            ))
+            [clojure.tools.logging :as log]))
+            
 
 (def email-disabled-notice
   [:div
@@ -44,15 +44,9 @@
       (and success (or (nil? score) (<= threshold score))))))
 
 
-(defstyled email-input :input 
-  :w-300px :mr-2 :text-lg :px-2 :py-1)
-
-(defstyled email-submit-btn :button
-  :text-lg :p-1 :bg-green-500 :text-white :rounded :border-0 :px-3 :rounded)
-
 (defstyled email-error-message :div
   ([error-text]
-    [:<> error-text]))
+   [:<> error-text]))
 
 (defn recaptcha-error-text [error]
   (case error
@@ -69,99 +63,7 @@
   
     "There was an error."))
 
-(defn form-body [{:keys [] :as ctx}]
-  (let [email-address
-        (get (:form-params ctx) "email")]
-    [:form
-     {:hx-post "/send-email"
-      :hx-disabled-elt "this"
-      :hx-swap "outerHTML"}
-     
-     (cond 
-       (= email-address "")
-       [:p "Please add email address."]
-       (nil? email-address)
-       [:p "Please enter your email address and we'll get in touch."])
-     
-     
-     [:div.inputs
-      [email-input
-       {:name "email"
-        :type "email"
-        :autocomplete "email"
-        :placeholder "email"}]
-      
-      [email-submit-btn
-       {:type "submit"
-        #_#_:class '[g-recaptcha]}
-       "Contact"]]]))
 
-(defstyled thanks-for-sending :div    
-  ([]
-   [:<>
-    "Thanks for your interest. We will reach out to you shortly."]))
-
-
-(defn contact-form [{:keys [] :as ctx}]
-  (let [email-address 
-        (get (:form-params ctx) "email")]
-    #_(pprint ctx)
-    (println "email address")
-    (pprint email-address)
-
-    (cond 
-      (nil? email-address)
-      (form-body ctx) 
-
-      (= email-address "")
-      (form-body ctx) 
-
-      :else 
-      [thanks-for-sending]
-        )
-    )
-  )
-
-(defstyled contact-form-container :div 
-  ;;  #_:border-solid #_:border-2px #_:border-green-600  :my-4 :p-4
-  :text-center
-  :text-lg
-  [:.inputs :w-75% :mx-auto]
-  )
-
-(defn contact-page [ctx]
-  (ui/page
-    (assoc ctx ::ui/recaptcha false)
-    [common/container
-     [contact/contact-intro]
-     [common/fancy-divider]
-     [:<> 
-      [contact/contact-block
-       [contact/contact-text
-        [:<>
-         [:h2 "Schedule a Consultation"]
-         [contact-form-container
-          (contact-form ctx)]
-         [:p
-          "You can send any questions directly to"
-          [common/email-link]
-          ", or call me at "
-          [common/phone-link]]
-         #_[:p
-            "To schedule a consultation, please leave your name and information. "
-            "We will contact you as soon as we can to help create your beautiful" [:em " Florida "] "garden."]
-         [:p "I will contact you shortly to help create your beautiful "
-          [:em "Florida"]
-          " garden."]
-         [contact/flower]]]
-       
-       
-       [contact/bottomflower]]
-      [contact/social-block
-       [contact/mobile-divider]
-       [common/social-icons "img/social-icons/"]
-       [contact/facebook-widget]]]]
-    ))
 
 (defn confirmation-page [{:keys [params] :as ctx}]
   (ui/page
@@ -196,57 +98,7 @@
 
 
 
-(defn send-email-custom [{:keys [biff/secret postmark/from]} form-params]
-  (let [gsol-email-address from
-        contact-email-address (get form-params "email")
-       
-        send-email-result
-        (fn [email-params]
-          (http/post "https://api.postmarkapp.com/email"
-            {:headers {"X-Postmark-Server-Token" "1816d048-a01c-4d1a-bb22-f263949c89ab" #_(secret :postmark/api-key)}
-             :as :json
-             :content-type :json
-             :form-params email-params
-             :throw-exceptions false}))
-        send-email-to-groundedsol-result
-        (send-email-result
-          {:From gsol-email-address
-           :To gsol-email-address
-           :Subject "New Contact Inquery from Groundesol website"
-           :TextBody (str "You recieved an inquery from " contact-email-address)})
-        send-email-to-groundedsol-success 
-        (< (:status send-email-to-groundedsol-result) 400)
-        
-        send-email-to-contact-result
-        (send-email-result
-          {:From gsol-email-address
-           :To contact-email-address
-           :Subject "Thank's for contacting us"
-           :TextBody "We will contact you shortly to discuss your beautify Florida Native landscape! \n https://groundedsol.com\n352-219-5381" })
-        send-email-to-contact-success
-        (< (:status send-email-to-contact-result) 400)]
-    
-    (when-not send-email-to-groundedsol-success 
-      (log/error (:body send-email-to-groundedsol-result)))
-    send-email-to-groundedsol-success
-    
-    (when-not send-email-to-contact-success
-      (log/error (:body send-email-to-contact-result)))
-    send-email-to-contact-success))
-
-(defn send-email-handler
-  [ctx]
-  (let [form-params (:form-params ctx)
-        pr 
-        (do
-          (println "form params:")
-          (pprint form-params))
-        email-address (get form-params "email")
-        request 
-        (send-email-custom ctx form-params)]
-    (contact-form ctx)
-    ))
-
+;; ___________________________________ .
 
 (defn foo [request]
   {:status 200
@@ -274,9 +126,9 @@
 
 (def new-routes
   [#_["/foo" 
-    {:det foo}]
-   ["/send-email" 
-    {:post send-email-handler}]
+      {:det foo}]
+   ["/send-contact" 
+    {:post gs.pages.contact/send-contact-emails-handler}]
    ["" 
     {:middleware [mid/wrap-redirect-signed-in]}
     ["/" 
@@ -284,7 +136,7 @@
    ["/contact-confirmed"  
     {:get confirmation-page}]
    ["/contact" 
-    {:get contact-page}]])
+    {:get gs.pages.contact/page}]])
 
 (def original-page-routes
   (->>
@@ -292,7 +144,7 @@
      :florida-plants gs.pages.fl-plants/page-hiccup
      :services gs.pages.services/page-hiccup
      :consultation gs.pages.consultation/page-hiccup
-   #_#_ :contact gs.pages.contact/page-hiccup
+    ;;  :contact gs.pages.contact/page-hiccup
      :about gs.pages.about/page-hiccup}
     (mapv make-routes)
     (apply concat)))
@@ -302,8 +154,8 @@
   (vec  
     (concat
          new-routes
-         original-page-routes)
-    ))
+         original-page-routes)))
+    
 
 (def plugin
   {:routes all-routes})

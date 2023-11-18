@@ -13,7 +13,7 @@
         :biff/base-url "https://groundedsol.com"
         ;; Postmark is used to send email sign-in links. Create an account at
         ;; https://postmarkapp.com
-        :postmark/api-key "1816d048-a01c-4d1a-bb22-f263949c89ab"
+        :postmark/api-key "POSTMARK_API_KEY"
         ;; Change to the address of your sending identity. Set a reply-to
         ;; address on your sending identity if you want to receive replies and
         ;; your from address isn't configured for receiving.
@@ -22,7 +22,7 @@
         ;; https://www.google.com/recaptcha/about/ and add a site. Select v2
         ;; invisible. Add localhost to your list of allowed domains.
         :recaptcha/site-key "6LfgaVMoAAAAAAvNStelse9tHZgLKwMbC8a-pk1A"
-        :recaptcha/secret-key "6LfgaVMoAAAAAHoMN41vyX55E5W4kOvaNwlGFFWg"
+        :recaptcha/secret-key "RECAPTCHA_SECRET_KEY"
         :biff.beholder/enabled false
         :biff.middleware/cookie-secret "COOKIE_SECRET"
         :biff/jwt-secret "JWT_SECRET"}
@@ -30,7 +30,7 @@
        :biff.beholder/paths ["src" "resources" "target"]
        :biff.beholder/exts [".clj" ".css"]
        :biff.beholder/enabled true
-       :gs.groundedsol/include-livejs true
+       :gs.groundedsol/include-livejs false
        :biff/host "0.0.0.0"
        :biff/port 8080
        :biff/base-url "http://localhost:8080"
