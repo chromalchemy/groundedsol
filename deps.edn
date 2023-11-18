@@ -44,12 +44,12 @@
   
   :flowstorm
   {:extra-deps
-   {com.github.flow-storm/flow-storm-dbg {:mvn/version "3.8.5"}}}
+   {com.github.flow-storm/flow-storm-dbg {:mvn/version "3.8.6"}}}
   
   :clojurestorm
   {:classpath-overrides {org.clojure/clojure nil} ;; for disabling the official compiler
-   :extra-deps {com.github.flow-storm/clojure {:mvn/version "1.11.1-13"}
-                com.github.flow-storm/flow-storm-dbg {:mvn/version "3.8.5"}}
+   :extra-deps {com.github.flow-storm/clojure {:mvn/version "1.11.1-15"}
+                com.github.flow-storm/flow-storm-dbg {:mvn/version "3.8.6"}}
    :jvm-opts ["-Dclojure.storm.instrumentEnable=true"
               "-Dclojure.storm.instrumentOnlyPrefixes=gs"]}
   
