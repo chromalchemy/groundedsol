@@ -6,7 +6,7 @@
     [cybermonday.core :as cm]
     [garden.selectors]
     [lambdaisland.ornament :refer [defstyled]]
-    [gs.airtable :as at]
+    #_[gs.airtable :as at]
     [gs.components :as common]
     [gs.util :as u]
     [lambdaisland.hiccup :as hiccup]

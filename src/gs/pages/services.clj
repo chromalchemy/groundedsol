@@ -7,7 +7,7 @@
     [lambdaisland.ornament :as o]
     [lambdaisland.ornament :refer [defstyled]]
     [garden.selectors :as gs]
-    [gs.airtable :as at]
+    #_[gs.airtable :as at]
     [gs.util :as u]
     [lambdaisland.hiccup :as hiccup]
     [com.rpl.specter :refer [select ALL FIRST setval transform NONE]]

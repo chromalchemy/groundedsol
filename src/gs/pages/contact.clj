@@ -10,7 +10,7 @@
     [lambdaisland.ornament :refer [defstyled]]
     [gs.components :as common]
     [camel-snake-kebab.core :as csk]
-    [gs.airtable :as at]
+    #_[gs.airtable :as at]
     [lambdaisland.hiccup :as hiccup]
     [com.rpl.specter :refer [select ALL FIRST setval transform NONE]]
     [gs.color :as color]
@@ -122,7 +122,7 @@
   (gs/css-selector a ":hover")
   (gs/defselector input-placeholder 
     (:input placeholder))
-  
+
   (css
     [ {:font-size "12px"}])
   )
