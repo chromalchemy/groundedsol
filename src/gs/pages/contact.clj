@@ -16,11 +16,15 @@
     [gs.color :as color]
    [gs.groundedsol.ui :as ui]
    [clj-http.client :as http]
-   [clojure.tools.logging :as log])
+   [clojure.tools.logging :as log]
+   [garden.core :as garden])
   (:use
     [gs.util]
     [gs.components]))
 
+
+
+(gs/defpseudoelement placeholder)
 
 (defstyled facebook-widget :iframe
   ;:box-border
@@ -43,56 +47,6 @@
      :allowTransparency "true"
      :allow "encrypted-media"}]))
 
-(defstyled captcha-button :div.g-recaptcha
-  ([]
-   [:<>
-    {:data-sitekey "6Lc0QbgkAAAAAMQbmtTZM3-qeduE8iReMNkzir5-"}]))
-
-(do
-  (defstyled submit-btn :div
-    ;{:background-color}
-    :flex :sm:justify-end :justify-center
-    [:button
-     :tracking-wider
-     :box-border
-     ;:h-20
-     ;:w-40
-     :py-1
-     :px-8
-     :inline-block
-     :text-center
-     :mt-10px :mb-20px :my-0 :cursor-pointer
-     :text-#333
-     :hover:no-underline
-     :bg-green-500 :text-white
-     :hover:border-green-600 #_:hover:text-green-600
-     :hover:bg-green-600
-     [(gs/& gs/active) :bg-red-500]
-     :text-lg
-     :select-none
-     {:font-family "'Oswald', Verdana, Helvetica, sans-serif"}
-     :font-normal
-     ;:py-2px :px-18px
-     :no-underline
-     :border-none
-     ;:border :border-solid :border-#333
-     :rounded-md]
-    ([]
-     [:<>
-      [:button.g-recaptcha
-       {:data-sitekey "6Lc0QbgkAAAAAMQbmtTZM3-qeduE8iReMNkzir5-"
-        :data-callback "onSubmit"
-        :data-action "submit"}
-       "Send"]]))
-      ;[:div.g-recaptcha
-      ; {:data-sitekey "6Lc0QbgkAAAAAMQbmtTZM3-qeduE8iReMNkzir5-"}]
-      ;[:input#submit-btn
-      ; {:value "Send"
-      ;  :type "submit"}]]))
-      ;[:label
-      ; {:for "submit-btn"}]]))
-  (html [submit-btn]))
-
 (def flower-img-data
   {:alt "Flower"
    :src "img/samples/flowercontact.png"})
@@ -112,20 +66,34 @@
   :items-center :flex :flex-col :tracking-wide
   [:p :text-xl :leading-relaxed :text-lg :leading-normal :mb-1 :text-center])
 
-(comment
 
-  (println
-    (css
-      [:div
-       [:& placeholder
-        {:color "red"}]]))
 
-  (println
-    (css
-      [:div (a ":hover")
-       {:color "red"}])))
+;; (comment
+  
+;;   (gs/defselector a)
 
-(gs/defselector a)
+;;   (println
+;;     (css
+;;       [:div
+;;        [:& placeholder
+;;         {:color "red"}]]))
+
+;;   (println
+;;     (css
+;;       [:div (a ":hover")
+;;        {:color "red"}])))
+
+
+(defstyled label :label
+  :hidden :sans-serif)
+
+(defstyled required-label label
+  :font-bold :text-red-500)
+
+#_[required-label
+   {:for hook-str}
+   proper-str]
+
 
 (defstyled input :input
   :rounded-lg
@@ -138,23 +106,72 @@
   :text-#076100
   :border-5 :border-#deebe4 :border-solid
   :font-sans
-  :box-border)
+  :box-border
+  #_[:& placeholder :italic :text-green-600 :tracking-widest])
 
-(defstyled label :label
-  :hidden :sans-serif)
 
-(defstyled required-label label
-  :font-bold :text-red-500)
+(comment
+  (gs/->CSSSelector)
+  (css
+    [:input
+     [(gs/+ gs/& "::placeholder") {:font-size "12px"}]])
+  (gs/defselector a)
+  a
+  (gs/css-selector a)
+  (gs/css-selector (gs/input placeholder))
+  (gs/css-selector a ":hover")
+  (gs/defselector input-placeholder 
+    (:input placeholder))
+  
+  (css
+    [ {:font-size "12px"}])
+  )
+
+(defstyled placeholder-text :div
+  ["input::placeholder" :italic :text-green-600 :tracking-wide]
+  )
+
+;; todo: how to compose placeholder and make more general?
+(defstyled required-field :div
+  placeholder-text
+  ["input::placeholder" :font-bold]
+  [".required::placeholder" :font-bold]
+  #_[placeholder ])
+
+(defstyled contact-input :div
+  required-field :w-full :block
+  
+  ([{field-name :name
+     :keys [name required?]
+     :or {required? false
+          type "text"}
+     :as params}]
+   (let
+     [field-label-str
+      (-> field-name (string/replace "-" " ") string/capitalize)]
+     [input
+      (->
+        {:placeholder
+         (str field-label-str #_(when required? " *"))}
+        (merge params)
+        (cond-> required?
+          (assoc :class '["required"])))]
+     )))
+
 
 (defstyled textarea :textarea
+  input
+  required-field
+  [gs/& placeholder :text-green-600 :italic]
+  
+  :font-bold
+  
   :mb-4
   :box-border
-  :w-100%
+  :w-full
   ;:max-w-100%
-  input
-  :block)
-
-(gs/defpseudoelement placeholder)
+  :block
+  )
 
 
 (def form-data
@@ -165,36 +182,16 @@
     :required? false}])
 
 
-(defstyled contact-input-block :div
-  :w-full
-  ([{:keys [field-name required?]
-     :or {required? true}}]
-   (let
-     [hook-str (csk/->snake_case_string field-name)
-      proper-str
-      (-> field-name name (string/replace "-" " ") string/capitalize)]
-     [:<>
-      ;[required-label
-      ; {:for hook-str}
-      ; proper-str]
-      [input
-       {:name hook-str
-        :type "text"
-        :placeholder
-        (if required?
-          (str proper-str "*") proper-str)}]])))
-
 (defstyled comments-input :div
   ([]
    [:<>
-    [required-label
+    #_[required-label
      {:for "comments"}
-     "Comments or Questions?"]
+     "Any comments or questions?"]
     [textarea
-     {
-      :cols "30"
-      :placeholder "Comments or Questions?*"
-      ;:maxlength "1000"
+     {:cols "30"
+      :placeholder "What are your landscape goals?"
+      :maxlength "1500"
       :name "comments"
       :rows "7"}]]))
 
@@ -206,7 +203,7 @@
   :block
   :mt-6 :p-8 :pb-8 :pt-0 :mt-8
   :mb-1
-  [placeholder #_:font-bold :italic :text-green-500 :tracking-wider]
+  #_[placeholder #_:font-bold :italic :text-green-500 :tracking-wider]
     ;:w-full
   :rounded-2xl
     ;:border-black :border-solid :border-4
@@ -220,33 +217,13 @@
      :action "send_form_email.php"
      :method "POST"}
        ;:name "contactform"}
-    [field-row
-     (for [x [{:field-name :first-name}
-              {:field-name :last-name}]]
-       [contact-input-block x])]
-    [field-row
-     (for [x [{:field-name :email}
-              {:field-name :telephone
-               :required? false}]]
-       [contact-input-block x])]
-    [comments-input]
-      ;[captcha-button]
-    [submit-btn]]))
+    ]))
 
 
 
 (defstyled contact-title :h1.title
-  :text-center :text-4xl :tracking-wider
+  :text-center :text-3xl :tracking-wider
   {:color color/gold-yellow})
-
-(defstyled contact-intro :div
-  :mx-auto
-  [contact-title]
-  [:p :text-lg :text-center :tracking-wider]
-  ([]
-   [:<>
-    [contact-title "Thank you for visiting Grounded Solutions"]
-    [:p "We are here to help you get started with a sustainable landscape!"]]))
 
 (defstyled social-block :div #_flex-stack
   ;:md:w-33%
@@ -264,32 +241,6 @@
   :my-4 :md:hidden)
 
 
-(defstyled contact-block :div#contact-block)
-
-
-(defstyled error-block :div#contact-error-warning
-  :text-red-500 :hidden :text-center :my-2
-  ([]
-   [:<>
-    "Sorry, there appears to be a problem with the form you submitted."
-    [:br]
-    "Please check that the required fields are included. Thank you."]))
-
-(defstyled success-block container
-  :hidden
-  :text-center
-  [:p :center]
-  [:img :center]
-  ([]
-   [:<>
-    {:id "contact-success"}
-    [inside
-     [:h1.center "Thank You"]
-     ;[fancy-divider]
-     [:p "Your form has been successfully submitted and we should be receiving it shortly." [:br] "We make
-           every
-           attempt to answer within one business day." [:br] "Please note that we keep your email address confidential."]
-     [:img {:alt "" :src "img/samples/mail.png"}]]]))
 
 ;; ___________________________________ .
 
@@ -319,6 +270,10 @@
   (let
     [gsol-email-address from
      contact-email-address (get form-params "email")
+     contact-email-name (get form-params "name")
+     contact-email-telephone (get form-params "telephone")
+     contact-address (get form-params "address")
+     contact-email-comments (get form-params "comments")
      postmark-api-key (secret :postmark/api-key)
      send-email-from-gsol
      (fn [email-params]
@@ -331,8 +286,20 @@
 
     (send-email-from-gsol
       {:To gsol-email-address
-       :Subject "New Contact Inquery from Groundesol website"
-       :TextBody (str "You recieved an inquery from " contact-email-address)})
+       :Subject "New inquiry from groundedsol.com contact page"
+       :TextBody 
+       (str 
+         "You recieved an inquery from " 
+         contact-email-address
+         (when contact-email-name 
+           (str "\n" "Name: " contact-email-name"\n")) 
+         (when contact-email-telephone
+           (str "\n" "Telephone: " contact-email-telephone "\n")) 
+         (when contact-address
+           (str "\n" "Address: " contact-address "\n")) 
+         (when contact-email-comments 
+           (str "\n" "Goals:\n" contact-email-comments "\n")) 
+         )})
 
     (send-email-from-gsol
       {:To contact-email-address
@@ -343,17 +310,36 @@
 ;; ___________________________________ .
 
 (defstyled email-input :input
-  :w-300px :mr-2 :text-lg :px-2 :py-1)
+  contact-input
+  ;; :w-300px :mr-2 :text-lg :px-2 :py-1
+  )
 
 (defstyled email-submit-btn :button
-  :text-lg :p-1 :bg-green-500 :text-white :rounded :border-0 :px-3 :rounded)
-
-
-(defstyled thanks-for-sending :div
-  ([]
-   [:<>
-    "Thanks for your interest. We will reach out to you shortly."]))
-
+  :text-lg :p-1 :bg-green-500 :text-white :rounded :border-0 :px-3 :rounded
+  :tracking-wider
+  :box-border
+       ;:h-20
+       ;:w-40
+  :py-1
+  :px-8
+  :inline-block
+  :text-center
+  :mt-10px :mb-20px :my-0 :cursor-pointer
+  :text-#333
+  :hover:no-underline
+  :bg-green-500 :text-white
+  :hover:border-green-600 #_:hover:text-green-600
+  :hover:bg-green-600
+  #_[(gs/& gs/active) :bg-red-500]
+  :text-lg
+  :select-none
+  {:font-family "'Oswald', Verdana, Helvetica, sans-serif"}
+  :font-normal
+       ;:py-2px :px-18px
+  :no-underline
+  :border-none
+       ;:border :border-solid :border-#333
+  :rounded-md)
 
 
 (defn valid-email-str? [s]
@@ -365,52 +351,123 @@
     (<= (count s) 100)
     ))
 
+(defstyled contact-sent container
+  :text-center
+  [:h1 :text-center]
+  [:p :text-center]
+  [:img :mx-auto]
+  ([]
+   [:<>
+    [:h1 "Thanks for your interest"]
+    [:p "Your form has been successfully submitted."
+     [:br]
+     "We make every attempt to answer within one business day."
+     [:br]
+     "Please note that we keep your email address confidential."]
+    [:img {:alt "" :src "img/samples/mail.png"}]]))
+
+(defstyled contact-error-message :div
+  :my-2
+  :text-red-500  :text-center :text-sm
+  [:.form-correction :text-green-500]
+  ([]
+   [:<>
+    [:p "Sorry, there appears to be a problem with the form you submitted."
+     [:br]
+     "Please check that the required fields are included. Thank you."]
+    [:p.form-correction "Please enter your email address."]] 
+   ))
+
+(defstyled schedule-title :h2
+  :text-center)
 
 (defstyled contact-form :div
-  ;;  #_:border-solid #_:border-2px #_:border-green-600  :my-4 :p-4
-  :text-center
-  :text-lg
-  [:.inputs :w-75% :mx-auto]
+    :my-4 :p-4
+    :text-center
+    :text-lg
+    [:.inputs :w-75% :mx-auto
+     :flex :flex-col :gap-2]
+  [:.start :italic :mb-4 :block]
+    [:form 
+     :block
+     :p-8 :pt-0
+     :mt-8 :mb-1
+     :rounded-2xl
+     :md:max-w-800px
+     :mx-auto
+         #_{:background {:color "#fcfbf9"}}
+          #_[:div #_:w-50%]
+     ]
+  
   ([{:keys [form-params] :as ctx}]
-   (let [email-address (get form-params "email")
-         pr 
-         (do 
-           (println "ran contact form")
-           (println "email form params")
-           (pprint form-params))
-         request
-         (when (valid-email-str? email-address)
-           (send-contact-emails! ctx))]
-     [:<>
-      (cond
-        (or
-          (= email-address "")
-          (nil? email-address))
-        [:form
-         {:hx-post "/send-contact"
-          :hx-disabled-elt "this"
-          :hx-swap "outerHTML"}
-
-         (cond
-           (nil? email-address)
-           [:p "Please enter your email address and we'll get in touch."]
-           (= email-address "")
-           [:p "Please add email address."])
-
-         [:div.inputs
-          [email-input
-           {:name "email"
-            :type "email"
-            :autocomplete "email"
-            :placeholder "email"}]
-
-          [email-submit-btn
-           {:type "submit"
-            #_#_:class '[g-recaptcha]}
-           "Contact"]]]
-        :else
-        [thanks-for-sending])])))
-
+    (let [email-address (get form-params "email")
+          pr
+          (do
+            (println "ran contact form")
+            (println "email form params")
+            (pprint form-params))
+          request
+          (when (valid-email-str? email-address)
+            (send-contact-emails! ctx))
+          email-address-submitted?
+          (and
+            (not= email-address "")
+            (some? email-address))]
+      [:<>
+       (cond
+      
+         (not email-address-submitted?)
+         [:<> 
+          [schedule-title
+           "Schedule a Consultation"]
+          [:form
+           {:hx-post "/send-contact"
+            :hx-disabled-elt "this"
+            :hx-swap "outerHTML"}
+           
+          ;; form validation logic
+           (cond
+             (nil? email-address)
+             [:<>
+              [:p
+               #_"Please leave your name and contact information. "
+               "We will reach out as soon as we can" [:br]
+               "to help create your beautiful Florida garden."]
+              #_[:span.start "Let's starts the conversation."] ]
+             
+             (= email-address "")
+             [contact-error-message]
+            )
+           
+           [:div.inputs
+            [contact-input
+             {:name "email"
+              :type "email"
+              :autocomplete "email"
+              :required? true
+              }]
+            [contact-input
+             {:name "name"
+              :required? true}]
+            [contact-input
+             {:name "telephone"
+              :type "tel"
+              :required? true}]
+            [contact-input
+             {:name "address"
+              :type "text"}]
+            
+            [comments-input]
+            ]
+           [email-submit-btn
+            {:type "submit"
+             :class '[g-recaptcha]}
+            "Send"]]]
+         :else
+         [contact-sent])])
+   )  
+  )
+    
 
 (defn send-contact-emails-handler [ctx]
   (contact-form ctx))
@@ -418,64 +475,51 @@
 
 ;; ___________________________________ .
 
-(defstyled bottom-half :div
-  ;:flex :flex-col :md:flex-row
-  ;[:.flower :md:hidden]
-  ([]
-   [:<>
-    ;[:button#mybtn
-    ; {:onclick "contactFormError()"}
-    ; "show error"]
-    ;[:button#mybtn
-    ; {:onclick "contactFormSuccess()"}
-    ; "toggle success"]
-    [contact-block
-     [contact-text]
-     [:p "I will contact you shortly to help create your beautiful "
-      [:em "Florida"]
-      " garden."]
-     #_[error-block]
-     #_[contact-form]
-     [bottomflower]]
-    #_[success-block]
-    [social-block
-     [mobile-divider]
-     [social-icons "img/social-icons/"]
-     [facebook-widget]]]))
 
 (def page-hiccup
   [:<>]
   )
 
+(defstyled hello :div 
+  :text-xl :text-black)
+
+(defstyled contact-links :div
+  :px-4 :md:px-2
+  :flex :gap-3 :md:gap-8 :justify-around :flex-col :md:flex-row
+  :mb-2 :md:mb-0
+  [:a  :inline-block 
+   :text-green-600 :text-2xl  :md:text-2xl :no-underline :font-bold :tracking-normal 
+   :mx-auto :text-center
+   ]
+  ["a:before" :text-gray-300 
+  ;;  :text-4xl :mr-2 :inline-block
+   ]
+  ([]
+   [:<>
+    #_"You can send any questions directly to"
+    [email-link]
+    #_", or call me at "
+    [phone-link]]))
+
 
 (defn page [ctx]
-  (ui/page
-    (assoc ctx ::ui/recaptcha false)
+  (ui/page ctx
+    #_(assoc ctx ::ui/recaptcha false)
     [container
-     [contact-intro]
+     [contact-title "We are here to help you get started with a sustainable landscape!"]
      [fancy-divider]
-     [:<>
-      [contact-block
-       [contact-text
-        [:<>
-         [:h2 "Schedule a Consultation"]
-         [contact-form ctx]
-         [:p
-          "You can send any questions directly to"
-          [email-link]
-          ", or call me at "
-          [phone-link]]
-         #_[:p
-            "To schedule a consultation, please leave your name and information. "
-            "We will contact you as soon as we can to help create your beautiful" [:em " Florida "] "garden."]
-         [:p "I will contact you shortly to help create your beautiful "
-          [:em "Florida"]
-          " garden."]
-         [flower]]]
-    
-       [bottomflower]]
-      [social-block
-       [mobile-divider]
-       [social-icons "img/social-icons/"]
-       [facebook-widget]]]]
+     [contact-text
+      [contact-links]
+      [bottomflower]]
+     (contact-form ctx)
+
+     
+     
+     [flower]
+     [social-block
+      [mobile-divider]
+      [social-icons "img/social-icons/"]
+      [facebook-widget]]
+      ]
+     
     ))
