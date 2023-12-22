@@ -446,14 +446,15 @@
           "Schedule a Consultation"]
          
          [:form
-          {:method "post"
+          {
+           :method "post"
            :action "/send-contact"
            :id "contact-form-id"
           ;;  :hx-post "/send-contact"
            :hx-disabled-elt "this"
            :hx-swap "outerHTML"}
           
-          [:hidden {:type "hidden" :name "__anti-forgery-token" :value csrf/*anti-forgery-token*}]
+          [:input {:type "hidden" :name "__anti-forgery-token" :value csrf/*anti-forgery-token*}]
           
           (recaptcha-callback "submitContact" "contact-form-id")
     
