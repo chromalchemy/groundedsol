@@ -450,7 +450,7 @@
            :method "post"
            :action "/send-contact"
            :id "contact-form-id"
-          ;;  :hx-post "/send-contact"
+           :hx-post "/send-contact"
            :hx-disabled-elt "this"
            :hx-swap "outerHTML"}
           
@@ -525,7 +525,9 @@
   
     
 
-(defn send-contact-emails-handler [ctx]
+(defn send-contact-emails-handler [{:keys [path-params] :as ctx}]
+  (println "path params")
+  (pprint path-params)
   (contact-form ctx))
 
 
@@ -558,7 +560,9 @@
     [phone-link]]))
 
 
-(defn page [ctx]
+(defn page [{:keys [path-params] :as ctx}]
+  ;; (println "contact page path params")
+  ;; (pprint path-params)
   (ui/page
     (assoc ctx ::ui/recaptcha true)
     [container
