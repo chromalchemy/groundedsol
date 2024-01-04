@@ -2,6 +2,7 @@
   (:require [com.biffweb :as biff]
             [gs.groundedsol.email :as email]
             [gs.groundedsol.app :as app]
+            [gs.groundedsol.demo]
             [gs.groundedsol.home :as home]
             [gs.groundedsol.middleware :as mid]
             [gs.groundedsol.ui :as ui]
@@ -17,10 +18,11 @@
             [gs.build]))
 
 (def plugins
-  [app/plugin
-   (biff/authentication-plugin {})
+  [gs.groundedsol.demo/plugin
+   #_app/plugin
+   #_(biff/authentication-plugin {})
    home/plugin
-   schema/plugin
+   #_schema/plugin
    #_worker/plugin])
 
 (def routes [["" {:middleware [mid/wrap-site-defaults]}
