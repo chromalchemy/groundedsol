@@ -44,9 +44,9 @@
    [:<>
     [:div.cont
      #_[:h3 "Talks"]
-     [pdf-link "Pruning_Notes_for_Native_Plants_3"
+     #_[pdf-link "Pruning_Notes_for_Native_Plants_3"
                "Prune Like Fire 🔥"]
-     [:a.garden-notes 
+     #_[:a.garden-notes 
       {:href "/notes" }
       "Click here for more Garden Notes"]
      #_[heading-line]
