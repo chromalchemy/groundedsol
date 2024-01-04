@@ -57,13 +57,26 @@
      :signin-code signin-code)
    opts))
 
-(defn send-postmark [{:keys [biff/secret postmark/from]} form-params]
-  (let [result (http/post "https://api.postmarkapp.com/email"
-                          {:headers {"X-Postmark-Server-Token" (secret :postmark/api-key)}
-                           :as :json
-                           :content-type :json
-                           :form-params (merge {:from from} (cske/transform-keys csk/->PascalCase form-params))
-                           :throw-exceptions false})
+(comment
+  (cske/transform-keys csk/->kebab-case-keyword 
+    {"helloWorld" "world"
+     nil "str"
+     "key" nil})
+  )
+
+(defn send-postmark 
+  [{:keys [biff/secret postmark/from]} form-params]
+  (let [result 
+        (http/post "https://api.postmarkapp.com/email"
+          {:headers
+           {"X-Postmark-Server-Token"
+            (secret :postmark/api-key)}
+           :as :json
+           :content-type :json
+           :form-params 
+           (merge {:from from} 
+             (cske/transform-keys csk/->PascalCase form-params))
+           :throw-exceptions false})
         success (< (:status result) 400)]
     (when-not success
       (log/error (:body result)))

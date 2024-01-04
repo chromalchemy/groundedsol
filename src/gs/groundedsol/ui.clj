@@ -41,14 +41,13 @@
   {:status status
    :headers {"content-type" "text/html"}
    :body 
-   (-> 
+   (bhiccup/render-static-markup
      (page
        ctx
        [:h1.text-lg.font-bold
         (if (= status 404)
           "Page not found."
-          "Something went wrong.")])
-     (bhiccup/render-static-markup))
+          "Something went wrong.")]))
    
    })
 
