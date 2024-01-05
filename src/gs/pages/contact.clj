@@ -380,12 +380,11 @@
    (str "<script>"
      "function " fn-name "(token) { "
      
-     "htmx.ajax('POST', '/send-contact', {target:'#"
-     form-id
-     "', swap:'outerHTML'});"
+    ;;  "htmx.ajax('GET', '/send-contact', {target:'#"
+    ;;  form-id
+    ;;  "', swap:'outerHTML'});"
      
-     
-    ;;  "document.getElementById('" form-id "').submit();"
+     "document.getElementById('" form-id "').submit();"
      
      "}"
      "</script>")])
@@ -434,8 +433,6 @@
          (cske/transform-keys csk/->kebab-case-keyword
            form-params)]
      
-     
-     
      (do
        (println "ran contact form")
        (println "email form params")
@@ -462,14 +459,16 @@
            default-form-message)])
       
       (biff/form
-        {:hx-post "/send-contact"
-         :hx-swap "outerHTML"
-         :hx-target "#contact"
-                  ;; :action "/send-contact"
-         :id "contact-form"}
+        {
+        ;;  :hx-post "/send-contact"
+        ;;  :hx-swap "outerHTML"
+        ;;  :hx-target "#contact"
+         :action "/send-contact"
+         :id "contact-form"
+         }
                   ;; :hx-disabled-elt "this"
         
-        #_(recaptcha-callback "submitContact" "contact-form")
+        (recaptcha-callback "submitContact" "contact-form")
         
         [:div.inputs
          [contact-input
@@ -483,11 +482,13 @@
           {:name "name"
            :required? true
            :value client-name}]
+         
          [contact-input
           {:name "telephone"
            :type "tel"
            :required? true
            :value telephone}]
+         
          [contact-input
           {:name "address"
            :type "text"
@@ -498,19 +499,17 @@
         
         [email-submit-btn
          (merge
-           #_(when site-key
+           (when site-key
                {:data-sitekey site-key
                 :data-callback "submitContact"})
-           {:type "submit"})
-                    ;; :class '[g-recaptcha]
-         
+           {:type "submit"
+            :class '[g-recaptcha]})
+            
          "Send"]
         
         
         biff/recaptcha-disclosure)])))
      
-
-
 
 (empty-returned-field? nil)
 
@@ -628,7 +627,7 @@
   ;; (println "contact page path params")
   ;; (pprint path-params)
   (ui/page
-    (assoc ctx ::ui/recaptcha false)
+    (assoc ctx ::ui/recaptcha true)
     [container
      [contact-title "We are here to help you get started with a sustainable landscape!"]
      [fancy-divider]
@@ -643,23 +642,4 @@
       [facebook-widget]]]))
 
 
-(defn contact-result-page [{:keys [path-params] :as ctx}]
-  (println "contact page results path params")
-  (pprint path-params)
-  (ui/page
-    (assoc ctx ::ui/recaptcha true)
-    [container
-     #_[contact-title "Success!"]
-     #_[fancy-divider]
-     #_[contact-text
-        [contact-links]
-        [bottomflower]]
-     (contact-form ctx)
-     [flower]
-     [social-block
-      [mobile-divider]
-      [social-icons "img/social-icons/"]
-      [facebook-widget]]]))
-      
-     
     
