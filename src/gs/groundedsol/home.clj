@@ -128,9 +128,8 @@
   [#_["/foo" 
       {:det foo}]
    ["/send-contact" 
-    {:get gs.pages.contact/contact-result-page}
-    #_{:post 
-     gs.pages.contact/send-contact-emails!}]
+    {:post 
+     gs.pages.contact/handle-form-submission}]
    ["" 
     {:middleware [mid/wrap-redirect-signed-in]}
     ["/" 

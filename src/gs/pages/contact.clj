@@ -13,7 +13,7 @@
    [camel-snake-kebab.extras :as cske]
    #_[gs.airtable :as at]
     [lambdaisland.hiccup :as hiccup]
-    [com.rpl.specter :refer [select ALL FIRST setval transform NONE]]
+    [com.rpl.specter :refer [select ALL FIRST setval transform NONE AFTER-ELEM]]
     [gs.color :as color]
    [gs.groundedsol.ui :as ui]
    [clj-http.client :as http]
@@ -67,7 +67,6 @@
   :items-center :flex :flex-col :tracking-wide
   [:p :text-xl :leading-relaxed :text-lg :leading-normal :mb-1 :text-center])
 
-
 (comment
   
   (gs/defselector a)
@@ -83,7 +82,6 @@
       [:div (a ":hover")
        {:color "red"}])))
 
-
 (defstyled label :label
   :hidden :sans-serif)
 
@@ -94,7 +92,6 @@
    {:for hook-str}
    proper-str]
 
-
 (defstyled input :input
   :rounded-lg
   :w-full
@@ -103,12 +100,10 @@
   :focus:outline-none :focus:border-#b8ecd5
   :bg-#f7fffb
   :block :p-3
-  :text-#076100
   :border-5 :border-#deebe4 :border-solid
   :font-sans
   :box-border
-  #_[:& placeholder :italic :text-green-600 :tracking-widest])
-
+  [(gs/& "::placeholder") :italic #_:text-green-600 :tracking-widest])
 
 (comment
   (gs/->CSSSelector)
@@ -125,37 +120,48 @@
 
   (css
     [ {:font-size "12px"}]))
-  
 
 (defstyled placeholder-text :div
-  ["input::placeholder" :italic :text-green-600 :tracking-wide])
+  ["input::placeholder" :italic :tracking-wide])
   
 
-;; todo: how to compose placeholder and make more general?
-(defstyled required-field :div
-  placeholder-text
-  ["input::placeholder" :font-bold]
-  [".required::placeholder" :font-bold]
-  #_[placeholder])
 
 (defstyled contact-input :div
-  required-field :w-full :block
+  #_placeholder-text
+  :w-full :block
+  ["input.required::placeholder" :font-bold :text-green-600]
+  [:input.error :bg-#eeffe7]
   
   ([{field-name :name
+     field-value :value
      :keys [name required?]
      :or {required? false
           type "text"}
      :as params}]
    (let
      [field-label-str
-      (-> field-name (string/replace "-" " ") string/capitalize)]
+      (-> field-name 
+        (string/replace "-" " ") 
+        (string/capitalize))
+      pr 
+      (do
+        (println "value:")
+        (pprint 
+          [field-value
+           (empty-returned-field? field-value)]))]
      [input
       (->
         {:placeholder
-         (str field-label-str #_(when required? " *"))}
+         (str field-label-str (when required? "*"))
+         :class []}
         (merge params)
-        (cond-> required?
-          (assoc :class '["required"])))])))
+        (cond->> 
+          required?
+          (setval [:class AFTER-ELEM] "required")
+          
+          (empty-returned-field? field-value)
+          (setval [:class AFTER-ELEM] "error")
+          ))])))
 
 (defstyled textarea :textarea
   input
@@ -176,7 +182,6 @@
    {:field-name :email}
    {:field-name :telephone
     :required? false}])
-
 
 (defstyled comments-input :div
   ([]
@@ -214,7 +219,6 @@
      :method "POST"}]))
        ;:name "contactform"}
     
-
 (defstyled contact-title :h1.title
   :text-center :text-3xl :tracking-wider
   {:color color/gold-yellow})
@@ -229,7 +233,6 @@
   ;:border-1 :border-solid
   ;:space-x-12)
   ;[:* :mx-9])
-
 
 (defstyled mobile-divider :hr
   :my-4 :md:hidden)
@@ -256,8 +259,6 @@
     success?))
 
 
-
-
 (defn send-email-from-gsol!
   [{gsol-email-address :postmark/from
     :keys [biff/secret form-params] :as ctx}
@@ -279,27 +280,30 @@
        form-params)]
     
     (println "ran (send-contact-emails!)")
+    [contact-form ctx]
 
-    (send-email-from-gsol! ctx
-      {:To gsol-email-address
-       :Subject "New inquiry from groundedsol.com contact page"
-       :TextBody 
-       (str 
-         "You recieved an inquery from " 
-         email-address
-         (when client-name 
-           (str "\n" "Name: " client-name"\n")) 
-         (when telephone
-           (str "\n" "Telephone: " telephone "\n")) 
-         (when address
-           (str "\n" "Address: " address "\n")) 
-         (when client-comment 
-           (str "\n" "Goals:\n" client-comment "\n")))}) 
+    #_(send-email-from-gsol! ctx
+       {:To gsol-email-address
+        :Subject "New inquiry from groundedsol.com contact page"
+        :TextBody 
+        (str 
+          "You recieved an inquery from " 
+          email-address
+          (when client-name 
+            (str "\n" "Name: " client-name"\n")) 
+          (when telephone
+            (str "\n" "Telephone: " telephone "\n")) 
+          (when address
+            (str "\n" "Address: " address "\n")) 
+          (when client-comment 
+            (str "\n" "Goals:\n" client-comment "\n")))}) 
          
-    (send-email-from-gsol! ctx
-      {:To email-address
-       :Subject "Thanks for contacting Grounded Solutions"
-       :TextBody "We will contact you shortly to discuss your beautiful Florida Native landscape.🌻 \n https://groundedsol.com\n352-219-5381"})))
+    #_(send-email-from-gsol! ctx
+       {:To email-address
+        :Subject "Thanks for contacting Grounded Solutions"
+        :TextBody "We will contact you shortly to discuss your beautiful Florida Native landscape.🌻 \n https://groundedsol.com\n352-219-5381"})))
+
+
 
 ;; ___________________________________ .
 
@@ -365,8 +369,8 @@
   [:.form-correction :text-green-500]
   ([h]
    [:<>
-    [:p "Sorry, there appears to be a problem with the form you submitted."
-     ]
+    [:p "Sorry, there appears to be a problem with the form you submitted."]
+     
     [:p.form-correction 
      h]])) 
 
@@ -375,15 +379,22 @@
   [::hiccup/unsafe-html
    (str "<script>"
      "function " fn-name "(token) { "
-     "document.getElementById('" form-id "').submit();"
+     
+     "htmx.ajax('POST', '/send-contact', {target:'#"
+     form-id
+     "', swap:'outerHTML'});"
+     
+     
+    ;;  "document.getElementById('" form-id "').submit();"
+     
      "}"
      "</script>")])
 
 (comment
   (hiccup/render
-    (recaptcha-callback "submitContact" "contact-form-id")
-    {:doctype? false})
-  )
+    (recaptcha-callback "submitContact" "contact-form")
+    {:doctype? false}))
+  
 
 (defstyled schedule-title :h2
   :text-center)
@@ -396,7 +407,7 @@
     "to help create your beautiful Florida garden."]
    #_[:span.start "Let's starts the conversation."]])
 
-(defstyled contact-form :div
+(defstyled contact-form :div#contact
     :my-4 :p-4
     :text-center
     :text-lg
@@ -414,150 +425,178 @@
         #_[:div #_:w-50%]]
      
   
-  ([{:keys [recaptcha/site-key form-params] :as ctx}]
-   (let [pr
-         (do
-                   ;;  (pprint 
-                   ;;    [(:recaptcha/secret-key ctx)
-                   ;;     "site key= " site-key
-                   ;;     (:postmark/api-key ctx)])
-           
-           (println "ran contact form")
-           (println "email form params")
-           (pprint form-params))
-         
-         form-params 
-         (cske/transform-keys csk/->kebab-case-keyword
-           form-params)
-         
-         {email-address :email
+  ([{:keys [recaptcha/site-key form-params contact-error] :as ctx}]
+   (let [{email-address :email
           client-name :name
           client-comment :comment
-          :keys [email telephone address]}
-         form-params
-
-         all-fields (vals form-params)
-         
-         required-fields
-         [client-name
-          email-address
-          telephone
-          address]
-
-         fresh-field? nil?
-         returned-field string?
-         empty-field? #(= % "")
-         filled-field #(not= % "")
-
-         empty-returned-field?
-         (every-pred 
-           returned-field
-           empty-field?
-           )
-
-         filled-returned-field
-         (every-pred
-           returned-field
-           empty-field?)
-         
-
-         empty-form?
-         (every? fresh-field? all-fields)
-
-         valid-email?
-         (valid-email-str? email-address)
-
-         valid-form?
-         (and 
-           valid-email?
-           (every? filled-returned-field
-             required-fields))
-         
-
-         request
-         (when valid-form?
-           (send-contact-emails! ctx))]
+          :keys [email telephone address]
+          :as form-params}
+         (cske/transform-keys csk/->kebab-case-keyword
+           form-params)]
+     
+     
+     
+     (do
+       (println "ran contact form")
+       (println "email form params")
+       (pprint form-params)
+       )
+     
      [:<>
-      (cond
+      [schedule-title
+       "Schedule a Consultation"]
       
-        (not valid-form?)
-        [:<> 
-         [schedule-title
-          "Schedule a Consultation"]
+      (when contact-error
+        [:div
+         (case contact-error
+      
+           "empty form"
+           "form is empty"
+      
+           "missing required fields"
+           "please fill out all the required fields"
+      
+           "invalid email"
+           "that email address is invalid"
+      
+           default-form-message)])
+      
+      (biff/form
+        {:hx-post "/send-contact"
+         :hx-swap "outerHTML"
+         :hx-target "#contact"
+                  ;; :action "/send-contact"
+         :id "contact-form"}
+                  ;; :hx-disabled-elt "this"
+        
+        #_(recaptcha-callback "submitContact" "contact-form")
+        
+        [:div.inputs
+         [contact-input
+          {:name "email"
+           :type "email"
+           :value email
+           :autocomplete "email"
+           :required? true}]
          
-         (biff/form
-           {:action "/send-contact"
-            :id "contact-form-id"
-            :hx-disabled-elt "this"}
-          (recaptcha-callback "submitContact" "contact-form-id")
-          
-          ;; form validation logic
-           (when-not valid-form?
-             default-form-message)
-           
-          (cond
-            (= email-address "")
-            [contact-error-message
-             "Please enter your email address."]
-            
-            ;; (= email-address "")
-            ;; [contact-error-message
-            ;;  "Please check that the required fields are included. Thank you."]
-            
-            )
-          
-          [:div.inputs
-           [contact-input
-            {:name "email"
-             :type "email"
-             :autocomplete "email"
-             :required? true}]
-          
-           [contact-input
-            {:name "name"
-             :required? true}]
-           [contact-input
-            {:name "telephone"
-             :type "tel"
-             :required? true}]
-           [contact-input
-            {:name "address"
-             :type "text"}]
-          
-           [comments-input]]
-          
-          [email-submit-btn
-           (merge
-             (when site-key
+         [contact-input
+          {:name "name"
+           :required? true
+           :value client-name}]
+         [contact-input
+          {:name "telephone"
+           :type "tel"
+           :required? true
+           :value telephone}]
+         [contact-input
+          {:name "address"
+           :type "text"
+           :value address
+           :required? true}]
+         
+         [comments-input]]
+        
+        [email-submit-btn
+         (merge
+           #_(when site-key
                {:data-sitekey site-key
                 :data-callback "submitContact"})
-             {:type "submit"
-              :class '[g-recaptcha]})
-           "Send"]
-          
-          (when-some [error (:error form-params)]
-            [:<>
-             [:div
-              (case error
-                "recaptcha"
-                (str "You failed the recaptcha test. Try again, "
-                  "and make sure you aren't blocking scripts from Google.")
-          
-                "invalid-email"
-                "Invalid email. Try again with a different address."
-          
-                "send-failed"
-                (str "We weren't able to send an email to that address. "
-                  "If the problem persists, try another address.")
-          
-                "There was an error.")]])
-          biff/recaptcha-disclosure)
-         ]
-        :else
-        [contact-sent])])))
+           {:type "submit"})
+                    ;; :class '[g-recaptcha]
+         
+         "Send"]
+        
+        
+        biff/recaptcha-disclosure)])))
      
 
-#_((every-pred string? #(not= % "" )) "x")
+
+
+(empty-returned-field? nil)
+
+(def fresh-field? nil?)
+
+(def returned-field? string?)
+
+(def empty-field? empty?)
+
+(defn filled-field? [x] 
+  (not (empty-field? x)))
+
+(def empty-returned-field?
+  (every-pred
+    returned-field?
+    empty-field?))
+
+(def filled-returned-field
+  (every-pred
+    filled-field?
+    returned-field?))
+
+(comment
+  (every? filled-returned-field
+    ["" "" "" ""]))
+
+
+(defn handle-form-submission 
+  [{:keys [form-params] :as ctx}]
+  (let [
+        {email-address :email
+         client-name :name
+         client-comment :comment
+         :keys [email telephone address]
+         :as form-params}
+        (cske/transform-keys csk/->kebab-case-keyword
+          form-params)
+        
+        all-fields (vec (vals form-params))
+        
+        required-fields
+        [client-name
+         email-address
+         telephone
+         address]
+        
+        error 
+        (cond
+          (every? fresh-field? all-fields)
+          "empty form"
+
+          (not 
+            (every? filled-returned-field required-fields))
+          "missing required fields"
+
+          (not (valid-email-str? email-address))
+          "invalid email"
+
+          )
+        ]
+    (println "")
+    (println "testing:")
+    (println "form params")
+    (pprint form-params)
+    (pprint 
+      [client-name
+       email-address
+       telephone
+       address])
+    (pprint
+      (not 
+        (every? filled-returned-field 
+             [client-name
+              email-address
+              telephone
+              address])))
+    (println "")
+    
+    
+    (when-not error
+      (send-contact-emails! ctx))
+    (if error
+      [contact-form (assoc ctx :contact-error error)]
+      [contact-sent])))
+
+
 
 ;; ___________________________________ .
 
@@ -589,7 +628,7 @@
   ;; (println "contact page path params")
   ;; (pprint path-params)
   (ui/page
-    (assoc ctx ::ui/recaptcha true)
+    (assoc ctx ::ui/recaptcha false)
     [container
      [contact-title "We are here to help you get started with a sustainable landscape!"]
      [fancy-divider]
@@ -613,8 +652,8 @@
      #_[contact-title "Success!"]
      #_[fancy-divider]
      #_[contact-text
-      [contact-links]
-      [bottomflower]]
+        [contact-links]
+        [bottomflower]]
      (contact-form ctx)
      [flower]
      [social-block

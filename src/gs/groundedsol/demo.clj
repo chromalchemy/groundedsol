@@ -7,34 +7,47 @@
       [gs.groundedsol.ui :as ui]
       [gs.hiccup :as bhiccup]))
 
+
+#_"setTimeout(() => {
+  document.getElementById('demo-form').submit();
+}, '1000');"
+
+(def callback-js-fn-str 
+  "<script> 
+    function myCallback() { 
+   
+      console.log('ran callback');
+    };
+   </script>")
+
 (defn bar-form [v]
   (let [v (if v v "no value set")]
-    (biff/form
-      {:id "demo-form"
-       :action "/demo/set-bar"
-      ;;  :hx-post "/demo/set-bar"
-       :hx-swap "outerHTML"}
+    [:div
+     [::hiccup/unsafe-html
+      callback-js-fn-str]
+     (biff/form
+       {:id "demo-form"
+        ;; :hx-target "this"
+        ;; :action "/demo/set-bar"
+        :onsubmit "myCallback()"
+      ;; :hx-post "/demo/set-bar"
+        ;; :hx-swap "outerHTML"
+        }
+       
       
-      ;; js callback
-      [::hiccup/unsafe-html
-       "<script> 
-        function myCallback() { 
-          document.getElementById('demo-form').submit();
-        } 
-        </script>"]
-      
-      [:label {:for "bar"} "Bar: "
-       (pr-str v)]
-      [:input#bar
-       {:type "text"
-        :name "bar"
-        :value "bar"}]
-      [:button
-       {:type "submit"
-        :data-callback "myCallback"}
-       "Update"]
-      [:div
-       "This demonstrates updating a value with HTMX."])))
+       [:label {:for "bar"} "Bar: "
+        (pr-str v)]
+       [:input#bar
+        {:type "text"
+         :name "bar"
+         :value "bar"}]
+       [:button
+        {:type "submit"
+        ;;  :data-callback "myCallback"
+         }
+        "Update"]
+       [:div
+        "This demonstrates updating a value with HTMX."])]))
 
 (defn set-bar [{:keys [params] :as ctx}]
   (println "params")
@@ -56,39 +69,39 @@
   (let [{:keys [foo]
          :or {foo "no value set"}} 
         params]
-    (println (str "foo: " foo))
+    #_(println (str "foo: " foo))
     (ui/page
      {}
-     (biff/form
-      {:action "/demo/set-foo"}
+     #_(biff/form
+        {:action "/demo/set-foo"}
       
-       [:label
-        {:for "foo"} 
-        "Foo: " (pr-str foo)
-        ]
+        [:label
+         {:for "foo"} 
+         "Foo: " (pr-str foo)]
+        
       
-       [:div.flex
+        [:div.flex
        
-        [:input#foo
-         {:type "text"
-          :name "foo"
-          :value "foo"}]
+         [:input#foo
+          {:type "text"
+           :name "foo"
+           :value "foo"}]
        
-        [:button
-         {:type "submit"}
-         "Update"]]
+         [:button
+          {:type "submit"}
+          "Update"]]
       
-       [:div
-       "This demonstrates updating a value with a plain old form."])
+        [:div
+         "This demonstrates updating a value with a plain old form."])
      
-     [:hr]
-     (bar-form (:bar params))
-     )))
+     #_[:hr]
+     (bar-form (:bar params)))))
+     
 
 
 (def plugin
   {:routes ["/demo" 
             ["" {:get demo-page}]
             ["/set-foo" {:post set-foo}]
-            ["/set-bar" {:post set-bar}]]
-   })
+            ["/set-bar" {:post set-bar}]]})
+   
