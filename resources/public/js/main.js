@@ -2,26 +2,23 @@
 
 
 // recaptcha callback to submit contact form
-function submitContact() {
-    // submit form classic style
-    // document.getElementById("contact-form").requestSubmit();
+// function submitContact() {
+//     // submit form classic style
+//     // document.getElementById("contact-form").requestSubmit();
 
 
-    // create new event for :hx-trigger
-    // const event = new Event('verified');
-    // const elem = document.querySelector("#contact-form");
-    // elem.dispatchEvent(event);
+//     // create new event for :hx-trigger
+//     // const event = new Event('verified');
+//     // const elem = document.querySelector("#contact-form");
+//     // elem.dispatchEvent(event);
 
-    // execute some code after the content has been inserted into the DOM
-    htmx.ajax('POST', '/send-contact', {target:'#contact', swap:'outerHTML', source:'#contact-form'}).then(() => {
-        // this code will be executed after the 'htmx:afterOnLoad' event,
-        // and before the 'htmx:xhr:loadend' event
-        console.log('Content inserted successfully!');
-    });
-
-    
-
-}
+//     // execute some code after the content has been inserted into the DOM
+//     htmx.ajax('POST', '/send-contact', {target:'#contact', swap:'outerHTML', source:'#contact-form'}).then(() => {
+//         // this code will be executed after the 'htmx:afterOnLoad' event,
+//         // and before the 'htmx:xhr:loadend' event
+//         console.log('Content inserted successfully!');
+//     });
+// }
 
 
 //LIGHTBOX

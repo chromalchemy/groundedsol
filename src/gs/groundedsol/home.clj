@@ -27,42 +27,9 @@
             [clojure.tools.logging :as log]))
             
 
-(def email-disabled-notice
-  [:div
-   "Until you add API keys for Postmark and reCAPTCHA, we'll print your sign-up "
-   "link to the console. See config.edn."])
-
-(defn passed-recaptcha? [{:keys [biff/secret biff.recaptcha/threshold params]
-                          :or {threshold 0.5}}]
-  (or (nil? (secret :recaptcha/secret-key))
-    (let [{:keys [success score]}
-          (:body
-           (http/post "https://www.google.com/recaptcha/api/siteverify"
-             {:form-params {:secret (secret :recaptcha/secret-key)
-                            :response (:g-recaptcha-response params)}
-              :as :json}))]
-      (and success (or (nil? score) (<= threshold score))))))
-
-
 (defstyled email-error-message :div
   ([error-text]
    [:<> error-text]))
-
-(defn recaptcha-error-text [error]
-  (case error
-    "recaptcha"
-    (str "You failed the recaptcha test. Try again, "
-      "and make sure you aren't blocking scripts from Google.")
-  
-    "invalid-email"
-    "Invalid email. Try again with a different address."
-  
-    "send-failed"
-    (str "We weren't able to send an email to that address. "
-      "If the problem persists, try another address.")
-  
-    "There was an error."))
-
 
 
 (defn confirmation-page [{:keys [params] :as ctx}]

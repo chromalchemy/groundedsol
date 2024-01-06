@@ -19,6 +19,7 @@
   ["https://unpkg.com/htmx.org@1.9.0"
    "https://unpkg.com/htmx.org/dist/ext/ws.js"
    "https://unpkg.com/hyperscript.org@0.9.8"
+   
    "https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"
    "jquery.slimmenu.js"
    "nivo-lightbox.js"

@@ -152,16 +152,19 @@
   ["input::placeholder" :italic :tracking-wide])
   
 
+(defn add-class [class-str params]
+  (setval [:class AFTER-ELEM] class-str params))
 
 (defstyled contact-input :div
   #_placeholder-text
   :w-full :block
   ["input.required::placeholder" :font-bold :text-green-600]
-  [:input.error :bg-#eeffe7]
+  [:input.empty :bg-#eeffe7]
+  [:input.error :bg-#fffdda]
   
   ([{field-name :name
      field-value :value
-     :keys [name required?]
+     :keys [name required? error?]
      :or {required? false
           type "text"}
      :as params}]
@@ -170,8 +173,10 @@
       (-> field-name 
         (string/replace "-" " ") 
         (string/capitalize))
-      pr 
-      (do
+      field-empty? 
+      (empty-returned-field? field-value)
+      #_pr 
+      #_(do
         (println "value:")
         (pprint 
           [field-value
@@ -183,11 +188,9 @@
          :class []}
         (merge params)
         (cond->> 
-          required?
-          (setval [:class AFTER-ELEM] "required")
-          
-          (empty-returned-field? field-value)
-          (setval [:class AFTER-ELEM] "error")
+          required? (add-class "required")
+          error? (add-class "error")
+          field-empty? (add-class "empty")
           ))])))
 
 (defstyled textarea :textarea
@@ -339,38 +342,36 @@
   
 
 (defstyled email-submit-btn :button
-  :text-lg :p-1 :bg-green-500 :text-white :rounded :border-0 :px-3 :rounded
-  :tracking-wider
-  :box-border
-       ;:h-20
-       ;:w-40
-  :py-1
-  :px-8
-  :inline-block
-  :text-center
-  :mt-10px :mb-20px :my-0 :cursor-pointer
-  :text-#333
-  :hover:no-underline
-  :bg-green-500 :text-white
-  :hover:border-green-600 #_:hover:text-green-600
-  :hover:bg-green-600
-  #_[(gs/& gs/active) :bg-red-500]
+  :inline-block  
+  :py-1 
+  :px-8 :my-0 :mb-4
   :text-lg
-  :select-none
-  {:font-family "'Oswald', Verdana, Helvetica, sans-serif"}
-  :font-normal
-       ;:py-2px :px-18px
+  :text-center
+  :tracking-wider 
+  :text-white
+  :bg-green-500
+  :cursor-pointer 
   :no-underline
-  :border-none
-       ;:border :border-solid :border-#333
-  :rounded-md)
+  :select-none
+  
+  :border-0 :border-none :rounded-md :box-border
 
+  :hover:border-green-600 :hover:bg-green-600
+  :hover:no-underline
+  
+  #_[(gs/& gs/active) :bg-red-500]
+
+  {:font-family "'Oswald', Verdana, Helvetica, sans-serif"}
+  :font-normal )
+  
+  
 (defn valid-email-str? [s]
   (and
+    (auth/email-valid? {} s)
     (some? s)
     (string? s)
     (string/includes? s "@")
-    (= "")
+    (not= "" s)
     (<= (count s) 100)))
 
 
@@ -421,6 +422,42 @@
      "}"
      "</script>")])
 
+(defstyled error-text :div 
+  :text-sm :text-green-600
+  ([error]
+    [:<>
+     (case error
+       "empty form"
+       "Please enter your contact information."
+
+       "invalid email"
+       "Email address is invalid. Please update."
+       
+       "missing required fields"
+       "Please enter the required* fields."
+       
+       "recaptcha"
+       "You failed the recaptcha test. Please try again, and make sure you aren't blocking scripts from Google."
+       
+       default-form-message
+       )]))
+
+(defstyled recaptcha-disclosure :div
+  :text-xs :leading-4 :text-#4b5563
+  [:br :lg:hidden]
+  ([]
+   [:<> 
+    "This site is protected by reCAPTCHA " [:br] "the Google "
+    [:a {:href "https://policies.google.com/privacy"
+         :target "_blank"
+         :style {:text-decoration "underline"}}
+     "Privacy Policy"] " and "
+    [:a {:href "https://policies.google.com/terms"
+         :target "_blank"
+         :style {:text-decoration "underline"}}
+     "Terms of Service"] " apply."]))
+
+
 (defstyled contact-form :div#contact
     :my-4 :p-4
     :text-center
@@ -439,8 +476,9 @@
         #_[:div #_:w-50%]]
      
   
-  ([{:keys [recaptcha/site-key form-params contact-error] :as ctx}]
-   (let [{email-address :email
+  ([{:keys [recaptcha/site-key form-params params ::render-recaptcha] :as ctx}]
+   (let [error (:error params)
+         {email-address :email
           client-name :name
           client-comment :comment
           :keys [email telephone address]
@@ -448,7 +486,7 @@
          (cske/transform-keys csk/->kebab-case-keyword
            form-params)]
      
-     (do
+     #_(do
        (println "ran contact form")
        (println "email form params")
        (pprint form-params)
@@ -458,42 +496,33 @@
       [schedule-title
        "Schedule a Consultation"]
       
-      (when contact-error
-        [:div
-         (case contact-error
-      
-           "empty form"
-           "form is empty"
-      
-           "missing required fields"
-           "please fill out all the required fields"
-      
-           "invalid email"
-           "that email address is invalid"
-      
-           default-form-message)])
+      (when error
+        [error-text error])
       
       (biff/form
         {
-        ;;  :hx-post "/send-contact"
-        ;;  :hx-swap "outerHTML"
-        ;;  :hx-target "#contact"
-        ;;  :hx-trigger "verified"
-        ;;  :action "/send-contact"
+         :hx-post "/send-contact"
+         :hx-swap "outerHTML"
+         :hx-target "#contact"
          :id "contact-form"
-        ;;  :hidden {:on-error "/contact"}
+         :hidden {:on-error "/"}
+         :_ (when render-recaptcha
+              (str "init call grecaptcha.render('g-recaptcha-id', {sitekey:'" site-key "'})"))
+        ;;  :hx-disabled-elt "this"
          }
-                  ;; :hx-disabled-elt "this"
         
-        #_(recaptcha-callback "submitContact" "contact-form")
+        (recaptcha-callback "submitContact" "contact-form")
         
         [:div.inputs
          [contact-input
           {:name "email"
-           :type "email"
+          ;;  :type "email"
            :value email
            :autocomplete "email"
-           :required? true}]
+           :required? true
+           :error? (= error "invalid email")
+           :placeholder "Enter your email address"
+           }]
          
          [contact-input
           {:name "name"
@@ -518,25 +547,31 @@
          (merge
            (when site-key
                {:data-sitekey site-key
-                :data-callback "submitContact"})
-           {:type "submit"
-            :class '[g-recaptcha]
-            :id "submit-button"})
+                :data-callback "submitContact"
+                :class '[g-recaptcha]
+                :id "g-recaptcha-id"})
+           {:type "submit"})
             
          "Send"]
         
-        
-        biff/recaptcha-disclosure)])))
+        [recaptcha-disclosure])])))
      
 
-(comment
-  (every? filled-returned-field
-    ["" "" "" ""]))
+(defn passed-recaptcha? [{:keys [biff/secret biff.recaptcha/threshold params]
+                          :or {threshold 0.5}}]
+  (let [{:keys [success score]}
+        (:body
+         (http/post "https://www.google.com/recaptcha/api/siteverify"
+           {:form-params {:secret (secret :recaptcha/secret-key)
+                          :response (:g-recaptcha-response params)}
+            :as :json}))]
+    (and success (or (nil? score) (<= threshold score)))))
 
 
 (defn handle-form-submission 
-  [{:keys [form-params] :as ctx}]
-  (let [
+  [{:keys [form-params params] :as ctx}]
+  (let [captcha-passed? (passed-recaptcha? ctx)
+        
         {email-address :email
          client-name :name
          client-comment :comment
@@ -558,38 +593,41 @@
           (every? fresh-field? all-fields)
           "empty form"
 
-          (not 
-            (every? filled-returned-field required-fields))
-          "missing required fields"
-
           (not (valid-email-str? email-address))
           "invalid email"
 
+          (not 
+            (every? filled-returned-field required-fields))
+          "missing required fields"
           )
         ]
     (println "")
+    (println "passed recaptcha:" captcha-passed?)
+    (println "error:" error)
     (println "testing:")
     (println "form params")
-    (pprint form-params)
-    (pprint 
+    (pprint (dissoc form-params :g-recaptcha-response))
+    #_(pprint 
       [client-name
        email-address
        telephone
        address])
-    (pprint
+    #_(pprint
       (not 
         (every? filled-returned-field 
-             [client-name
-              email-address
-              telephone
-              address])))
+          [client-name
+           email-address
+           telephone
+           address])))
     (println "")
     
-    
-    (when-not error
+    (and (not (some? error)) captcha-passed?
       (send-contact-emails! ctx))
     (if error
-      [contact-form (assoc ctx :contact-error error)]
+      [contact-form 
+       (-> ctx
+         (assoc-in [:params :error] error)
+         (assoc ::render-recaptcha true))]
       [contact-sent])))
 
 ;; example response header, instead of returning html
@@ -639,8 +677,8 @@
      [flower]
      [social-block
       [mobile-divider]
-      [social-icons "img/social-icons/"]
-      [facebook-widget]]]))
+      #_[social-icons "img/social-icons/"]
+      #_[facebook-widget]]]))
 
 
     
