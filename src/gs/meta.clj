@@ -37,16 +37,16 @@
                 (cond 
                   (str/includes? script-str "http") script-str
                   :else (str js-path script-str))]
-            (cond
-              (str/includes? script-str "live.js")
-              [:script {:src script-url 
-                        :type "text/javascript"
-                        :title "default"}]
-              :else 
-              [:script {:src script-url :type "text/javascript"}]
-              )))]
-    (if-not recaptcha links
-      (conj links recaptcha-script-link))))
+            [:script 
+             (-> {:src script-url
+                  :type "text/javascript"}
+               (cond-> 
+                 (str/includes? script-str "live.js")
+                 (assoc :title "default")))]
+            ))]
+    (cond 
+      recaptcha (conj links recaptcha-script-link)
+      :else links)))
 
 
 ;; ----------- css

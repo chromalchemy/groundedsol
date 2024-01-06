@@ -20,10 +20,37 @@
    [clojure.tools.logging :as log]
    [garden.core :as garden]
    [ring.middleware.anti-forgery :as csrf]
-   [com.biffweb.impl.auth :as auth])
+   [com.biffweb.impl.auth :as auth]
+   [squint.compiler :as sq])
   (:use
     [gs.util]
     [gs.components]))
+
+
+
+#_(empty-returned-field? nil)
+
+(def fresh-field? nil?)
+
+(def returned-field? string?)
+
+(def empty-field? empty?)
+
+(defn filled-field? [x]
+  (not (empty-field? x)))
+
+(def empty-returned-field?
+  (every-pred
+    returned-field?
+    empty-field?))
+
+(def filled-returned-field
+  (every-pred
+    filled-field?
+    returned-field?))
+
+
+(sq/compile-string "(defn foo [] (+ 1 2 3))")
 
 (gs/defpseudoelement placeholder)
 
@@ -148,7 +175,7 @@
         (println "value:")
         (pprint 
           [field-value
-           (empty-returned-field? field-value)]))]
+            (empty-returned-field? field-value)]))]
      [input
       (->
         {:placeholder
@@ -165,7 +192,6 @@
 
 (defstyled textarea :textarea
   input
-  required-field
   [gs/& placeholder :text-green-600 :italic]
   
   :font-bold
@@ -280,7 +306,7 @@
        form-params)]
     
     (println "ran (send-contact-emails!)")
-    [contact-form ctx]
+    #_[contact-form ctx]
 
     #_(send-email-from-gsol! ctx
        {:To gsol-email-address
@@ -375,26 +401,6 @@
      h]])) 
 
 
-(defn recaptcha-callback [fn-name form-id]
-  [::hiccup/unsafe-html
-   (str "<script>"
-     "function " fn-name "(token) { "
-     
-    ;;  "htmx.ajax('GET', '/send-contact', {target:'#"
-    ;;  form-id
-    ;;  "', swap:'outerHTML'});"
-     
-     "document.getElementById('" form-id "').submit();"
-     
-     "}"
-     "</script>")])
-
-(comment
-  (hiccup/render
-    (recaptcha-callback "submitContact" "contact-form")
-    {:doctype? false}))
-  
-
 (defstyled schedule-title :h2
   :text-center)
 
@@ -405,6 +411,15 @@
     "We will reach out as soon as we can" [:br]
     "to help create your beautiful Florida garden."]
    #_[:span.start "Let's starts the conversation."]])
+
+(defn recaptcha-callback [fn-name form-id]
+  [::hiccup/unsafe-html
+   (str
+     "<script>"
+     "function " fn-name "(token) { "
+     "document.getElementById('" form-id "').requestSubmit();"
+     "}"
+     "</script>")])
 
 (defstyled contact-form :div#contact
     :my-4 :p-4
@@ -463,12 +478,14 @@
         ;;  :hx-post "/send-contact"
         ;;  :hx-swap "outerHTML"
         ;;  :hx-target "#contact"
-         :action "/send-contact"
+        ;;  :hx-trigger "verified"
+        ;;  :action "/send-contact"
          :id "contact-form"
+        ;;  :hidden {:on-error "/contact"}
          }
                   ;; :hx-disabled-elt "this"
         
-        (recaptcha-callback "submitContact" "contact-form")
+        #_(recaptcha-callback "submitContact" "contact-form")
         
         [:div.inputs
          [contact-input
@@ -503,34 +520,14 @@
                {:data-sitekey site-key
                 :data-callback "submitContact"})
            {:type "submit"
-            :class '[g-recaptcha]})
+            :class '[g-recaptcha]
+            :id "submit-button"})
             
          "Send"]
         
         
         biff/recaptcha-disclosure)])))
      
-
-(empty-returned-field? nil)
-
-(def fresh-field? nil?)
-
-(def returned-field? string?)
-
-(def empty-field? empty?)
-
-(defn filled-field? [x] 
-  (not (empty-field? x)))
-
-(def empty-returned-field?
-  (every-pred
-    returned-field?
-    empty-field?))
-
-(def filled-returned-field
-  (every-pred
-    filled-field?
-    returned-field?))
 
 (comment
   (every? filled-returned-field
@@ -595,6 +592,10 @@
       [contact-form (assoc ctx :contact-error error)]
       [contact-sent])))
 
+;; example response header, instead of returning html
+(comment 
+  {:status 303
+     :headers {"location" (str "/contact?success=" "success")}})
 
 
 ;; ___________________________________ .
