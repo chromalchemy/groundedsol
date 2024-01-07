@@ -303,15 +303,14 @@
   (let
     [{email-address :email
       client-name :name
-      client-comment :comment
+      client-comment :comments
       :keys [email telephone address]}
      (cske/transform-keys csk/->kebab-case-keyword
        form-params)]
     
     (println "ran (send-contact-emails!)")
-    #_[contact-form ctx]
-
-    #_(send-email-from-gsol! ctx
+    
+    (send-email-from-gsol! ctx
        {:To gsol-email-address
         :Subject "New inquiry from groundedsol.com contact page"
         :TextBody 
@@ -327,7 +326,7 @@
           (when client-comment 
             (str "\n" "Goals:\n" client-comment "\n")))}) 
          
-    #_(send-email-from-gsol! ctx
+    (send-email-from-gsol! ctx
        {:To email-address
         :Subject "Thanks for contacting Grounded Solutions"
         :TextBody "We will contact you shortly to discuss your beautiful Florida Native landscape.🌻 \n https://groundedsol.com\n352-219-5381"})))
@@ -548,9 +547,10 @@
            (when site-key
                {:data-sitekey site-key
                 :data-callback "submitContact"
-                :class '[g-recaptcha]
-                :id "g-recaptcha-id"})
-           {:type "submit"})
+                })
+           {:type "submit"
+            :class '[g-recaptcha]
+            :id "g-recaptcha-id"})
             
          "Send"]
         
@@ -677,8 +677,8 @@
      [flower]
      [social-block
       [mobile-divider]
-      #_[social-icons "img/social-icons/"]
-      #_[facebook-widget]]]))
+      [social-icons "img/social-icons/"]
+      [facebook-widget]]]))
 
 
     
