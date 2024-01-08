@@ -54,26 +54,39 @@
 
 (gs/defpseudoelement placeholder)
 
-(defstyled facebook-widget :iframe
-  ;:box-border
-  :mb-8  #_:overflow-hidden :mx-auto :block
-  :w-340px
-  (color/hex-k :border "#ebe5cd" #_color/gold-yellow)
-  :border-solid
-  :border-30
-  :border-t-50
-  :border-b-50
-  :text-center
-  {:border-radius (px 10)}
+(defstyled facebook-widget :div
+  :mx-auto
+  :mb-8 
+  :bg-#ebe5cd 
+  :rounded-2xl
+  :pt-6
+  :w-360px
+  
+  
+  [:iframe
+  ;;  :h-500px
+  ;;  :block
+   ;:box-border
+   #_:overflow-hidden :mx-auto :block
+  ;; :w-340px
+  ;; (color/hex-k :border "#ebe5cd" #_color/gold-yellow)
+  ;; :border-solid
+  ;; :border-1
+  ;; :border-t-50
+  ;; :border-b-50
+  ;; :text-center
+  #_{:border-radius (px 10)}]
+  
   ([]
    [:<>
-    {:src "https://www.facebook.com/plugins/page.php?href=https://www.facebook.com/groundedsol/%2Ffacebook&tabs=timeline&width=340&height=500&small_header=false&adapt_container_width=true&hide_cover=false&show_facepile=true&appId"
-     :scrolling "no"
-     :height "500px"
-     :width "360px"
-     :frameborder "0"
-     :allowTransparency "true"
-     :allow "encrypted-media"}]))
+    [:iframe
+     {:src "https://www.facebook.com/plugins/page.php?href=https://www.facebook.com/groundedsol/%2Ffacebook&tabs=timeline&width=340&height=500&small_header=false&adapt_container_width=true&hide_cover=false&show_facepile=true&appId"
+      :scrolling "no"
+      :height "500px"
+      :width "340px"
+      :frameborder "0"
+      :allowTransparency "true"
+      :allow "encrypted-media"}]]))
 
 (def flower-img-data
   {:alt "Flower"
@@ -229,27 +242,12 @@
   :flex :gap-3 :mb-4 :flex-wrap :sm:flex-nowrap
   :justify-center #_:md:justify-start)
 
-(defstyled old-contact-form :form ;.contact-form
-  :block
-  :mt-6 :p-8 :pb-8 :pt-0 :mt-8
-  :mb-1
-  #_[placeholder #_:font-bold :italic :text-green-500 :tracking-wider]
-    ;:w-full
-  :rounded-2xl
-    ;:border-black :border-solid :border-4
-  :md:max-w-800px
-  :mx-auto
-    ;{:background {:color "#fcfbf9"}}
-     ;[:div #_:w-50%]]
-  ([]
-   [:<>
-    {:id "contact-form"
-     :action "send_form_email.php"
-     :method "POST"}]))
-       ;:name "contactform"}
     
 (defstyled contact-title :h1.title
-  :text-center :text-3xl :tracking-wider
+  :text-center 
+  :text-xl  :md:text-3xl 
+  :tracking-wider
+  :leading-tight :md:relaxed
   {:color color/gold-yellow})
 
 (defstyled social-block :div #_flex-stack
@@ -458,23 +456,23 @@
 
 
 (defstyled contact-form :div#contact
-    :my-4 :p-4
-    :text-center
-    :text-lg
-    [:.inputs :w-75% :mx-auto
-     :flex :flex-col :gap-2]
+  :mb-4 
+  :md:p-4
+  :text-center
+  :text-lg
+  [:.inputs :mx-auto
+   :flex :flex-col :gap-2]
   [:.start :italic :mb-4 :block]
-  [:form 
+  [:form
    :block
-   :p-8 :pt-0
-   :mt-8 :mb-1
+   :md:p-8 :pt-0
+   :mb-1
    :rounded-2xl
-   :md:max-w-800px
+   :md:max-w-600px
    :mx-auto
-       #_{:background {:color "#fcfbf9"}}
-        #_[:div #_:w-50%]]
-     
-  
+   #_{:background {:color "#fcfbf9"}}
+   #_[:div #_:w-50%]]
+
   ([{:keys [recaptcha/site-key form-params params ::render-recaptcha] :as ctx}]
    (let [error (:error params)
          {email-address :email
@@ -484,23 +482,21 @@
           :as form-params}
          (cske/transform-keys csk/->kebab-case-keyword
            form-params)]
-     
+
      #_(do
-       (println "ran contact form")
-       (println "email form params")
-       (pprint form-params)
-       )
-     
+         (println "ran contact form")
+         (println "email form params")
+         (pprint form-params))
+
      [:<>
       [schedule-title
        "Schedule a Consultation"]
-      
+
       (when error
         [error-text error])
-      
+
       (biff/form
-        {
-         :hx-post "/send-contact"
+        {:hx-post "/send-contact"
          :hx-swap "outerHTML"
          :hx-target "#contact"
          :id "contact-form"
@@ -509,9 +505,9 @@
               (str "init call grecaptcha.render('g-recaptcha-id', {sitekey:'" site-key "'})"))
         ;;  :hx-disabled-elt "this"
          }
-        
+
         (recaptcha-callback "submitContact" "contact-form")
-        
+
         [:div.inputs
          [contact-input
           {:name "email"
@@ -520,40 +516,38 @@
            :autocomplete "email"
            :required? true
            :error? (= error "invalid email")
-           :placeholder "Enter your email address"
-           }]
-         
+           :placeholder "Enter your email address"}]
+
          [contact-input
           {:name "name"
            :required? true
            :value client-name}]
-         
+
          [contact-input
           {:name "telephone"
            :type "tel"
            :required? true
            :value telephone}]
-         
+
          [contact-input
           {:name "address"
            :type "text"
            :value address
            :required? true}]
-         
+
          [comments-input]]
-        
+
         [email-submit-btn
          (merge
            (when site-key
-               {:data-sitekey site-key
-                :data-callback "submitContact"
-                })
+             {:data-sitekey site-key
+              :data-callback "submitContact"})
            {:type "submit"
             :class '[g-recaptcha]
             :id "g-recaptcha-id"})
-            
+
          "Send"]
-        
+
         [recaptcha-disclosure])])))
      
 
@@ -649,7 +643,9 @@
   :flex :gap-3 :md:gap-8 :justify-around :flex-col :md:flex-row
   :mb-2 :md:mb-0
   [:a  :inline-block 
-   :text-green-600 :text-2xl  :md:text-2xl :no-underline :font-bold :tracking-normal 
+   :text-green-600 
+   :text-xl  :md:text-2xl 
+   :no-underline :font-bold :tracking-normal 
    :mx-auto :text-center]
    
   ["a:before" :text-gray-300] 
@@ -672,7 +668,7 @@
      [fancy-divider]
      [contact-text
       [contact-links]
-      [bottomflower]]
+      #_[bottomflower]]
      (contact-form ctx)
      [flower]
      [social-block

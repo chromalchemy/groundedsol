@@ -127,7 +127,7 @@
   ;[:border-red-500 :border-1 :border-solid]
   ;;(border :green-500)
   [:a :block :tracking-wide :text-#000 :text-sm :font-normal
-   :py-1 :md:py-2 :px-2 #_(styles/border "red")
+   :py-2px :md:py-2 :px-2 #_(styles/border "red")
 
    [:&:hover :text-#d1c583 :no-underline]]
 
@@ -252,7 +252,9 @@
   :tracking-wide
   :uppercase
   ;:pl-0
-  :text-sm
+  {:font-size "14px"}
+  :leading-tight
+  :md:text-sm
   ;:md:text-md
   ;:text-left
   :font-normal)
@@ -270,6 +272,7 @@
 (defstyled masthead container
   :pt-2
   :border-b-0 :md:flex :justify-between #_:flex-col
+  :mb-4
   ;(styles/border "green")
   ;:min-h-100px
   ;[:.test (styles/border "green") :flex :p-2 :w-full]
