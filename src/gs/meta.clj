@@ -36,7 +36,8 @@
         (for [script-str script-strs]
           (let [script-url 
                 (cond 
-                  (str/includes? script-str "http") script-str
+                  (str/includes? script-str "http") 
+                  script-str
                   :else (str js-path script-str))]
             [:script 
              (-> {:src script-url
@@ -46,7 +47,8 @@
                  (assoc :title "default")))]
             ))]
     (cond 
-      recaptcha (conj links recaptcha-script-link)
+      recaptcha 
+      (conj links recaptcha-script-link)
       :else links)))
 
 
