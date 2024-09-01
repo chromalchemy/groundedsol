@@ -1,5 +1,3 @@
-# Biff example project
+Website for Grounded Solutions Inc.
 
-This is the example/template project for Biff.
-
-Run `bb dev` to get started. See `bb tasks` for other commands.
+Built with [Biff](https://biffweb.com/)
