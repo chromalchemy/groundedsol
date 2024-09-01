@@ -112,7 +112,7 @@
     [[:link {:href "/site.webmanifest", :rel "manifest"}]]
     icon-meta
     (js-script-links recaptcha)
-    (when (include-livejs? ctx)
+    #_(when (include-livejs? ctx)
       [[:script {:src "/js/live.js" :title "default"}]])
     css-links
     head))

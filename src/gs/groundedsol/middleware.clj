@@ -94,6 +94,6 @@
     biff/wrap-internal-error
     biff/wrap-ssl
     biff/wrap-log-requests
-    wrap-etag
+    #_wrap-etag ;; for live.js
     head/wrap-head
     ))
