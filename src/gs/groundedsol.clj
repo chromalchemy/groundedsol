@@ -46,7 +46,6 @@
   (biff/add-libs)
   (biff/eval-files! ctx)
   (generate-assets! ctx)
-  (biff/catchall (require 'gs.example-test))
   (test/run-all-tests #"gs.groundedsol.*-test"))
 
 (def malli-opts

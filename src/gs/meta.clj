@@ -16,8 +16,10 @@
     "main.js"))
 
 (def htmx-main-lib-script-tag
-  [:script 
-   {:src "https://unpkg.com/htmx.org@2.0.2"
+  [:script
+   {:src "https://unpkg.com/htmx.org@1.9.12"}
+  ;; latest 
+   #_{:src "https://unpkg.com/htmx.org@2.0.2"
     :integrity "sha384-Y7hw+L/jvKeWIRRkqWYfPcvVxHzVzn5REgzbawhxAuQGwX1XWe70vji+VSeHOThJ"
     :crossorigin "anonymous"}])
 
@@ -34,7 +36,8 @@
 
 (def js-cdn-include-urls
   ["https://unpkg.com/htmx.org@1.9.12/dist/ext/ws.js"
-   "https://unpkg.com/hyperscript.org@0.9.12"
+   "https://unpkg.com/hyperscript.org@0.9.8"
+   #_"https://unpkg.com/hyperscript.org@0.9.12"
    "https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"
    ]) 
 

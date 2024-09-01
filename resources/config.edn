@@ -12,6 +12,8 @@
  :biff.xtdb.jdbc/jdbcUrl #biff/secret "XTDB_JDBC_URL"
 
  :biff.beholder/enabled         #profile {:dev true :default false}
+ :biff.beholder/paths           ["src" "resources" "test"]
+ :biff/eval-paths               ["src" "test"]
  :gs.groundedsol/include-livejs #profile {:dev true :default false}
  :biff.middleware/secure        #profile {:dev false :default true}
  :biff.middleware/cookie-secret #biff/secret COOKIE_SECRET
