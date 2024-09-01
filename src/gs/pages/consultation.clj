@@ -89,8 +89,8 @@
   ([]
    [:<>
     [process-title "The Process"]
-    (for [cs content/consultion-steps]
-      [process-step cs])]))
+    (for [step content/consultion-steps]
+      [process-step step])]))
 
 (def page-hiccup
   [common/container

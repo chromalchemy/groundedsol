@@ -4,7 +4,6 @@
     [garden.selectors :as gs]
     [garden.compiler :as gc]
     [garden.core :as g :refer [css style]]
-    #_[gs.airtable :as at]
     [lambdaisland.ornament :as o :refer [defstyled]]
     [lambdaisland.hiccup :as hiccup]
     [clojure.string :as string]

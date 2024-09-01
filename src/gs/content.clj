@@ -161,7 +161,6 @@
     :link-text "Plant Gallery"
     :link :florida-plants}})
 
-;(def markdown-test my-airtable-data)
 
 (def slogan "Ecological Landscape Design & Consulting")
 

@@ -15,26 +15,26 @@
             [gs.hiccup :refer [export-hiccup]]
             [malli.registry :as malr]
             [nrepl.cmdline :as nrepl-cmd]
-            [gs.build]))
+            [gs.build])
+  (:gen-class))
 
-(def plugins
-  [gs.groundedsol.demo/plugin
-   #_app/plugin
-   #_(biff/authentication-plugin {})
-   home/plugin
-   #_schema/plugin
-   #_worker/plugin])
+(def modules
+  [gs.groundedsol.demo/module
+   #_app/module
+   #_(biff/authentication-module {})
+   home/module
+   schema/module])
 
 (def routes [["" {:middleware [mid/wrap-site-defaults]}
-              (keep :routes plugins)]
+              (keep :routes modules)]
              ["" {:middleware [mid/wrap-api-defaults]}
-              (keep :api-routes plugins)]])
+              (keep :api-routes modules)]])
 
 (def handler 
   (-> (biff/reitit-handler {:routes routes})
     mid/wrap-base-defaults))
 
-(def static-pages (apply biff/safe-merge (map :static plugins)))
+(def static-pages (apply biff/safe-merge (map :static modules)))
 
 (defn generate-assets! [ctx]
   (gs.build/write-page-css!)
@@ -43,33 +43,34 @@
                           :exts [".html"]}))
 
 (defn on-save [ctx]
-  (println "saving files")
   (biff/add-libs)
   (biff/eval-files! ctx)
   (generate-assets! ctx)
-  (test/run-all-tests #"gs.groundedsol.test.*"))
+  (biff/catchall (require 'gs.example-test))
+  (test/run-all-tests #"gs.groundedsol.*-test"))
 
 (def malli-opts
   {:registry (malr/composite-registry
               malc/default-registry
               (apply biff/safe-merge
-                     (keep :schema plugins)))})
+                     (keep :schema modules)))})
 
 (def initial-system
-  {:biff/plugins #'plugins
+  {:biff/modules #'modules
    :biff/send-email #'email/send-email
    :biff/handler #'handler
    :biff/malli-opts #'malli-opts
    :biff.beholder/on-save #'on-save
    :biff.middleware/on-error #'ui/on-error
    :biff.xtdb/tx-fns biff/tx-fns
-   :gs.groundedsol/chat-clients (atom #{})})
+   #_#_ :gs.groundedsol/chat-clients (atom #{})
+   }
+  )
 
 (defonce system (atom {}))
 
 (def components
-  [biff/use-config
-   biff/use-secrets
+  [biff/use-aero-config
    biff/use-xt
    biff/use-queues
    biff/use-tx-listener
@@ -86,11 +87,12 @@
     (reset! system new-system)
     (generate-assets! new-system)
     (log/info "System started.")
-    (log/info "Go to" (:biff/base-url new-system))))
+    (log/info "Go to" (:biff/base-url new-system))
+    new-system))
 
-(defn -main [& args]
-  (start)
-  (apply nrepl-cmd/-main args))
+(defn -main []
+  (let [{:keys [biff.nrepl/args]} (start)]
+    (apply nrepl-cmd/-main args)))
 
 (defn refresh []
   (doseq [f (:biff/stop @system)]

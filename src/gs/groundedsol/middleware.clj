@@ -56,14 +56,15 @@
 ;; for live.js
 (defn wrap-etag [handler]
   (fn [ctx]
-    (let [response (handler ctx)]
+    (let [{:keys [body]:as response} 
+          (handler ctx)]
       (resp/update-header
         response
         "ETag"
         (fn [etag]
           (or etag
-            (when (string? (:body response))
-              (checksum (:body response)))))))))
+            (when (string? body)
+              (checksum body))))))))
 
 
 (defn wrap-site-defaults [handler]

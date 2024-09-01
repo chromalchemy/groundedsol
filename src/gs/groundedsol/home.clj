@@ -66,6 +66,6 @@
          original-page-routes)))
     
 
-(def plugin
+(def module
   {:routes all-routes})
 

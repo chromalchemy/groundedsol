@@ -5,7 +5,6 @@
     [gs.content :as c]
     [gs.components :as common]
     [lambdaisland.ornament :refer [defstyled]]
-    #_[gs.airtable :as at]
     [gs.util :as u]
     [lambdaisland.hiccup :as hiccup]
     [com.rpl.specter :refer [select ALL FIRST setval transform NONE]]

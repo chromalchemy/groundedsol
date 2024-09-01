@@ -22,17 +22,26 @@
                                 :git/url "https://github.com/squint-cljs/squint"}
 
     ;; biff deps
-  com.biffweb/biff                    {:git/url "https://github.com/com.biffweb/biff", #_#_:tag "v0.7.15", :git/sha "821182173945d40cde59cbd1784fc32bb5b0d4e0"}
+  com.biffweb/biff                   
+  #:git{:url "https://github.com/jacobobryant/biff", 
+        :git/tag "v1.8.0", 
+        :git/sha "3b2fa14"}
   camel-snake-kebab/camel-snake-kebab {:mvn/version "0.4.3"}
   metosin/muuntaja                    {:mvn/version "0.6.8"}
-  ring/ring-defaults                  {:mvn/version "0.4.0"}
+  ring/ring-defaults                  {:mvn/version "0.3.4"}
   org.clojure/clojure                 {:mvn/version "1.11.1"}
-  org.slf4j/slf4j-simple              {:mvn/version "2.0.10"}}
 
+
+        ;; Notes on logging: https://gist.github.com/jacobobryant/76b7a08a07d5ef2cc076b048d078f1f3
+        org.slf4j/slf4j-simple     {:mvn/version "2.0.0-alpha5"}
+        org.slf4j/log4j-over-slf4j {:mvn/version "1.7.36"}
+        org.slf4j/jul-to-slf4j     {:mvn/version "1.7.36"}
+        org.slf4j/jcl-over-slf4j   {:mvn/version "1.7.36"}}
  :aliases
  {:dev
   {:extra-deps
    {#_#_binaryage/devtools {:mvn/version "1.0.4"}
+    com.biffweb/tasks {:git/url "https://github.com/jacobobryant/biff", :git/tag "v1.8.0", :git/sha "3b2fa14", :deps/root "libs/tasks"}
     djblue/portal {:mvn/version "0.51.1"}
     com.github.gnl/playback
     {:git/url "https://github.com/gnl/playback"
@@ -42,7 +51,12 @@
     etaoin/etaoin {:mvn/version "1.0.40"}
     io.github.nextjournal/clerk {:mvn/version "0.15.957"}
     no.cjohansen/portfolio {:mvn/version "2023.12.07"}
-    }}
+    }
+    :extra-paths ["dev" "test"]
+    :jvm-opts ["-XX:-OmitStackTraceInFastThrow"
+                   "-XX:+CrashOnOutOfMemoryError"
+                   "-Dbiff.env.BIFF_PROFILE=dev"]
+    :main-opts ["-m" "com.biffweb.task-runner" "tasks/tasks"]}
   
   :flowstorm
   {:extra-deps
@@ -55,4 +69,9 @@
    :jvm-opts ["-Dclojure.storm.instrumentEnable=true"
               "-Dclojure.storm.instrumentOnlyPrefixes=gs"]}
   
-  }}
+  :prod {:jvm-opts ["-XX:-OmitStackTraceInFastThrow"
+                    "-XX:+CrashOnOutOfMemoryError"
+                    "-Dbiff.env.BIFF_PROFILE=prod"]
+          :main-opts ["-m" "gs.groundedsol"]}}
+                                                         
+                                                         }

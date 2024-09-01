@@ -99,7 +99,7 @@
      
 
 
-(def plugin
+(def module
   {:routes ["/demo" 
             ["" {:get demo-page}]
             ["/set-foo" {:post set-foo}]
