@@ -15,42 +15,51 @@
     (str "main.js?t=" (.lastModified f))
     "main.js"))
 
-(def script-strs
-  ["https://unpkg.com/htmx.org@1.9.0"
-   "https://unpkg.com/htmx.org/dist/ext/ws.js"
-   "https://unpkg.com/hyperscript.org@0.9.8"
-   
-   "https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"
-   "jquery.slimmenu.js"
+(def htmx-main-lib-script-tag
+  [:script 
+   {:src "https://unpkg.com/htmx.org@2.0.2"
+    :integrity "sha384-Y7hw+L/jvKeWIRRkqWYfPcvVxHzVzn5REgzbawhxAuQGwX1XWe70vji+VSeHOThJ"
+    :crossorigin "anonymous"}])
+
+(def recaptcha-script-tag
+  [:script {:src "https://www.google.com/recaptcha/api.js"
+            :async "async" :defer "defer"}])
+
+(def local-js-file-names 
+  ["jquery.slimmenu.js"
    "nivo-lightbox.js"
    "wow.min.js"
    "accordionscript.js"
    (main-js-path)])
 
-(def recaptcha-script-link
-  [:script {:src "https://www.google.com/recaptcha/api.js"
-            :async "async" :defer "defer"}])
+(def js-cdn-include-urls
+  ["https://unpkg.com/htmx.org@1.9.12/dist/ext/ws.js"
+   "https://unpkg.com/hyperscript.org@0.9.12"
+   "https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"
+   ]) 
+
+(defn script-tag [js-source-str]
+  [:script
+   {:src js-source-str
+    :type "text/javascript"}])
 
 (defn js-script-links [recaptcha]
-  (let [links 
-        (for [script-str script-strs]
-          (let [script-url 
-                (cond 
-                  (str/includes? script-str "http") 
-                  script-str
-                  :else (str js-path script-str))]
-            [:script 
-             (-> {:src script-url
-                  :type "text/javascript"}
-               (cond-> 
-                 (str/includes? script-str "live.js")
-                 (assoc :title "default")))]
-            ))]
-    (cond 
-      recaptcha 
-      (conj links recaptcha-script-link)
-      :else links)))
+  (let [local-js-links 
+        (->> local-js-file-names
+          (map #(str js-path %))
+          (map script-tag))
+        
+        cdn-sj-links
+        (-> (map script-tag js-cdn-include-urls)
+          (conj htmx-main-lib-script-tag)
+          (cond->  recaptcha
+            (conj recaptcha-script-tag)))]
+    (concat
+      local-js-links
+      cdn-sj-links)))
 
+(comment 
+  (js-script-links nil))
 
 ;; ----------- css
 
