@@ -79,7 +79,7 @@
                 canonical
                 font-families
                 head]
-    :as opts}
+    :as ctx}
    & contents]
   [:html
    {:lang lang
@@ -120,12 +120,12 @@
   
     hidden:  A map from names to values, which will be converted to
              [:input {:type \"hidden\" ...}] fields.
-    opts:    Options for the :form element (with hidden removed).
+    ctx:    Options for the :form element (with hidden removed).
   
     Sets :method to \"post\" by default, and includes a CSRF token (via
     ring.middleware.anti-forgery/*anti-forgery-token*)."
-  [{:keys [hidden] :as opts} & body]
-  [:form (-> (merge {:method "post"} opts)
+  [{:keys [hidden] :as ctx} & body]
+  [:form (-> (merge {:method "post"} ctx)
            (dissoc :hidden)
            (assoc-in [:style :margin-bottom] 0))
    (for [[k v] (util/assoc-some hidden "__anti-forgery-token" anti-forgery/*anti-forgery-token*)]

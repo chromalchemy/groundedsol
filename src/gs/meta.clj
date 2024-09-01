@@ -104,8 +104,8 @@
    [:meta {:content "width=device-width, initial-scale=1.0" :name "viewport"}]])
 
 
-(defn include-livejs? [opts]
-  (:gs.groundedsol/include-livejs opts))
+(defn include-livejs? [ctx]
+  (:gs.groundedsol/include-livejs ctx))
 
 (defn head-stuff  [ctx head recaptcha]
   (concat
