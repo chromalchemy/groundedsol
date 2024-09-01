@@ -1,3 +1,3 @@
 (ns gs.groundedsol.settings)
 
-(def app-name "groundsol")
+(def app-name "groundedsol")

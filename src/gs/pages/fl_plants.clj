@@ -2,10 +2,9 @@
   (:require
     [hickory.core :as h]
     [cybermonday.core :as cm]
-    [gs.content :as c]
-    [gs.components :as common]
+    [gs.content :as content]
+    [gs.components :as c]
     [lambdaisland.ornament :refer [defstyled]]
-    [gs.airtable :as at]
     [gs.util :as u]
     [lambdaisland.hiccup :as hiccup]
     [com.rpl.specter :refer [select ALL FIRST setval transform NONE]]
@@ -34,7 +33,7 @@
     (str "old/" (jpeg "milkweed2b"))))
 
 (def image-local-paths
-  (concat old-image-local-paths c/new-images-filenames))
+  (concat old-image-local-paths content/new-images-filenames))
 
 (defn image-file-name->short-desc [filename]
   (-> filename
@@ -44,7 +43,7 @@
            (apply str))))
 
 (def new-gallery-entries
-  (->> c/new-images-filenames
+  (->> content/new-images-filenames
     (map
       (fn [filename]
         [filename (image-file-name->short-desc filename)]))
@@ -106,7 +105,6 @@
     image-tags]
    [:p.center [:strong "Click on an image to see full view."]]])
 
-
 (def gallery-intro
   [:div.group
    [:section.contentBox3a
@@ -123,15 +121,15 @@
    [:section.contentBox3c
     [:p "There are plenty of native plants to discover and we hope to see more planted. This gallery showcases some of our favorites that may be right for you too. Soon we will be open for business in our pop-up plant shop. We want to help spread the seeds of diversity in the landscape."]
     [:p "Please follow Grounded Solutions Inc on Facebook, Instagram and Youtube for individual plant stories, growing organically each season."]
-    (common/social-icons "img/social-icons/")]])
+    (c/inline-social-icons "img/social-icons/")]])
 
-(defstyled mytitle common/middle-of-line-title
-  :text-red-500)
+(defstyled mytitle c/middle-of-line-title
+  :text-gray-700)
 
 (def page-hiccup
-  [common/container
-   [common/page-title "What’s Hot in Florida Plants"]
-   [common/fancy-divider]
+  [c/container
+   [c/page-title "What’s Hot in Florida Plants"]
+   [c/fancy-divider]
    [mytitle "Flora & Fauna"]
    gallery-intro
    gallery])

@@ -15,41 +15,54 @@
     (str "main.js?t=" (.lastModified f))
     "main.js"))
 
-(def script-strs
-  ["https://unpkg.com/htmx.org@1.9.0"
-   "https://unpkg.com/htmx.org/dist/ext/ws.js"
-   "https://unpkg.com/hyperscript.org@0.9.8"
-   "https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"
-   "jquery.slimmenu.js"
-   "nivo-lightbox.js"
-   "wow.min.js"
-   "accordionscript.js"
-   (main-js-path)
-   "old_main.js"
-   #_"live.js"])
+(def htmx-main-lib-script-tag
+  [:script
+   {:src "https://unpkg.com/htmx.org@1.9.12"}
+  ;; latest 
+   #_{:src "https://unpkg.com/htmx.org@2.0.2"
+    :integrity "sha384-Y7hw+L/jvKeWIRRkqWYfPcvVxHzVzn5REgzbawhxAuQGwX1XWe70vji+VSeHOThJ"
+    :crossorigin "anonymous"}])
 
-(def recaptcha-script-link
+(def recaptcha-script-tag
   [:script {:src "https://www.google.com/recaptcha/api.js"
             :async "async" :defer "defer"}])
 
-(defn js-script-links [recaptcha]
-  (let [links 
-        (for [script-str script-strs]
-          (let [script-url 
-                (cond 
-                  (str/includes? script-str "http") script-str
-                  :else (str js-path script-str))]
-            (cond
-              (str/includes? script-str "live.js")
-              [:script {:src script-url 
-                        :type "text/javascript"
-                        :title "default"}]
-              :else 
-              [:script {:src script-url :type "text/javascript"}]
-              )))]
-    (if-not recaptcha links
-      (conj links recaptcha-script-link))))
+(def js-cdn-include-urls
+  ["https://unpkg.com/htmx.org@1.9.12/dist/ext/ws.js"
+   "https://unpkg.com/hyperscript.org@0.9.8"
+   #_"https://unpkg.com/hyperscript.org@0.9.12"
+   "https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"
+   ])
 
+(def local-js-file-names 
+  ["jquery.slimmenu.js"
+   "nivo-lightbox.js"
+   "wow.min.js"
+   #_"accordionscript.js"
+   (main-js-path)]) 
+
+(defn script-tag [js-source-str]
+  [:script
+   {:src js-source-str
+    :type "text/javascript"}])
+
+(defn js-script-links [recaptcha]
+  (let [local-js-links 
+        (->> local-js-file-names
+          (map #(str js-path %))
+          (map script-tag))
+        
+        cdn-sj-links
+        (-> (map script-tag js-cdn-include-urls)
+          (conj htmx-main-lib-script-tag)
+          (cond->  recaptcha
+            (conj recaptcha-script-tag)))]
+    (concat
+      cdn-sj-links
+      local-js-links)))
+
+(comment 
+  (js-script-links nil))
 
 ;; ----------- css
 
@@ -90,19 +103,19 @@
   [[:meta {:charset "utf-8"}]
    [:meta {:name "viewport" :content "width=device-width, initial-scale=1"}]
    [:meta {:property "og:type" :content "website"}]
-   #_[:meta {:content c/page-description :name "description"}]
+   #_[:meta {:content content/page-description :name "description"}]
    [:meta {:content "width=device-width, initial-scale=1.0" :name "viewport"}]])
 
 
-(defn include-livejs? [opts]
-  (:gs.groundedsol/include-livejs opts))
+(defn include-livejs? [ctx]
+  (:gs.groundedsol/include-livejs ctx))
 
 (defn head-stuff  [ctx head recaptcha]
   (concat
     [[:link {:href "/site.webmanifest", :rel "manifest"}]]
     icon-meta
     (js-script-links recaptcha)
-    (when (include-livejs? ctx)
+    #_(when (include-livejs? ctx)
       [[:script {:src "/js/live.js" :title "default"}]])
     css-links
     head))

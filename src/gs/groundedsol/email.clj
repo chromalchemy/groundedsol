@@ -51,19 +51,32 @@
                    "you can ignore this email.")
    :message-stream "outbound"})
 
-(defn template [k opts]
+(defn template [k ctx]
   ((case k
      :signin-link signin-link
      :signin-code signin-code)
-   opts))
+   ctx))
 
-(defn send-postmark [{:keys [biff/secret postmark/from]} form-params]
-  (let [result (http/post "https://api.postmarkapp.com/email"
-                          {:headers {"X-Postmark-Server-Token" (secret :postmark/api-key)}
-                           :as :json
-                           :content-type :json
-                           :form-params (merge {:from from} (cske/transform-keys csk/->PascalCase form-params))
-                           :throw-exceptions false})
+(comment
+  (cske/transform-keys csk/->kebab-case-keyword 
+    {"helloWorld" "world"
+     nil "str"
+     "key" nil})
+  )
+
+(defn send-postmark 
+  [{:keys [biff/secret postmark/from]} form-params]
+  (let [result 
+        (http/post "https://api.postmarkapp.com/email"
+          {:headers
+           {"X-Postmark-Server-Token"
+            (secret :postmark/api-key)}
+           :as :json
+           :content-type :json
+           :form-params 
+           (merge {:from from} 
+             (cske/transform-keys csk/->PascalCase form-params))
+           :throw-exceptions false})
         success (< (:status result) 400)]
     (when-not success
       (log/error (:body result)))
@@ -79,10 +92,10 @@
            "API keys for Postmark and Recaptcha to config.edn.")
   true)
 
-(defn send-email [{:keys [biff/secret recaptcha/site-key] :as ctx} opts]
-  (let [form-params (if-some [template-key (:template opts)]
-                      (template template-key opts)
-                      opts)]
+(defn send-email [{:keys [biff/secret recaptcha/site-key] :as ctx} ctx]
+  (let [form-params (if-some [template-key (:template ctx)]
+                      (template template-key ctx)
+                      ctx)]
     (if (every? some? [(secret :postmark/api-key)
                        (secret :recaptcha/secret-key)
                        site-key])

@@ -1,7 +1,7 @@
 (ns gs.components
   (:require
     [lambdaisland.ornament :as o :refer [defstyled]]
-    [gs.content :as c]
+    [gs.content :as content]
     [gs.garden.page]
     [clojure.string :as string]
     [gs.site :as site :refer [pages html-filename]]
@@ -9,7 +9,8 @@
     [garden.selectors]
     [gs.color :as color]
     [lambdaisland.hiccup :as hiccup]
-    [gs.garden.styles :as styles])
+    [gs.garden.styles :as styles]
+    )
   (:use [gs.util]
         [gs.site]
         [gs.garden.page]
@@ -26,7 +27,7 @@
 (defstyled pdf-link :div
   :text-2xl :text-center
   [:a :mb-4 :inline-block]
-  [:.link-type :text-lg :text-gray-300 :ml-4]
+  [:.link-type :text-lg :text-gray-300 :ml-4 :no-underline]
   [:.description :text-lg :mt-2]
   ([filename link-text]
    [:<>
@@ -55,24 +56,33 @@
       (mycomponent))))
 
 (defstyled page-title :h1
-  :text-#d1c583 :text-center)
+  ;; :text-#ffa3a3 ;;red
+  :text-#d1c583
+  :text-center)
 
 (defstyled content-box :section
   #_:w-98% #_:m-1% :p-0)
 
-(defstyled left-img :img
+
+(defstyled capsule-img :img
   :block
-  :mt-0.4em :mr-15px :float-left
+  :mt-0.4em)
+
+(defstyled left-img capsule-img
+  :mr-15px :float-left
   ([{:keys [src alt size]}]
    [:<>
     {:width (px size)
      :height (px size)
      :src src}]))
 
-(defstyled right-img :img
-  :mt-0.4em :ml-15px :float-right
+(defstyled right-img capsule-img
+  :ml-15px :float-right
   ([{:keys [src alt size]}]
-   [:<> {:width (px size) :height (px size)}]))
+   [:<>
+    {:width (px size)
+     :height (px size)
+     :src src}]))
 
 (defstyled img-rotate-left :img
   ;:m-20
@@ -126,7 +136,7 @@
   ;[:border-red-500 :border-1 :border-solid]
   ;;(border :green-500)
   [:a :block :tracking-wide :text-#000 :text-sm :font-normal
-   :py-1 :md:py-2 :px-2 #_(styles/border "red")
+   :py-2px :md:py-2 :px-2 #_(styles/border "red")
 
    [:&:hover :text-#d1c583 :no-underline]]
 
@@ -175,26 +185,32 @@
 
 ;--------------------------------
 
-(defstyled social-icon :a
-  ([img-filepath link]
-   [:<> {:href link}
-    [:img {:src img-filepath}]]))
-
 (def social-data
   [["instagram-icon.png" "https://www.instagram.com/groundedsolution/"]
    ["youtube-icon.png" "https://www.youtube.com/channel/UCNqZxB-qW4lf4xey7xiT0Lg"]
    ["facebook-icon.png" "https://www.facebook.com/groundedsol"]])
 
+(defstyled social-icon :a
+  ([img-filepath link]
+   [:<> {:href link}
+    [:img {:src img-filepath}]]))
+
 (defstyled social-icons :div
-  :x :flex :mb-4
+  :flex 
   :justify-center
   :w-75% :md:w-30% :mx-auto
+  :mb-4
   :pl-15px
   :md:pl-0
   ([icon-folder-path]
    [:<>
     (for [[img-filename link] social-data]
-      [social-icon (str icon-folder-path img-filename) link])]))
+      [social-icon 
+       (str icon-folder-path img-filename) 
+       link])]))
+
+(defstyled inline-social-icons social-icons
+  :w-full :md:w-full)
 
 ;--------------------------------
 
@@ -250,7 +266,9 @@
   :tracking-wide
   :uppercase
   ;:pl-0
-  :text-sm
+  {:font-size "14px"}
+  :leading-tight
+  :md:text-sm
   ;:md:text-md
   ;:text-left
   :font-normal)
@@ -262,12 +280,13 @@
    [:<>
     {:href (site/html-filename :home)}
     [:img
-     {:alt (c/images :logo/alt)
-      :src (gs.site/img-path (c/images :logo/file))}]]))
+     {:alt (content/images :logo/alt)
+      :src (gs.site/img-path (content/images :logo/file))}]]))
 
 (defstyled masthead container
   :pt-2
   :border-b-0 :md:flex :justify-between #_:flex-col
+  :mb-4
   ;(styles/border "green")
   ;:min-h-100px
   ;[:.test (styles/border "green") :flex :p-2 :w-full]
@@ -276,7 +295,7 @@
    [:<>
     [logo-block
      [brand-logo]
-     [slogan c/slogan]]
+     [slogan content/slogan]]
     [nav-menu page-keys]
     #_
     [:div.test
@@ -295,11 +314,14 @@
     [:a {:href (html-filename page-key)}
      (page-name page-key)]]))
 
+(defstyled footer-header :h5)
+
+
 (defstyled footer-menu :section.contentBox4a
   [:ul :text-left]
   ([]
    [:<>
-    [:h5 "Menu:"]
+    [footer-header "Menu"]
     [:ul
      (map footer-nav-link page-keys)]]))
 
@@ -317,34 +339,56 @@
 
 
 (defstyled footer-social-icons :div
-  [:div :a :w-130px]
-  [:div :flex :space-x-4 :-left]
+  [:div :w-full :flex :space-x-4 :justify-start :mt-3 :mb-1]
   ([]
    [:<>
     [social-icons "img/social-icons/small/"]]))
 
-(defstyled hours :p.hours)
-(defstyled phone :p.phone)
+(defstyled contact-btn :p.center
+  [:a {:color color/gold-yellow}]
+  ([button-text]
+   [:<>
+    [:a.btn.btn-main
+     {:href (site/html-filename :contact)}
+     button-text]]))
+
+(defstyled hours :p.hours
+  ([]
+    [:<>
+     "By Appointment Only"
+     [:br]
+     [contact-btn "Make Appointment"]]))
+    
 (defstyled home :p.home)
-(defstyled email :p.email)
+
+(defstyled email-link :a.email
+  ([]
+   [:<> {:href (str "mailto:" content/email-address)}
+    content/email-address]))
+
+(defstyled phone-link :a.phone
+  ([]
+    [:<>
+     {:href (str "tel:" content/phone-number)}
+     content/phone-number-formatted]))
+
 
 (defstyled contact :section.contentBox4b
+  [:a :block :mb-2 :hover:text-green-700 :tracking-wider :no-underline :hover:underline :font-bold]
+  [:p :mb-2 :mt-0]
   ([]
    [:<>
-    [:h5 "Contact:"]
+    [footer-header "Contact"]
     [footer-social-icons]
+    [email-link]
+    [phone-link]
     [home "1821 Amherst Ave." [:br] "Orlando, FL 32804"]
-    [email
-     [:a {:href "mailto:groundedsolution@gmail.com"}
-      "groundedsolution@gmail.com"]
-     [:br]]
-    [phone "352-219-5381"]
-    [hours "By appointment only" [:br]]]))
+    [hours]]))
 
 (defstyled certifications :section.contentBox4c
   ([]
    [:<>
-    [:h5 "Certifications / Affiliations"]
+    [footer-header "Certifications / Affiliations"]
     [:i.fa.fa-trophy.fa-3x.img-left.color3.icon-shadow] "B.S. Environmental Science"
     [:br] "Certified Wetland Delineator"
     [:br] "Commercial Applicator License"
@@ -359,13 +403,7 @@
 (def calendar-script
   [:script {:src "js/calendar02.js" :type "text/javascript"}])
 
-(defstyled contact-btn :p.center
-  [:a {:color color/gold-yellow}]
-  ([]
-   [:<>
-    [:a.btn.btn-main
-     {:href (site/html-filename :contact)}
-     "Contact"]]))
+
 
 (defstyled news :section.contentBox4d
   ([]
@@ -373,7 +411,7 @@
     ;[:h5 {:id "calendar"} "News & Events:"]
     [:p.center]
     calendar-script
-    (contact-btn)]))
+    [contact-btn "Contact"]]))
 
 ;&raquo;
 

@@ -27,6 +27,6 @@
       [:h1 "APP"])))
 
 
-(def plugin
+(def module
   {:routes ["/app" {:middleware [mid/wrap-signed-in]}
             ["" {:get app}]]})

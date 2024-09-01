@@ -3,9 +3,8 @@
     [gs.content :as content]
     [hickory.core :as h]
     [cybermonday.core :as cm]
-    [gs.content :as c]
-    [gs.components :as common]
-    [gs.airtable :as at]
+    [gs.content :as content]
+    [gs.components :as c]
     [lambdaisland.ornament :as o :refer [defstyled]]
     [gs.util :as u]
     [lambdaisland.hiccup :as hiccup]
@@ -71,13 +70,13 @@
    ;:height (em 0.2)})
 
 (def page-hiccup
-  [common/container
-   [common/fancy-divider]
-   [common/page-title "Meet Amanda Martin"]
+  [c/container
+   [c/fancy-divider]
+   [c/page-title "Meet Amanda Martin"]
    [drop-cap-p content/about-me-intro-text]
    [biography-title "Getting Growing"]
    [heading-line]
    [about-me-article]
    [what-is-horticulturist?]
-   [common/fancy-divider]
+   [c/fancy-divider]
    [resume]])
