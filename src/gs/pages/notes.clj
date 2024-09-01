@@ -2,8 +2,8 @@
   (:require
     [hickory.core :as h]
     [cybermonday.core :as cm]
-    [gs.content :as c]
-    [gs.components :as common]
+    [gs.content :as content]
+    [gs.components :as c]
     [lambdaisland.ornament :as o]
     [lambdaisland.ornament :refer [defstyled]]
     [garden.selectors :as gs]
@@ -24,23 +24,23 @@
 (defstyled pdf-block :div
   ([filename link-text]
    [:<>
-    [common/pdf-link filename link-text]
-    [common/pdf-embed filename]]))
+    [c/pdf-link filename link-text]
+    [c/pdf-embed filename]]))
 
 
 ;[:p.description "Includes Seasonal Planting Guide, & how to \"Prune like Fire\"!"]]]))
 
-(defstyled container common/container)
+(defstyled container c/container)
 
 (def page-hiccup
-  [common/container
-   [common/page-title "Garden Notes"]
-   [common/fancy-divider]
+  [c/container
+   [c/page-title "Garden Notes"]
+   [c/fancy-divider]
    [pdf-block 
     "Pruning_Notes_for_Native_Plants_3" 
     "Prune Like Fire!"]
-   [common/fancy-divider]
+   [c/fancy-divider]
    [pdf-block "Convert your Landscape" 
     "Convert your Landscape"]
-   (common/spacer 20)])
+   (c/spacer 20)])
 

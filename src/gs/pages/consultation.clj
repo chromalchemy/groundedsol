@@ -7,7 +7,6 @@
     [garden.selectors]
     [lambdaisland.ornament :refer [defstyled]]
     #_[gs.airtable :as at]
-    [gs.components :as common]
     [gs.util :as u]
     [lambdaisland.hiccup :as hiccup]
     [com.rpl.specter :refer [select ALL FIRST setval transform NONE]]
@@ -17,48 +16,51 @@
   (:use
     [gs.util]))
 
+
 (defstyled process-title :h2)
 
-(defstyled news-date :p.newsDate
-  :relative :text-#666 :text-right
-  :pr-20 :pb-10
-  [::before :absolute {:font-family "FontAwesome"
-                       :content "\f073"
-                       :top "0"
-                       :right "0"}]
+(defstyled calendar-icon :span.newsDate
+   :text-#666 :text-left :relative
+  [::before :absolute
+   {:font-family "FontAwesome"
+    :content "\f073"
+    :top "0"
+    :right "0"}]
   {:font-size (em 0.9)
-   :letter-spacing (px 1)
-   :margin-top (px -2)})
+   :letter-spacing (px 1)})
 
-(defstyled calendar-link :a
+
+(defstyled calendar-link :a.calendar-link
   ([]
    [:<>
-    {:href "contact.html"}
-    [news-date]]))
+    {:href "/contact"}
+    [calendar-icon]]))
 
 (defstyled step-title :h6
-  ;:border-none
-  {:color color/gold-yellow}
-  :text-center
-  :mx-auto
-  :self-center
-  ;:w-75%
-  :text-2xl
   :mb-8
   :pb-0
   :border-none
-  [:span
-   :inline-block]
+  :flex
+  :items-center
+  [:.title-text 
+   :text-center :mx-auto
+   {:color color/gold-yellow}
+   :text-2xl]
+  [:a.calendar-link :block
+   {:white-space "nowrap"}]
    ;{:border-bottom-style :solid
    ; :border-color "#bdaf64"
    ; :border-bottom-width (px 1)}]
   ([s]
-   [:<> [:span s]]))
+   [:<> 
+    [:div.title-text s]
+    [calendar-link]]))
 
 (defstyled process-img-left c/left-img
   c/img-shadow
   c/img-rotate-left
   :mt-2 :ml-0 :mr-8 :mb-4)
+
 
 (defstyled process-img-right c/right-img
   c/img-shadow
@@ -73,7 +75,6 @@
    [:<>
     ;{:style {:text-align "center"}}
     [step-title title]
-    [calendar-link]
     [:div
      (case image-side
        :left
@@ -93,9 +94,9 @@
       [process-step step])]))
 
 (def page-hiccup
-  [common/container
-   [common/page-title "Consultation & Design"]
-   [common/fancy-divider]
+  [c/container
+   [c/page-title "Consultation & Design"]
+   [c/fancy-divider]
    [process]])
 
 (defn page

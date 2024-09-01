@@ -1,7 +1,7 @@
 (ns gs.components
   (:require
     [lambdaisland.ornament :as o :refer [defstyled]]
-    [gs.content :as c]
+    [gs.content :as content]
     [gs.garden.page]
     [clojure.string :as string]
     [gs.site :as site :refer [pages html-filename]]
@@ -56,24 +56,33 @@
       (mycomponent))))
 
 (defstyled page-title :h1
-  :text-#d1c583 :text-center)
+  ;; :text-#ffa3a3 ;;red
+  :text-#d1c583
+  :text-center)
 
 (defstyled content-box :section
   #_:w-98% #_:m-1% :p-0)
 
-(defstyled left-img :img
+
+(defstyled capsule-img :img
   :block
-  :mt-0.4em :mr-15px :float-left
+  :mt-0.4em)
+
+(defstyled left-img capsule-img
+  :mr-15px :float-left
   ([{:keys [src alt size]}]
    [:<>
     {:width (px size)
      :height (px size)
      :src src}]))
 
-(defstyled right-img :img
-  :mt-0.4em :ml-15px :float-right
+(defstyled right-img capsule-img
+  :ml-15px :float-right
   ([{:keys [src alt size]}]
-   [:<> {:width (px size) :height (px size)}]))
+   [:<>
+    {:width (px size)
+     :height (px size)
+     :src src}]))
 
 (defstyled img-rotate-left :img
   ;:m-20
@@ -176,27 +185,32 @@
 
 ;--------------------------------
 
-(defstyled social-icon :a
-  ([img-filepath link]
-   [:<> {:href link}
-    [:img {:src img-filepath}]]))
-
 (def social-data
   [["instagram-icon.png" "https://www.instagram.com/groundedsolution/"]
    ["youtube-icon.png" "https://www.youtube.com/channel/UCNqZxB-qW4lf4xey7xiT0Lg"]
    ["facebook-icon.png" "https://www.facebook.com/groundedsol"]])
 
+(defstyled social-icon :a
+  ([img-filepath link]
+   [:<> {:href link}
+    [:img {:src img-filepath}]]))
 
 (defstyled social-icons :div
-  :x :flex :mb-4
+  :flex 
   :justify-center
   :w-75% :md:w-30% :mx-auto
+  :mb-4
   :pl-15px
   :md:pl-0
   ([icon-folder-path]
    [:<>
     (for [[img-filename link] social-data]
-      [social-icon (str icon-folder-path img-filename) link])]))
+      [social-icon 
+       (str icon-folder-path img-filename) 
+       link])]))
+
+(defstyled inline-social-icons social-icons
+  :w-full :md:w-full)
 
 ;--------------------------------
 
@@ -266,8 +280,8 @@
    [:<>
     {:href (site/html-filename :home)}
     [:img
-     {:alt (c/images :logo/alt)
-      :src (gs.site/img-path (c/images :logo/file))}]]))
+     {:alt (content/images :logo/alt)
+      :src (gs.site/img-path (content/images :logo/file))}]]))
 
 (defstyled masthead container
   :pt-2
@@ -281,7 +295,7 @@
    [:<>
     [logo-block
      [brand-logo]
-     [slogan c/slogan]]
+     [slogan content/slogan]]
     [nav-menu page-keys]
     #_
     [:div.test
@@ -349,14 +363,14 @@
 
 (defstyled email-link :a.email
   ([]
-   [:<> {:href (str "mailto:" c/email-address)}
-    c/email-address]))
+   [:<> {:href (str "mailto:" content/email-address)}
+    content/email-address]))
 
 (defstyled phone-link :a.phone
   ([]
     [:<>
-     {:href (str "tel:" c/phone-number)}
-     c/phone-number-formatted]))
+     {:href (str "tel:" content/phone-number)}
+     content/phone-number-formatted]))
 
 
 (defstyled contact :section.contentBox4b

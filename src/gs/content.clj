@@ -9,7 +9,8 @@
 (def phone-number-formatted "(352) 219-5381")
 
 (def consultion-steps
-  [{:title "Step one: Making the most out of your consultation"
+  [
+   {:title "Step one: Making the most out of your consultation"
     :image-side :left
     :alt "Florida Front Yard with Grass"
     :src "img/samples/yard.jpg"
@@ -284,7 +285,12 @@
             The worst type of raw vegan possible. They will only eat the freshest foliage on a particular genus,
             or species of plant. So, this is what we mean by habitat, grouping plants together that exist in concert
             with insects to form the base of the food web."
-      [:a {:href "samples/Monarch%20egg-0044%20resized.jpg" :target "_blank"} [:img.img-shadow {:alt "Monarch Larvae" :height "252" :src "samples/monarchegg.jpg" :width "373"}]])]
+      [:img.img-shadow
+       {:style {:display "block"}
+        :alt "Monarch Larvae"
+        :height "252"
+        :src "/img/samples/monarchegg.jpg"
+        :width "373"}])]
    ["How do I attract butterflies?"
     "Flowers that produce nectar and have a tubular shape to them can be planted.
  Larval host plants will bring them around to mate and lay eggs, which provides regular

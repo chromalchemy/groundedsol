@@ -2,8 +2,8 @@
   (:require
     [hickory.core :as h]
     [cybermonday.core :as cm]
-    [gs.content :as c]
-    [gs.components :as common]
+    [gs.content :as content]
+    [gs.components :as c]
     [lambdaisland.ornament :as o]
     [lambdaisland.ornament :refer [defstyled]]
     [garden.selectors :as gs]
@@ -49,7 +49,7 @@
   :ml-8 :mt-0 :mb-4 :float-right :w-40%)
 
 (defstyled image-gallery-block-caption :span
-  :text-base :text-center common/fancy-font
+  :text-base :text-center c/fancy-font
   :block :text-center)
 
 (defstyled final-design-image :a
@@ -150,7 +150,7 @@
   :text-center
   :rounded-4px
   :no-underline
-  common/fancy-font
+  c/fancy-font
   :uppercase
   :text-base
   {:box-shadow (str "5px 5px 10px #5c524080")})
@@ -158,7 +158,7 @@
 (def consultation-appt-btn
   ;[:div {:style {:text-align "center"}}]
   (consult-btn
-    {:href "/contact.html"}
+    {:href "/contact"}
     "Set up a Consultation Today"))
 
 (defstyled callbox :div
@@ -181,7 +181,7 @@
     "Consultation & Design Details"))
 
 
-(defstyled analysis-body common/flex-stack
+(defstyled analysis-body c/flex-stack
   [:.text :md:w-70% :pr-6]
   [:div :md:w-30%])
 
@@ -286,7 +286,7 @@
   :w-300px :mx-auto
   ([]
    [:<>
-    (common/social-icons "img/social-icons/")]))
+    (c/social-icons "img/social-icons/")]))
 
 
 (defstyled video-title :h2
@@ -342,7 +342,7 @@
 ;         :flex-wrap "on"}}
 
 (defstyled rate-time :div.lead
-  common/fancy-font
+  c/fancy-font
   :my-2
   :mb-0
   :pb-0)
@@ -372,7 +372,7 @@
   :capitalize
   :md:text-3xl
   :py-1
-  common/fancy-font)
+  c/fancy-font)
 
 (defstyled rate-price :span
   ;:ml-2
@@ -380,7 +380,7 @@
   :block
   :pl-2
   ;:float-right
-  common/fancy-font)
+  c/fancy-font)
 
 (defstyled rate-notes :span)
 
@@ -401,7 +401,7 @@
 
 ;--------------------------------
 
-(defstyled btn common/btn
+(defstyled btn c/btn
   :mx-2
   ;:rounded-lg
   :border-2px
@@ -416,21 +416,26 @@
 (defstyled rates :div
   ([]
    [:<>
-    [common/page-title "Services & Rates"]
-    [common/fancy-divider]
-    [common/spacer 20]
+    [c/page-title "Services & Rates"]
+    [c/fancy-divider]
+    [c/spacer 20]
     [rates-list]]))
 
 
 (def faq
-  [:dl#acc
-   (for [[question answer] c/faq]
-     [:<>
-       [:dt question]
-       [:dd
-        [:p.dropcap answer]
-        [:p]]])
-   [:hr.noshow]])
+  [:div.accordion
+   (for [[question answer] content/faq]
+     (let [idx 
+           (inc 
+             (.indexOf content/faq 
+               [question answer])) ]
+       [:div.accordion-item
+        [:div.accordion-header 
+         {:onclick (str "toggleAccordion('content" idx "')")}
+         question]
+        [:div.accordion-content
+         {:id (str "content" idx)}
+         [:p.dropcap answer]]]))])
 
 (defstyled faq-block :div
   ([]
@@ -446,12 +451,12 @@
 
 (def page-hiccup
   [:<>
-   [common/container
+   [c/container
      [rates]
      [examples]]
-   [common/fancy-divider]
-   [common/container
-    [common/page-title "Frequently Asked Questions"]
+   [c/fancy-divider]
+   [c/container
+    [c/page-title "Frequently Asked Questions"]
     [faq-block]]])
 
 (defn page [ctx]

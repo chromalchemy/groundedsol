@@ -1,5 +1,10 @@
 // When plain htmx isn't quite enough, you can stick some custom JS here.
 
+function toggleAccordion(contentId) {
+    const content = document.getElementById(contentId);
+    content.classList.toggle('active');
+}
+
 
 // recaptcha callback to submit contact form
 // function submitContact() {

@@ -27,19 +27,19 @@
   [:script {:src "https://www.google.com/recaptcha/api.js"
             :async "async" :defer "defer"}])
 
-(def local-js-file-names 
-  ["jquery.slimmenu.js"
-   "nivo-lightbox.js"
-   "wow.min.js"
-   "accordionscript.js"
-   (main-js-path)])
-
 (def js-cdn-include-urls
   ["https://unpkg.com/htmx.org@1.9.12/dist/ext/ws.js"
    "https://unpkg.com/hyperscript.org@0.9.8"
    #_"https://unpkg.com/hyperscript.org@0.9.12"
    "https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"
-   ]) 
+   ])
+
+(def local-js-file-names 
+  ["jquery.slimmenu.js"
+   "nivo-lightbox.js"
+   "wow.min.js"
+   #_"accordionscript.js"
+   (main-js-path)]) 
 
 (defn script-tag [js-source-str]
   [:script
@@ -58,8 +58,8 @@
           (cond->  recaptcha
             (conj recaptcha-script-tag)))]
     (concat
-      local-js-links
-      cdn-sj-links)))
+      cdn-sj-links
+      local-js-links)))
 
 (comment 
   (js-script-links nil))
@@ -103,7 +103,7 @@
   [[:meta {:charset "utf-8"}]
    [:meta {:name "viewport" :content "width=device-width, initial-scale=1"}]
    [:meta {:property "og:type" :content "website"}]
-   #_[:meta {:content c/page-description :name "description"}]
+   #_[:meta {:content content/page-description :name "description"}]
    [:meta {:content "width=device-width, initial-scale=1.0" :name "viewport"}]])
 
 
