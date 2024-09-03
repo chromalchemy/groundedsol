@@ -162,7 +162,6 @@
     :link-text "Plant Gallery"
     :link :florida-plants}})
 
-
 (def slogan "Ecological Landscape Design & Consulting")
 
 (def hot-plant-gallery
@@ -177,6 +176,16 @@
     {:delay ".2s" :img-file "plant3b.jpg" :thumb-file "plant3s.jpg" :title "Redroot, Lachnanthes caroliana and a Swallowtail getting nectar"}
     {:delay ".6s" :img-file "plant4b.jpg" :thumb-file "plant4s.jpg" :title "A fresh cut flower arrangement"}
     {:delay "1.0s" :img-file "plant5b.jpg" :thumb-file "plant5s.jpg" :title "Beach verbena, Glandularia maritima"}]})
+
+(def gallery-intro-text
+  [:<> 
+   [:p
+    "Our native Florida plants are as versatile as they are colorful. Grounded Solutions specializes in ecosystem identification and assisting the property owner in re-developing for a native landscape. Many of our clients are interested in attracting birds, butterflies and other pollinators. "]
+   [:p "With Grounded Solutions, you get the whole story. The proper Florida native name, its origin and how to best take care of your new plants in the landscape."]
+   [:p "Many homeowners are shifting towards a low water, no fertilizer, low maintenance landscape. Upland native plants can fit that bill. Methods of maintenance for these plants can vary from the subtropical, fast growing plants we commonly use in residential landscapes today."]
+    [:p "Below are macro flower photos and some wide angle photos to show the beauty of individual flowers, pollinator interactions, and how the plant persists in the landscapes we find them in. Please enjoy the photos as we add to and edit this gallery over time. Email with any requests to use these photos."]
+   [:p "There are plenty of native plants to discover and we hope to see more planted. This gallery showcases some of our favorites that may be right for you too. Soon we will be open for business in our pop-up plant shop. We want to help spread the seeds of diversity in the landscape."]
+     [:p "Please follow Grounded Solutions Inc on Facebook, Instagram and Youtube for individual plant stories, growing organically each season."]])
 
 (def welcome
   {:title "Welcome"

@@ -64,7 +64,7 @@
   #_:w-98% #_:m-1% :p-0)
 
 
-(defstyled capsule-img :img
+(defstyled capsule-img :img.capsule
   :block
   :mt-0.4em)
 
@@ -72,7 +72,8 @@
   :mr-15px :float-left
   ([{:keys [src alt size]}]
    [:<>
-    {:width (px size)
+    {:class "left"
+     :width (px size)
      :height (px size)
      :src src}]))
 
@@ -210,7 +211,7 @@
        link])]))
 
 (defstyled inline-social-icons social-icons
-  :w-full :md:w-full)
+  :md:w-full :w-80%)
 
 ;--------------------------------
 
@@ -382,7 +383,7 @@
     [footer-social-icons]
     [email-link]
     [phone-link]
-    [home "1821 Amherst Ave." [:br] "Orlando, FL 32804"]
+    #_[home "1821 Amherst Ave." [:br] "Orlando, FL 32804"]
     [hours]]))
 
 (defstyled certifications :section.contentBox4c
@@ -442,16 +443,17 @@
 (defstyled heading-line :div.heading-line)
 
 (defstyled middle-of-line-title :h3
-  :text-#fff :my-1 :mx-0 :text-center :relative :overflow-hidden :normal-case
+  fancy-font 
+  :text-#fff :my-1 :mx-0 :text-center :relative :overflow-hidden
+  :normal-case
   [:&:before :&:after
    :inline-block :relative :align-middle :w-50% :mb-1 :text-#fff
    {:border-bottom
-      {:width (px 1)
-       :style "solid"
-       :color "#fff"}
+    {:width (px 1)
+     :style "solid"
+     :color "#fff"}
     :content "' '"
     :height (em 0.2)}]
-  fancy-font
   {:font
    {:size (px 38)
     :variant "normal"}}

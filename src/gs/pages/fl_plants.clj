@@ -4,15 +4,61 @@
     [cybermonday.core :as cm]
     [gs.content :as content]
     [gs.components :as c]
+   [gs.content :as content]
     [lambdaisland.ornament :refer [defstyled]]
     [gs.util :as u]
     [lambdaisland.hiccup :as hiccup]
-    [com.rpl.specter :refer [select ALL FIRST setval transform NONE]]
+    [com.rpl.specter :refer [select ALL FIRST setval transform NONE selected? before-index pred=] :as s]
     [clojure.string :as string]
     [gs.meta])
   (:use [gs.util]))
 
 ;img/samples/1b.jpg
+
+(defn set-elem-at-beginning-of-first-child-tag 
+  [{:keys [target-tag hiccup]} h]
+  (setval
+    [s/INDEXED-VALS 
+     (selected? s/LAST vector?
+       FIRST (pred= target-tag))
+     (selected? FIRST (pred= 1))
+     s/LAST
+     (before-index 1)]
+    hiccup
+    h)
+  )
+
+(comment
+  (set-elem-at-beginning-of-first-child-tag
+    {:target-tag :p
+     :hiccup :inserted}
+    [:<>
+     [:p "first"]
+     [:p "second"]]))
+
+(do 
+  (defn set-elem-at-end-of-last-child-tag
+    [{:keys [target-tag hiccup]} h]
+    (let [last-elem 
+          (last h)]
+      (setval
+        [s/INDEXED-VALS
+         (selected? s/LAST vector?
+           FIRST (pred= target-tag))
+         (selected? s/LAST 
+           (pred= last-elem))
+       s/LAST
+       s/AFTER-ELEM]
+      hiccup
+        h)))
+  (set-elem-at-end-of-last-child-tag
+    {:target-tag :p
+     :hiccup :inserted}
+    [:<>
+     [:p "first"]
+     [:p "second"]]))
+
+
 
 (def old-image-names
   (let [removed 3
@@ -25,14 +71,14 @@
       numbers)))
 
 (defn gallery-image-path [s]
-  (str "img/gallery/" s))
+  (str "https://groundedsol.com/img/gallery/" s))
 
 (def old-image-local-paths
   (conj
     (vec old-image-names)
     (str "old/" (jpeg "milkweed2b"))))
 
-(def image-local-paths
+(def gallery-image-local-paths
   (concat old-image-local-paths content/new-images-filenames))
 
 (defn image-file-name->short-desc [filename]
@@ -70,78 +116,67 @@
 (def gallery-entries
   (merge old-gallery-entries new-gallery-entries))
 
-(defn image-tag [local-path description]
-  [:a.lightbox
-   {
-    ;:class ["w-1/3"]
-    :style                 {}
-            ;:height "160px"
-            :display "block"
-            ;:margin "auto"}
-    :data-lightbox-gallery "catalog1"
-    :href                  (gallery-image-path local-path)
-    :title                 description}
-   [:img.img-portfolio
-    {:src   (gallery-image-path (str "thumb/" local-path))
-     :style {:height "160px"}
-     :alt   description}]])
 
-(def image-tags
-  (map
-    (fn [gallery-path]
-      (let [description (gallery-entries gallery-path)]
-        (image-tag gallery-path description)))
-    image-local-paths))
+(defstyled thumbnail-img :img.img-portfolio.thumb)
 
-;(def images)
+(defstyled gallery-link :a.lightbox 
+  :block
+  [:.thumb :h-160px]
+  ([local-path description]
+   (let [full-img-path
+         (gallery-image-path local-path)
+         thumb-img-path
+         (gallery-image-path
+           (str "thumb/" local-path))]
+     [:<>
+      {:href full-img-path
+       :data-lightbox-gallery "catalog1"
+       :title description}
+      [thumbnail-img
+       {:src thumb-img-path
+        :alt description}]])))
 
-(def gallery
-  [:fieldset
-   [:legend "Florida Faves"]
-   [:p.center
-    {:style {:display "flex"
-             :flex-wrap "wrap"
-             :justify-content "space-evenly"}}
-    image-tags]
-   [:p.center [:strong "Click on an image to see full view."]]])
+(defstyled gallery :fieldset
+  [:.inner :flex :flex-wrap :justify-evenly]
+  [:.directions :text-center]
+  ([]
+   [:<>
+    [:legend "Florida Faves"]
+    [:div.inner
+     (for [gallery-path gallery-image-local-paths]
+       (let [description
+             (gallery-entries gallery-path)]
+         (gallery-link gallery-path description)))]
+    [:p.directions
+     "Click on an image to see full view."]]))
 
-(def gallery-intro
-  [:div.group
-   [:section.contentBox3a
-    [:p
-     [:img.img-left.img-curved
-      {:alt "" :src "img/samples/green125.jpg"}]
-     "Our native Florida plants are as versatile as they are colorful. Grounded Solutions specializes in ecosystem identification and assisting the property owner in re-developing for a native landscape. Many of our clients are interested in attracting birds, butterflies and other pollinators. "]
-    [:p "With Grounded Solutions, you get the whole story. The proper Florida native name, its origin and how to best take care of your new plants in the landscape."]]
+(defstyled gallery-intro :div
+  [:.capsule :rounded-2xl]
+  [:at-media 
+   {:min-width "768px"}
+   {:column
+    {:count 3
+     :gap (px 30)}}]
+  [:p {:margin-block-start "auto"}]
+  ([]
+    (->> content/gallery-intro-text
+      (set-elem-at-beginning-of-first-child-tag
+        {:target-tag :p
+         :hiccup
+         [c/left-img
+          {:alt "" 
+           :src "img/samples/green125.jpg"}]})
+      (setval s/AFTER-ELEM 
+        (c/inline-social-icons 
+          "img/social-icons/")))))
 
-   [:section.contentBox3b
-    [:p "Many homeowners are shifting towards a low water, no fertilizer, low maintenance landscape. Upland native plants can fit that bill. Methods of maintenance for these plants can vary from the subtropical, fast growing plants we commonly use in residential landscapes today."]
-    [:p "Below are macro flower photos and some wide angle photos to show the beauty of individual flowers, pollinator interactions, and how the plant persists in the landscapes we find them in. Please enjoy the photos as we add to and edit this gallery over time. Email with any requests to use these photos."]]
-
-   [:section.contentBox3c
-    [:p "There are plenty of native plants to discover and we hope to see more planted. This gallery showcases some of our favorites that may be right for you too. Soon we will be open for business in our pop-up plant shop. We want to help spread the seeds of diversity in the landscape."]
-    [:p "Please follow Grounded Solutions Inc on Facebook, Instagram and Youtube for individual plant stories, growing organically each season."]
-    (c/inline-social-icons "img/social-icons/")]])
-
-(defstyled mytitle c/middle-of-line-title
-  :text-gray-700)
+(defstyled centered-title c/middle-of-line-title
+  :text-gray-700 :mb-4)
 
 (def page-hiccup
   [c/container
    [c/page-title "What’s Hot in Florida Plants"]
    [c/fancy-divider]
-   [mytitle "Flora & Fauna"]
-   gallery-intro
-   gallery])
-
-    ;(comment)
-
-    ; [:p "Shown above are a few examples of versatility you can find when choosing native plants.
-    ;Grounded Solutions strives to over you the best quality plant material we possibly can.
-    ;Pairing plant selection with the area you’d like to plant in is the first step towards habitat reconstruction.
-    ; Want the wow factor? We can do that too."]]]])
-     ;[:div.pagination
-     ; [:span.disabled_pagination "Prev"]
-     ; [:span.active_link "1"]
-     ; [:a {:href "#0"} "Next"]]
-     ;[:p.dropcap]]]])
+   [centered-title "Flora & Fauna"]
+   [gallery-intro]
+   [gallery]])
