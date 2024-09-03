@@ -37,7 +37,7 @@
  :biff.tasks/main-ns                gs.groundedsol
  :biff.tasks/on-soft-deploy         "\"(gs.groundedsol/on-save @gs.groundedsol/system)\""
  :biff.tasks/generate-assets-fn     gs.groundedsol/generate-assets!
- :biff.tasks/css-output             "target/resources/public/css/main.css"
+ :biff.tasks/css-output             "target/resources/public/css/main-tailwind.css"
  :biff.tasks/deploy-untracked-files [#ref [:biff.tasks/css-output]
                                      "config.env"]
  ;; `clj -M:dev prod-dev` will run the soft-deploy task whenever files in these directories are changed.

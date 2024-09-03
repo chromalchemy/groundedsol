@@ -61,7 +61,7 @@
      (gc/compile-css gs.garden.page/rules)
      (interpose \n)]
     (apply str)
-    (spit "resources/public/css/main.css"))
+    (spit "target/resources/public/css/main.css"))
   (println "Wrote Compiled CSS to main.css"))
 
 (defn load-pages-hiccup []

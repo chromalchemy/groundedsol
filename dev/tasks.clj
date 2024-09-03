@@ -1,10 +1,13 @@
 (ns tasks
-  (:require [com.biffweb.tasks :as tasks]))
+  (:require 
+   [com.biffweb.tasks :as tasks]
+   [gs.build]))
 
 (defn hello
   "Says 'Hello'"
   []
   (println "Hello"))
+
 
 ;; Tasks should be vars (#'hello instead of hello) so that `clj -M:dev help` can
 ;; print their docstrings.
