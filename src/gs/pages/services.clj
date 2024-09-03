@@ -300,7 +300,7 @@
    [:<>
     {:width "560"
      :height "315"
-     :src "https://www.youtube.com/embed/ewdExZt_98c"
+     :src "https://youtube.com/embed/ewdExZt_98c"
      :title "YouTube video player"
      :frameborder "0"
      :allow "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
@@ -308,9 +308,9 @@
 
 (comment
   "More native plant photos and horiticultural information on my "
-  [:a {:href "https://www.facebook.com/groundedsol/" } "Facebook"]
+  [:a {:href "https://facebook.com/groundedsol/" } "Facebook"]
   " and "
-  [:a {:href "https://www.instagram.com/groundedsolution/" } "Instagram"]
+  [:a {:href "https://instagram.com/groundedsolution/" } "Instagram"]
   " pages."
   " ")
 
