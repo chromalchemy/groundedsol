@@ -71,7 +71,7 @@
       numbers)))
 
 (defn gallery-image-path [s]
-  (str "https://groundedsol.com/img/gallery/" s))
+  (str "/img/gallery/" s))
 
 (def old-image-local-paths
   (conj
