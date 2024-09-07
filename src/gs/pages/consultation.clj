@@ -102,5 +102,8 @@
 (defn page
   [{:keys [recaptcha/site-key params] :as ctx}]
   (ui/page
-    (assoc ctx ::ui/recaptcha true)
+    (assoc ctx 
+      ::ui/recaptcha false
+      #_:base/title
+      #_"Grounded Solutions Native Landscape Consultation & Design")
     page-hiccup))

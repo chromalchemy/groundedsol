@@ -661,7 +661,9 @@
   ;; (println "contact page path params")
   ;; (pprint path-params)
   (ui/page
-    (assoc ctx ::ui/recaptcha true)
+    (assoc ctx ::ui/recaptcha true
+      :base/title
+      "Grounded Solutions - Contact")
     [container
      [contact-title "We are here to help you get started with a sustainable landscape!"]
      [fancy-divider]

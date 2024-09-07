@@ -23,7 +23,7 @@
    :consultation
      {:filename "consultationanddesign"
       :name "Consultation"
-      :title "Consultation and Design Eco-Logical Landscapes"}
+      :title "Consultation and Design for Ecological Landscapes"}
    :about
      {:name "About"
       :filename "about"}

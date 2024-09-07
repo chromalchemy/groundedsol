@@ -314,7 +314,11 @@
 
 (defn home-page [ctx]
   (ui/base
-    (assoc ctx ::ui/recaptcha false)
+    (assoc ctx 
+      ::ui/recaptcha false
+      :base/title 
+      "Grounded Solutions Native Landscape Consultation & Design"
+      )
     [welcome]
     [engagements]
     

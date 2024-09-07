@@ -10,23 +10,31 @@
     ))
 
 (defn base [{:keys [::recaptcha] :as ctx} & body]
-  (apply
-   base-html
-   (-> ctx
-     (merge
-       #:base{:title settings/app-name
-              #_ (let [custom-page-title (:title (pages page-key))]
-                   (if custom-page-title
-                     custom-page-title
-                     (-> pages :home :title)))
-              :lang "en-US"
-              #_#_:icon "/img/glider.png"
-              :description "Ecological Landscape Design & Consulting"
-              :image "/img/logo400.png"})
-     (update :base/head
-       (fn [head]
-         (gs.meta/head-stuff ctx head recaptcha))))
-   body))
+  (let [custom-title 
+        (:base/title ctx)
+        #_settings/app-name
+        title 
+        (cond 
+          custom-title custom-title
+          :else
+          "Grounded Solutions Native Landscape Consultation & Design")]
+    (apply
+      base-html
+      (-> ctx
+        (merge
+          #:base{:title title
+                 #_ (let [custom-page-title (:title (pages page-key))]
+                      (if custom-page-title
+                        custom-page-title
+                        (-> pages :home :title)))
+                 :lang "en-US"
+                 #_#_:icon "/img/glider.png"
+                 :description "Ecological Landscape Design & Consulting"
+                 :image "/img/logo400.png"})
+        (update :base/head
+          (fn [head]
+            (gs.meta/head-stuff ctx head recaptcha))))
+      body)))
 
 (defn page [ctx & body]
   (base
