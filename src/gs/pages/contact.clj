@@ -601,25 +601,24 @@
           (not captcha-passed?)
           "captcha failed")
         ]
+    
+    ;; log statement
     (println "")
-    (println "passed recaptcha?:" captcha-passed?)
-    (println "error:" error)
-    (println "testing:")
-    (println "form params")
+    (println "handle-form-submission:") 
     (pprint 
-      (dissoc form-params :g-recaptcha-response))
-    #_(pprint 
-      [client-name
-       email-address
-       telephone
-       address])
-    #_(pprint
-      (not 
-        (every? filled-returned-field 
-          [client-name
-           email-address
-           telephone
-           address])))
+      {:email email-address
+       :captcha-passed? captcha-passed?
+       :form-params (dissoc form-params :g-recaptcha-response) 
+       :error error
+       :client client-name
+       :telephone telephone 
+       :address address
+       :required-fields-filled-and-returned?
+       (every? filled-returned-field
+         [client-name
+          email-address
+          telephone
+          address])})
     (println "")
     
     (when
