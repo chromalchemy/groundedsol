@@ -432,8 +432,8 @@
        "missing required fields"
        "Please enter the required* fields."
        
-       "recaptcha"
-       "You failed the recaptcha test. Please try again, and make sure you aren't blocking scripts from Google."
+       "captcha failed"
+       "The Recaptcha test failed. Please try again. Make sure you aren't blocking scripts from Google."
        
        default-form-message
        )]))
@@ -550,15 +550,20 @@
         [recaptcha-disclosure])])))
      
 
-(defn passed-recaptcha? [{:keys [biff/secret biff.recaptcha/threshold params]
-                          :or {threshold 0.5}}]
+(defn passed-recaptcha? 
+  [{:keys [biff/secret biff.recaptcha/threshold params]
+    :or {threshold 0.5}}]
   (let [{:keys [success score]}
         (:body
          (http/post "https://www.google.com/recaptcha/api/siteverify"
-           {:form-params {:secret (secret :recaptcha/secret-key)
-                          :response (:g-recaptcha-response params)}
-            :as :json}))]
-    (and success (or (nil? score) (<= threshold score)))))
+           {:form-params
+            {:secret (secret :recaptcha/secret-key)
+             :response (:g-recaptcha-response params)}
+             :as :json}))]
+    (and  
+      success
+      (or (nil? score)
+        (<= threshold score)))))
 
 
 (defn handle-form-submission 
@@ -592,14 +597,17 @@
           (not 
             (every? filled-returned-field required-fields))
           "missing required fields"
-          )
+
+          (not captcha-passed?)
+          "captcha failed")
         ]
     (println "")
-    (println "passed recaptcha:" captcha-passed?)
+    (println "passed recaptcha?:" captcha-passed?)
     (println "error:" error)
     (println "testing:")
     (println "form params")
-    (pprint (dissoc form-params :g-recaptcha-response))
+    (pprint 
+      (dissoc form-params :g-recaptcha-response))
     #_(pprint 
       [client-name
        email-address
@@ -614,10 +622,14 @@
            address])))
     (println "")
     
-    (and (not (some? error)) captcha-passed?
+    (when
+      (and
+        (not (some? error))
+        captcha-passed?)
       (send-contact-emails! ctx))
+    
     (if error
-      [contact-form 
+      [contact-form
        (-> ctx
          (assoc-in [:params :error] error)
          (assoc ::render-recaptcha true))]
@@ -627,7 +639,6 @@
 (comment 
   {:status 303
      :headers {"location" (str "/contact?success=" "success")}})
-
 
 ;; ___________________________________ .
 
@@ -665,7 +676,8 @@
       :base/title
       "Grounded Solutions - Contact")
     [container
-     [contact-title "We are here to help you get started with a sustainable landscape!"]
+     [contact-title 
+      "We are here to help you get started with a sustainable landscape!"]
      [fancy-divider]
      [contact-text
       [contact-links]
